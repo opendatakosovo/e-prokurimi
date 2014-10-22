@@ -1,6 +1,10 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.pyc~
+*.py~
+*.*~
+config.cfg
 
 # C extensions
 *.so
@@ -8,6 +12,8 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+.idea/
+venv/
 build/
 develop-eggs/
 dist/

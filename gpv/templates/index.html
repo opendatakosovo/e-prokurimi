@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block body %}
+    <h2>Data tables for companies who won tenders</h2>
+
+    <h3>2011</h3>
+
+    <script type="text/javascript">
+          google.load("visualization", "1", {packages:["table"]});
+          google.setOnLoadCallback(drawTable);
+
+          function drawTable() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Kompania');
+            data.addColumn('string', 'Tipi');
+            data.addColumn('string', 'Shuma e fituar');
+            data.addRows([
+
+            {% for result in table_results %}
+              ["{{result.kompania}}", "{{ result.tipi }}", "{{ result.shuma }}"],
+
+            {% endfor %}
+            ]);
+
+            var table = new google.visualization.Table(document.getElementById('table'));
+
+            table.draw(data, {showRowNumber: true});
+          }
+
+    </script>
+    <div id="table">
+    </div>
+
+{% endblock %}
