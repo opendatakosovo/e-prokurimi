@@ -101,6 +101,7 @@ from views.piechart import PieChart
 from views.treemap import TreeMap
 from views.budgettype import BudgetType
 from views.procurementtype import ProcurementType
+from views.company_details import CompanyDetails
 
 def register_url_rules(app):
     ''' Register the URL rules.
@@ -114,6 +115,9 @@ def register_url_rules(app):
     # Show Index page.
     app.add_url_rule('/', view_func=Index.as_view('index'))
 
+    # Show Treemap
+    app.add_url_rule('/company/<string:company_slug>', view_func=CompanyDetails.as_view('company'))
+
     # Show Pie Chart
 
     app.add_url_rule('/piechart', view_func=PieChart.as_view('piechart'))
@@ -123,8 +127,8 @@ def register_url_rules(app):
 
     # Show chart by Budget Type
 
-    app.add_url_rule('/budget-type', view_func=Index.as_view('budgettype'))
+    app.add_url_rule('/budget-type', view_func=BudgetType.as_view('budgettype'))
 
     # Show chart by Procurement Type
 
-    app.add_url_rule('/procurement-type', view_func=Index.as_view('procurementtype'))
+    app.add_url_rule('/procurement-type', view_func=ProcurementType.as_view('procurementtype'))

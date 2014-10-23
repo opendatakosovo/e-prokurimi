@@ -6,7 +6,7 @@ import json
 
 class ProcurementType(View):
     def dispatch_request(self):
-        url = "http://0.0.0.0:5000/piechart"
+        url = "http://0.0.0.0:5000/procurement-type"
         piechart = json.loads(urlopen(url).read())
 
 

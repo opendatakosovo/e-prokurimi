@@ -6,7 +6,7 @@ import json
 
 class Index(View):
     def dispatch_request(self):
-        url = "http://0.0.0.0:5000/treemap"
+        url = "http://0.0.0.0:5000/company-list"
         table_results = json.loads(urlopen(url).read())
 
 
