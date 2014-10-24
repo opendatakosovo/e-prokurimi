@@ -13,12 +13,11 @@
             data.addColumn('string', 'Kompania');
             data.addColumn('number', 'Viti');
             data.addColumn('string', 'Tipi');
-            data.addColumn('number', 'Shuma e fituar');
             data.addRows([
 
             {% for result in table_results %}
 
-              ['<a href="http://0.0.0.0:5001/company/{{result.slug}}">{{result.emri}}</a>',{{ result.viti }}, "{{ result.tipi }}", {{ result.shuma|float }}],
+              ['<a href="http://0.0.0.0:5001/company/{{result.slug}}">{{result.emri}}</a>',{{ result.viti }}, "{{ result.tipi }}"],
 
             {% endfor %}
             ]);

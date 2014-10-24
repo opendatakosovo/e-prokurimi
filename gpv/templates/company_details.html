@@ -11,10 +11,11 @@
             data.addColumn('string', 'Tipi');
             data.addColumn('string', 'Emri');
             data.addColumn('string', 'Selia');
+            data.addColumn('number', 'Viti');
             data.addRows([
 
             {% for results in company %}
-              ["{{results.kompania.emri}}", "{{ results.tipi }}", "{{ results.kompania.selia }}"],
+              ["{{results.kompania.emri}}", "{{ results.tipi }}", "{{ results.kompania.selia }}",{{ results.viti }}],
             {% endfor %}
             ]);
             var table = new google.visualization.Table(document.getElementById('table'));

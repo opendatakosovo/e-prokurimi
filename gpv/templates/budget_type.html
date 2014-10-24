@@ -15,14 +15,15 @@
         ]);
 
         var options = {
-          title: 'Shuma sipas tipit te shpenzimeve'
-        };
+          title: 'Shuma sipas tipit te shpenzimeve',
+          'width':600,
+          'height':600
+          };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
         chart.draw(data, options);
       }
-    </script>
     </script>
     <div id="piechart">
     </div>
