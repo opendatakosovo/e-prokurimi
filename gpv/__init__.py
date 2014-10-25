@@ -6,12 +6,12 @@ import logging.config
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
-from flask.views import View
 
 from utils.utils import Utils
 
 # Create utils instance.
 utils = Utils()
+
 
 def create_app():
     ''' Create the Flask app.
@@ -63,6 +63,7 @@ def load_config(app):
 
     app.config['LOG_LEVEL'] = config.get('Logging', 'LEVEL').upper()
 
+
 def configure_logging(app):
 
     # Get the path of the log from the config
@@ -102,6 +103,8 @@ from views.treemap import TreeMap
 from views.budgettype import BudgetType
 from views.procurementtype import ProcurementType
 from views.company_details import CompanyDetails
+from views.map import Map
+
 
 def register_url_rules(app):
     ''' Register the URL rules.
@@ -126,9 +129,10 @@ def register_url_rules(app):
     app.add_url_rule('/treemap', view_func=TreeMap.as_view('treemap'))
 
     # Show chart by Budget Type
-
     app.add_url_rule('/budget-type', view_func=BudgetType.as_view('budgettype'))
 
     # Show chart by Procurement Type
-
     app.add_url_rule('/procurement-type', view_func=ProcurementType.as_view('procurementtype'))
+
+    # Map url:
+    app.add_url_rule('/harta', view_func=Map.as_view('maps'))

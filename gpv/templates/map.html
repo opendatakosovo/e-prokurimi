@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Harta Prokurimit (2011 - 2013)</h3>
+    </div>
+    <div class="panel-body">
+        <div class="tabbable">
+            <ul class="nav nav-tabs assets-throughout-years-combo-chart">
+                <li id="tab-pane-contract-value">
+                    <a href="#pane-contract-value" data-toggle="tab">
+                        Kontrat Vlera
+                    </a>
+                </li>
+                <li id="tab-pane-contract-price">
+                    <a href="#pane-contract-price" data-toggle="tab">
+                        Kontrat Qmimi
+                    </a>
+                </li>
+                <li id="tab-pane-contract-count">
+                    <a href="#pane-contract-count" data-toggle="tab">
+                        Numri i Kontratave
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content assets-throughout-years-combo-chart">
+                <div id="pane-contract-value" class="tab-pane active">
+                    <iframe width='100%' height='520' frameborder='0' src='http://opendatakosovo.cartodb.com/viz/9c07b48c-5c38-11e4-9794-0e853d047bba/embed_map' allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+                </div>
+                <div id="pane-contract-price" class="tab-pane">
+                    <iframe width='100%' height='520' frameborder='0' src='http://opendatakosovo.cartodb.com/viz/06399ef6-5c39-11e4-814c-0e018d66dc29/embed_map' allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+                </div>
+                <div id="pane-contract-count" class="tab-pane">
+                    <iframe width='100%' height='520' frameborder='0' src='http://opendatakosovo.cartodb.com/viz/6ded6f28-5c39-11e4-9de4-0e853d047bba/embed_map' allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
