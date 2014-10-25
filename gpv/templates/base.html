@@ -1,34 +1,59 @@
 <html>
 <head>
+    <!-- Google Charts -->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='jQuery/jquery-1.11.1.min.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
+    <!-- Bootstrap  JavaScript -->
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
+
+    <!-- Bootstrap compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
+
+    <!-- Site styling -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
 <title>
     Gjakova Procurement Visualizer
 </title>
 </head>
 <body>
 
-<nav class="navbar navbar-inverse" role="navigation">
-    <a class="navbar-brand" href="{{ url_for('index')}}">Gjakova Municipality Procurement Visualizer</a>
-      <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analysis <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="{{ url_for('budgettype')}}">Budget Type</a></a></li>
-            <li><a href="{{ url_for('procurementtype')}}">Procurement Typek</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="{{ url_for('maps')}}">Harta</a>
-        </li>
-      </ul>
-</nav>
-<div class="container" style="padding-top:10px;">
-			{% block body %}{% endblock %}
-		</div>
+  <nav class="navbar navbar-default" role="navigation">
+      <a class="navbar-brand" href="{{ url_for('index')}}">Gjakova Municipality Procurement Visualizer</a>
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analysis <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{ url_for('budgettype')}}">Budget Type</a></a></li>
+              <li><a href="{{ url_for('procurementtype')}}">Procurement Typek</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="{{ url_for('maps')}}">Harta</a>
+          </li>
+        </ul>
+  </nav>
+  <div class="container" style="padding-top:10px;">
+  	{% block body %}{% endblock %}
+  </div>
+
+  <div class="push-for-footer"></div>
+
+  <div class="footer">
+      <div class="footer-container" align="center">
+          <p class="text-muted">
+              <br>Made in Kosovo by <a href="http://opendatakosovo.org" target="_blank">Open Data Kosovo</a>.
+              <br>
+                Source code available on 
+                  <a href="https://github.com/opendatakosovo/gjakova-procurement-visualizer" target="_blank">
+                    GitHub
+                  </a>.
+              <br>
+          </p>
+      </div>
+  </div>
+
 </body>
 </html>
