@@ -24,10 +24,12 @@
       <a class="navbar-brand" href="{{ url_for('index')}}">Gjakova Municipality Procurement Visualizer</a>
         <ul class="nav navbar-nav">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analysis <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Distribution <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="{{ url_for('budgettype')}}">Budget Type</a></a></li>
-              <li><a href="{{ url_for('procurementtype')}}">Procurement Typek</a></li>
+              <li><a href="/type-distribution/budget-type">Budget Type</a></a></li>
+              <li><a href="/type-distribution/procurement-type">Procurement Type</a></li>
+              <li><a href="/procurement-distribution/contract-value">Contract Value</a></li>
+              <li><a href="/procurement-distribution/contract-price">Contract Price</a></li>
             </ul>
           </li>
           <li>

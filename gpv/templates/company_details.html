@@ -1,31 +1,4 @@
 {% extends "base.html" %}
 {% block body %}
-    <h2>Company Details</h2>
-
-    <script type="text/javascript">
-          google.load("visualization", "1", {packages:["table"]});
-          google.setOnLoadCallback(drawTable);
-
-          function drawTable() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Tipi');
-            data.addColumn('string', 'Emri');
-            data.addColumn('string', 'Selia');
-            data.addColumn('number', 'Viti');
-            data.addRows([
-
-            {% for results in company %}
-              ["{{results.kompania.emri}}", "{{ results.tipi }}", "{{ results.kompania.selia }}",{{ results.viti }}],
-            {% endfor %}
-            ]);
-            var table = new google.visualization.Table(document.getElementById('table'));
-
-            table.draw(data, {showRowNumber: true});
-          }
-
-    </script>
-    <div id="table">
-        {{company}}
-    </div>
 
 {% endblock %}

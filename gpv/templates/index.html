@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 {% block body %}
-    <h2>Data tables for companies who won tenders</h2>
-
-    <h3>2011</h3>
-
     <script type="text/javascript">
           google.load("visualization", "1", {packages:["table"]});
           google.setOnLoadCallback(drawTable);
@@ -11,23 +7,18 @@
           function drawTable() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Kompania');
-            data.addColumn('number', 'Viti');
-            data.addColumn('string', 'Tipi');
             data.addRows([
-
-            {% for result in table_results %}
-
-              ['<a href="http://0.0.0.0:5001/company/{{result.slug}}">{{result.emri}}</a>',{{ result.viti }}, "{{ result.tipi }}"],
-
-            {% endfor %}
+              {% for result in table_results %}
+                ['{{result.emri}}'],
+              {% endfor %}
             ]);
 
             var table = new google.visualization.Table(document.getElementById('table'));
 
             table.draw(data,{allowHtml: true, showRowNumber: true});
           }
-
     </script>
+
     <div id="table">
     </div>
 

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block body %}
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+
+  $(document).ready(function() {
+    initTab(2011);
+
+    $( "#tab-pane-2012" ).click(function() {
+      initTab(2012);
+    });
+
+    $( "#tab-pane-2013" ).click(function() {
+       initTab(2013);
+    });
+
+    // Set title
+    if("{{type}}" === "budget-type"){
+      $('.panel-title').html('Total Contract Value Grouped By Budget Type');
+    }else if("{{type}}" === "procurement-type"){
+      $('.panel-title').html('Total Contract Value Grouped By Procurement Type');
+    }
+
+  });
+
+  function initTab(year){
+    // Only initialize the tab if it hasn't been initialized already.
+    if($('#pane-' + year).children().size() == 0){
+      url = "/json/{{type}}/" + year;
+
+      $.get(url, function( results ) {
+        piechartDivId = 'pane-' + year;
+        drawChart(results, piechartDivId);
+      });
+    }
+  }
+
+  function drawChart(results, divId) {
+
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn('string', 'Tipi');
+    dataTable.addColumn('number', 'Shuma');
+
+    for(var idx in results){
+      var type = results[idx]['tipi'];
+      var sum = results[idx]['shuma'];
+
+      if(type === ""){
+        type = "Unknown";
+      }
+
+      // Skip type "Konkurs projektimi" for now, well add it at the end.
+      // This is so that we stay cosistent in the colors of the pie chart.
+      // Because some years do not have "Konkurs projektimi," it messes up
+      // the pie chart's colouring consistency.
+      if(type != "Konkurs projektimi"){
+        dataTable.addRow([type, sum]);
+      }
+    }
+
+    // Now add the "Konkurs projektimi" row.
+    for(var idx in results){
+      var type = results[idx]['tipi'];
+
+      if(type == "Konkurs projektimi"){  
+        var sum = results[idx]['shuma'];
+        dataTable.addRow([type, sum]);
+      }
+    }
+
+    var options = {
+      'legend': {
+        'position': 'top'
+      },
+      'width':1000,
+      'height':800
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById(divId));
+    chart.draw(dataTable, options);
+  }
+</script>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Type Distribution</h3>
+    </div>
+    <div class="panel-body">
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li id="tab-pane-2011">
+                    <a href="#pane-2011" data-toggle="tab">
+                        2011
+                    </a>
+                </li>
+                <li id="tab-pane-2012">
+                    <a href="#pane-2012" data-toggle="tab">
+                        2012
+                    </a>
+                </li>
+                <li id="tab-pane-2013">
+                    <a href="#pane-2013" data-toggle="tab">
+                        2013
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="pane-2011" class="tab-pane active">  
+                </div>
+                <div id="pane-2012" class="tab-pane">
+                </div>
+                <div id="pane-2013" class="tab-pane">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

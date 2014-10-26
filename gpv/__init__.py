@@ -96,43 +96,73 @@ def configure_logging(app):
     app.logger.info('Logging to: %s', log_path)
 
 
-# Import forms
-from views.index import Index
-from views.piechart import PieChart
-from views.treemap import TreeMap
-from views.budgettype import BudgetType
-from views.procurementtype import ProcurementType
-from views.company_details import CompanyDetails
-from views.map import Map
+# Views for JSON requests
+from views.json.budgettype import BudgetType
+from views.json.procurementtype import ProcurementType
+from views.json.treemap import TreeMap
+
+# Views for Page rendering
+from views.pages.index import Index
+from views.pages.company_details import CompanyDetails
+from views.pages.typedistribution import TypeDistribution
+from views.pages.map import Map
+from views.pages.procurementdistribution import ProcurementDistribution
 
 
 def register_url_rules(app):
-    ''' Register the URL rules.
-        Use pluggable class-based views: http://flask.pocoo.org/docs/views/
+    ''' Register URLs
     :param app: The Flask application instance.
     '''
+    # Register the URL rules for JSON requests.
+    register_json_url_rules(app)
 
+    # Register the URL rules for page requests.
+    register_page_url_rules(app)
+
+
+def register_json_url_rules(app):
+    ''' Register the URL rules for JSON requests.
+    :param app: The Flask application instance.
     '''
-        Template Loading URLs.
+    app.add_url_rule(
+        '/json/budget-type/<int:year>',
+        view_func=BudgetType.as_view('budget_type_json'))
+
+    app.add_url_rule(
+        '/json/procurement-type/<int:year>',
+        view_func=ProcurementType.as_view('procurement_type_json'))
+
+    # Get JSON for TreeMap
+    app.add_url_rule(
+        '/json/treemap/<int:year>',
+        view_func=TreeMap.as_view('treemap_json'))
+
+
+def register_page_url_rules(app):
+    ''' Register the URL rules for page requests.
+    :param app: The Flask application instance.
     '''
-    # Show Index page.
-    app.add_url_rule('/', view_func=Index.as_view('index'))
+    # Index.
+    app.add_url_rule(
+        '/',
+        view_func=Index.as_view('index'))
 
-    # Show Treemap
-    app.add_url_rule('/company/<string:company_slug>', view_func=CompanyDetails.as_view('company'))
+    # Company Profile
+    app.add_url_rule(
+        '/company/<string:company_slug>',
+        view_func=CompanyDetails.as_view('company'))
 
-    # Show Pie Chart
+    # Budget/Procurement Type
+    app.add_url_rule(
+        '/type-distribution/<string:type>',
+        view_func=TypeDistribution.as_view('type_distribution'))
 
-    app.add_url_rule('/piechart', view_func=PieChart.as_view('piechart'))
+    # Contract Distribution Amongst Companies
+    app.add_url_rule(
+        '/procurement-distribution/<string:param>',
+        view_func=ProcurementDistribution.as_view('procurement_distribution'))
 
-    # Show Treemap
-    app.add_url_rule('/treemap', view_func=TreeMap.as_view('treemap'))
-
-    # Show chart by Budget Type
-    app.add_url_rule('/budget-type', view_func=BudgetType.as_view('budgettype'))
-
-    # Show chart by Procurement Type
-    app.add_url_rule('/procurement-type', view_func=ProcurementType.as_view('procurementtype'))
-
-    # Map url:
-    app.add_url_rule('/harta', view_func=Map.as_view('maps'))
+    # Map Page:
+    app.add_url_rule(
+        '/harta',
+        view_func=Map.as_view('maps'))
