@@ -100,6 +100,7 @@ def configure_logging(app):
 from views.json.budgettype import BudgetType
 from views.json.procurementtype import ProcurementType
 from views.json.treemap import TreeMap
+from views.json.treemapprice import TreeMapPrice
 
 # Views for Page rendering
 from views.pages.index import Index
@@ -137,6 +138,10 @@ def register_json_url_rules(app):
         '/json/treemap/<int:year>',
         view_func=TreeMap.as_view('treemap_json'))
 
+    app.add_url_rule(
+        '/json/treemap/price/<int:year>',
+        view_func=TreeMapPrice.as_view('treemap_price_json'))
+
 
 def register_page_url_rules(app):
     ''' Register the URL rules for page requests.
@@ -159,7 +164,7 @@ def register_page_url_rules(app):
 
     # Contract Distribution Amongst Companies
     app.add_url_rule(
-        '/procurement-distribution/<string:param>',
+        '/procurement-distribution/contracts',
         view_func=ProcurementDistribution.as_view('procurement_distribution'))
 
     # Map Page:

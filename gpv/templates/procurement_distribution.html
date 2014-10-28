@@ -4,15 +4,25 @@
     google.load("visualization", "1", {packages:["treemap"]});
 
     $(document).ready(function() {
-        initTab(2011);
+        initContractValueTab(2011);
+        initContractPriceTab(2011);
         initContractCountTab(2011);
 
+
         $( "#tab-pane-2012" ).click(function() {
-            initTab(2012);
+            initContractValueTab(2012);
         });
 
         $( "#tab-pane-2013" ).click(function() {
-            initTab(2013);
+            initContractValueTab(2013);
+        });
+
+        $( "#tab-pane-contract-price-2012" ).click(function() {
+            initContractPriceTab(2012);
+        });
+
+        $( "#tab-pane-contract-price-2013" ).click(function() {
+            initContractPriceTab(2013);
         });
 
         $( "#tab-pane-contract-count-2012" ).click(function() {
@@ -24,7 +34,7 @@
         });
     });
 
-    function initTab(year){
+    function initContractValueTab(year){
         if($('#pane-' + year).children().size() == 0){
             url = "/json/treemap/" + year;
 
@@ -35,8 +45,19 @@
         }
     }
 
+    function initContractPriceTab(year){
+        if($('#pane-contract-price-' + year).children().size() == 0){
+            url = "/json/treemap/price/" + year;
+
+            $.get(url, function( results ) {
+                contractCountContainerDivId = 'pane-contract-price-' + year;
+                drawChart(results, contractCountContainerDivId, "shuma", true);
+            });
+        }
+    }
+
     function initContractCountTab(year){
-        if($('#pane-contract-count' + year).children().size() == 0){
+        if($('#pane-contract-count-' + year).children().size() == 0){
             url = "/json/treemap/" + year;
 
             $.get(url, function( results ) {
@@ -97,7 +118,7 @@
 
     function showCurrencyStaticTooltip(row, size, value) {
         amount = parseFloat(Math.round(size * 100) / 100).toFixed(2);
-        
+
         return '<div style="background:#fd9; padding:10px; border-style:solid">' +
            '<strong>&euro; ' + toCurrency(amount) + '</strong>' +
            '</div>';
@@ -151,6 +172,41 @@
     </div>
 </div>
 
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Contract Price</h3>
+    </div>
+    <div class="panel-body">
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li id="tab-pane-contract-price-2011" class="active">
+                    <a href="#pane-contract-price-2011" data-toggle="tab">
+                        2011
+                    </a>
+                </li>
+                <li id="tab-pane-contract-price-2012">
+                    <a href="#pane-contract-price-2012" data-toggle="tab">
+                        2012
+                    </a>
+                </li>
+                <li id="tab-pane-contract-price-2013">
+                    <a href="#pane-contract-price-2013" data-toggle="tab">
+                        2013
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="pane-contract-price-2011" style="width: 100%; height: 500px;" class="tab-pane active">  
+                </div>
+                <div id="pane-contract-price-2012" style="width: 100%; height: 500px;" class="tab-pane">
+                </div>
+                <div id="pane-contract-price-2013" style="width: 100%; height: 500px;" class="tab-pane">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="panel panel-default">
     <div class="panel-heading">

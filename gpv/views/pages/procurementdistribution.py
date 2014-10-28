@@ -3,7 +3,5 @@ from flask.views import View
 
 
 class ProcurementDistribution(View):
-    def dispatch_request(self, param):
-        return render_template(
-            'procurement_distribution.html',
-            param=param)
+    def dispatch_request(self):
+        return render_template('procurement_distribution.html')
