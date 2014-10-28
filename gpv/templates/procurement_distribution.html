@@ -5,6 +5,7 @@
 
     $(document).ready(function() {
         initTab(2011);
+        initContractCountTab(2011);
 
         $( "#tab-pane-2012" ).click(function() {
             initTab(2012);
@@ -13,15 +14,103 @@
         $( "#tab-pane-2013" ).click(function() {
             initTab(2013);
         });
+
+        $( "#tab-pane-contract-count-2012" ).click(function() {
+            initContractCountTab(2012);
+        });
+
+        $( "#tab-pane-contract-count-2013" ).click(function() {
+            initContractCountTab(2013);
+        });
     });
 
     function initTab(year){
-        //TODO: Implement me!
+        if($('#pane-' + year).children().size() == 0){
+            url = "/json/treemap/" + year;
+
+            $.get(url, function( results ) {
+                containerDivId = 'pane-' + year;
+                drawChart(results, containerDivId, 'shuma', true);
+            });
+        }
     }
 
-    function drawChart(results, chartContainerDivId) {
-         //TODO: Implement me!
+    function initContractCountTab(year){
+        if($('#pane-contract-count-' + year).children().size() == 0){
+            url = "/json/treemap/" + year;
+
+            $.get(url, function( results ) {
+                contractCountContainerDivId = 'pane-contract-count-' + year;
+                drawChart(results, contractCountContainerDivId, "count", false);
+            });
+        }
     }
+
+    function drawChart(results, chartContainerDivId, param, isCurrency) {
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn('string', 'Procurement Type');
+        dataTable.addColumn('string', 'Parent');
+        dataTable.addColumn('number', 'Amount');
+
+        dataTable.addRow(['Global', null, 0]);
+        dataTable.addRow(['Furnizim', 'Global', 0]);
+        dataTable.addRow(['Konkurs projektimi', 'Global', 0]);
+        dataTable.addRow(['Pune', 'Global', 0]);
+        dataTable.addRow(['Sherbime', 'Global', 0]);
+
+        var companies = []
+
+        for(var idx in results){
+            var company = results[idx]['kompania'];
+
+            // Address issue when same company in different types
+            if(companies[company] != undefined){
+                companies[company] = companies[company] + 1;
+                company = company + '-' + companies[company];
+            }else{
+                companies[company] = 1;
+            }
+
+            var type = results[idx]['tipi'];
+            var amount = results[idx][param];
+
+            dataTable.addRow([company, type, amount]);
+        }
+
+        var options = {
+            minColor: '#FF6666',
+            midColor: '#FF0000',
+            maxColor: '#990000',
+            showScale: true,
+        };
+
+        if(isCurrency == true){
+            options['generateTooltip'] = showCurrencyStaticTooltip;
+        }else{
+            options['generateTooltip'] = showStaticTooltip;
+        }
+        
+
+        var chart = new google.visualization.TreeMap(document.getElementById(chartContainerDivId));
+        chart.draw(dataTable, options);
+    }
+
+    function showCurrencyStaticTooltip(row, size, value) {
+        return '<div style="background:#fd9; padding:10px; border-style:solid">' +
+           '<strong>&euro; ' + toCurrency(size) + '</strong>' +
+           '</div>';
+    }
+
+    function showStaticTooltip(row, size, value) {
+        return '<div style="background:#fd9; padding:10px; border-style:solid">' +
+           '<strong>' + size + '</strong>' +
+           '</div>';
+    }
+
+    function toCurrency(number){
+        return (number + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    }
+
 </script>
 
 
@@ -32,8 +121,8 @@
     <div class="panel-body">
         <div class="tabbable">
             <ul class="nav nav-tabs">
-                <li id="tab-pane-2011">
-                    <a href="#pane-2011" data-toggle="tab" class="active">
+                <li id="tab-pane-2011" class="active">
+                    <a href="#pane-2011" data-toggle="tab">
                         2011
                     </a>
                 </li>
@@ -54,6 +143,42 @@
                 <div id="pane-2012" style="width: 100%; height: 500px;" class="tab-pane">
                 </div>
                 <div id="pane-2013" style="width: 100%; height: 500px;" class="tab-pane">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Number of Awarded Contracts</h3>
+    </div>
+    <div class="panel-body">
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li id="tab-pane-contract-count-2011" class="active">
+                    <a href="#pane-contract-count-2011" data-toggle="tab">
+                        2011
+                    </a>
+                </li>
+                <li id="tab-pane-contract-count-2012">
+                    <a href="#pane-contract-count-2012" data-toggle="tab">
+                        2012
+                    </a>
+                </li>
+                <li id="tab-pane-contract-count-2013">
+                    <a href="#pane-contract-count-2013" data-toggle="tab">
+                        2013
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="pane-contract-count-2011" style="width: 100%; height: 500px;" class="tab-pane active">  
+                </div>
+                <div id="pane-contract-count-2012" style="width: 100%; height: 500px;" class="tab-pane">
+                </div>
+                <div id="pane-contract-count-2013" style="width: 100%; height: 500px;" class="tab-pane">
                 </div>
             </div>
         </div>
