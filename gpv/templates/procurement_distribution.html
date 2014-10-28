@@ -36,7 +36,7 @@
     }
 
     function initContractCountTab(year){
-        if($('#pane-contract-count-' + year).children().size() == 0){
+        if($('#pane-contract-count' + year).children().size() == 0){
             url = "/json/treemap/" + year;
 
             $.get(url, function( results ) {
@@ -96,8 +96,10 @@
     }
 
     function showCurrencyStaticTooltip(row, size, value) {
+        amount = parseFloat(Math.round(size * 100) / 100).toFixed(2);
+        
         return '<div style="background:#fd9; padding:10px; border-style:solid">' +
-           '<strong>&euro; ' + toCurrency(size) + '</strong>' +
+           '<strong>&euro; ' + toCurrency(amount) + '</strong>' +
            '</div>';
     }
 
