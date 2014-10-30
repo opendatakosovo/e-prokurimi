@@ -1,11 +1,15 @@
 from flask.views import View
 from flask import Response
 from urllib2 import urlopen
+from gpv import utils
 
 
 class TreeMap(View):
     def dispatch_request(self, year):
-        url = "http://0.0.0.0:5000/treemap/%d" % year
+
+    	api_base_url = utils.get_api_url()
+        url = "%s/treemap/%d" % (api_base_url, year)
+
         result = urlopen(url).read()
 
         # Build response object.
