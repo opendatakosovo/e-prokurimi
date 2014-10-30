@@ -40,6 +40,16 @@
               data.setCell(resultJson[key].muaji-1, columnIndex, resultJson[key][param]);
             }
 
+            // Formater for column cells to display numbers as currency
+            var formatter = new google.visualization.NumberFormat({
+                    fractionDigits: 0,
+                    prefix: '€ '
+            });
+
+            for(var i=1; i <= 3; i++){
+              formatter.format(data, i);
+            }
+
             var options = {
               'title': title,
               'width':900,

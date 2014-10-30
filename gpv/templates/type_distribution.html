@@ -64,6 +64,14 @@
       }
     }
 
+    // Formater for column cells to display numbers as currency
+    var formatter = new google.visualization.NumberFormat({
+            fractionDigits: 0,
+            prefix: '€ '
+    });
+
+    formatter.format(dataTable, 1);
+
     var options = {
       'legend': {
         'position': 'top'
