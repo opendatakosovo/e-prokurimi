@@ -143,6 +143,7 @@ def register_json_url_rules(app):
         view_func=TreeMapPrice.as_view('treemap_price_json'))
 
 
+
 def register_page_url_rules(app):
     ''' Register the URL rules for page requests.
     :param app: The Flask application instance.

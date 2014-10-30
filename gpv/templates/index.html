@@ -1,25 +1,73 @@
 {% extends "base.html" %}
 {% block body %}
     <script type="text/javascript">
-          google.load("visualization", "1", {packages:["table"]});
-          google.setOnLoadCallback(drawTable);
+          google.load("visualization", "1", {packages:["corechart"]});
+          
+          $(document).ready(function(){
+            drawContractValueChart("Vlera", "x axis", "y axis", "vlera", "linechart-vlera");
+            drawContractValueChart("Qmimi", "x axis", "y axis", "qmimi", "linechart-qmimi");
+            drawContractValueChart("Contract Number", "x axis", "y axis", "count", "linechart-contract-count");
+          });
 
-          function drawTable() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Kompania');
-            data.addRows([
-              {% for result in table_results %}
-                ['{{result.emri}}'],
-              {% endfor %}
+          function drawContractValueChart(title, xAxisTitle, yAxisTitle, param, containerDivId) {
+            var data = google.visualization.arrayToDataTable([
+              ['Muji'],
+              ["Janar"],
+              ["Shkurt"],
+              ["Mars"],
+              ["Prill"],
+              ["Maj"],
+              ["Qershor"],
+              ["Korrik"],
+              ["Gusht"],
+              ["Shtator"],
+              ["Tetor"],
+              ["Nëntor"],
+              ["Dhjetor"]
             ]);
 
-            var table = new google.visualization.Table(document.getElementById('table'));
+            var resultJson = {{result_json|tojson}};
 
-            table.draw(data,{allowHtml: true, showRowNumber: true});
+            var currentYear = 0;
+            var columnIndex = 0;
+
+            for (var key in resultJson ){
+              if (resultJson[key].viti != currentYear){
+                data.addColumn('number', resultJson[key].viti);
+                currentYear = resultJson[key].viti;
+                columnIndex++; 
+              }
+              data.setCell(resultJson[key].muaji-1, columnIndex, resultJson[key][param]);
+            }
+
+            var options = {
+              'title': title,
+              'width':900,
+              'height':450,
+              'vAxis': {
+                'title': yAxisTitle
+              },
+              'hAxis': {
+                'title': xAxisTitle
+              }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById(containerDivId));
+
+            chart.draw(data, options);
           }
+
     </script>
 
-    <div id="table">
+    <div id="linechart-vlera">
     </div>
+
+    <div id="linechart-qmimi">
+    </div>
+
+    <div id="linechart-contract-count">
+    </div>
+
+
 
 {% endblock %}
