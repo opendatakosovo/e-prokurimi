@@ -126,11 +126,11 @@ def register_json_url_rules(app):
     :param app: The Flask application instance.
     '''
     app.add_url_rule(
-        '/json/budget-type/<int:year>',
+        '/json/buxheti/<int:year>',
         view_func=BudgetType.as_view('budget_type_json'))
 
     app.add_url_rule(
-        '/json/procurement-type/<int:year>',
+        '/json/prokurimi/<int:year>',
         view_func=ProcurementType.as_view('procurement_type_json'))
 
     # Get JSON for TreeMap
@@ -158,15 +158,15 @@ def register_page_url_rules(app):
         '/company/<string:company_slug>',
         view_func=CompanyDetails.as_view('company'))
 
-    # Budget/Procurement Type
-    app.add_url_rule(
-        '/type-distribution/<string:type>',
-        view_func=TypeDistribution.as_view('type_distribution'))
-
     # Contract Distribution Amongst Companies
     app.add_url_rule(
-        '/procurement-distribution/contracts',
+        '/shperndarja/perfituesit',
         view_func=ProcurementDistribution.as_view('procurement_distribution'))
+
+    # Budget/Procurement Type
+    app.add_url_rule(
+        '/shperndarja/<string:type>',
+        view_func=TypeDistribution.as_view('type_distribution'))    
 
     # Map Page:
     app.add_url_rule(

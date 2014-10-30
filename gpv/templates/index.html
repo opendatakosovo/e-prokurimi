@@ -4,9 +4,9 @@
           google.load("visualization", "1", {packages:["corechart"]});
           
           $(document).ready(function(){
-            drawContractValueChart("Vlera", "x axis", "y axis", "vlera", "linechart-vlera");
-            drawContractValueChart("Qmimi", "x axis", "y axis", "qmimi", "linechart-qmimi");
-            drawContractValueChart("Contract Number", "x axis", "y axis", "count", "linechart-contract-count");
+            drawContractValueChart("Vlera e kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Shuma", "vlera", "linechart-vlera");
+            drawContractValueChart("Çmimi e kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Shuma", "qmimi", "linechart-qmimi");
+            drawContractValueChart("Numri i kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Numri i kontratave", "count", "linechart-contract-count");
           });
 
           function drawContractValueChart(title, xAxisTitle, yAxisTitle, param, containerDivId) {
