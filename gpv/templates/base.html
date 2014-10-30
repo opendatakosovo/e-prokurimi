@@ -21,18 +21,25 @@
 <body>
 
   <nav class="navbar navbar-default" role="navigation">
-      <a class="navbar-brand" href="{{ url_for('index')}}">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komun&euml;s t&euml; Gjakov&euml;s</a>
+      
+
+      {% if config.BASE_PATH == '' %}
+          <a class="navbar-brand" href="/">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komun&euml;s t&euml; Gjakov&euml;s</a>
+      {% else %}
+          <a class="navbar-brand" href="{{ config.BASE_PATH }}">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komun&euml;s t&euml; Gjakov&euml;s</a>
+      {% endif %}
+
         <ul class="nav navbar-nav">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shp&euml;rndarja <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="/shperndarja/buxheti">Lloji buxhetit</a></a></li>
-              <li><a href="/shperndarja/prokurimi">Lloji prokurimit</a></li>
-              <li><a href="/shperndarja/perfituesit">P&euml;rfituesit</a></li>
+              <li><a href="{{ config.BASE_PATH }}/shperndarja/buxheti">Lloji buxhetit</a></a></li>
+              <li><a href="{{ config.BASE_PATH }}/shperndarja/prokurimi">Lloji prokurimit</a></li>
+              <li><a href="{{ config.BASE_PATH }}/shperndarja/perfituesit">P&euml;rfituesit</a></li>
             </ul>
           </li>
           <li>
-            <a href="{{ url_for('maps')}}">Harta</a>
+            <a href="{{ config.BASE_PATH }}/harta">Harta</a>
           </li>
         </ul>
   </nav>
