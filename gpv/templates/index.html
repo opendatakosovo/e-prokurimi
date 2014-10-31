@@ -4,12 +4,12 @@
           google.load("visualization", "1", {packages:["corechart"]});
           
           $(document).ready(function(){
-            drawContractValueChart("Vlera e kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Shuma", "vlera", "linechart-vlera");
-            drawContractValueChart("Çmimi e kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Shuma", "qmimi", "linechart-qmimi");
-            drawContractValueChart("Numri i kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Numri i kontratave", "count", "linechart-contract-count");
+            drawContractValueChart("Vlera e kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Shuma", "vlera", "linechart-vlera", true);
+            drawContractValueChart("Çmimi e kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
+            drawContractValueChart("Numri i kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Numri i kontratave", "count", "linechart-contract-count", false);
           });
 
-          function drawContractValueChart(title, xAxisTitle, yAxisTitle, param, containerDivId) {
+          function drawContractValueChart(title, xAxisTitle, yAxisTitle, param, containerDivId, isCurrency) {
             var data = google.visualization.arrayToDataTable([
               ['Muji'],
               ["Janar"],
@@ -40,14 +40,16 @@
               data.setCell(resultJson[key].muaji-1, columnIndex, resultJson[key][param]);
             }
 
-            // Formater for column cells to display numbers as currency
-            var formatter = new google.visualization.NumberFormat({
-                    fractionDigits: 0,
-                    prefix: '€ '
-            });
+            if(isCurrency == true){
+              // Formater for column cells to display numbers as currency
+              var formatter = new google.visualization.NumberFormat({
+                      fractionDigits: 0,
+                      prefix: '€ '
+              });
 
-            for(var i=1; i <= 3; i++){
-              formatter.format(data, i);
+              for(var i=1; i <= 3; i++){
+                formatter.format(data, i);
+              }
             }
 
             var options = {
