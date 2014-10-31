@@ -9,30 +9,70 @@
         initContractCountTab(2011);
 
 
+        $( "#tab-pane-2011" ).click(function() {
+            setContractValueResetLink(2011);
+        });
+
         $( "#tab-pane-2012" ).click(function() {
             initContractValueTab(2012);
+            setContractValueResetLink(2012);
         });
 
         $( "#tab-pane-2013" ).click(function() {
             initContractValueTab(2013);
+            setContractValueResetLink(2013);
+        });
+
+        $( "#tab-pane-contract-price-2011" ).click(function() {
+            setContractPriceResetLink(2011);
         });
 
         $( "#tab-pane-contract-price-2012" ).click(function() {
             initContractPriceTab(2012);
+            setContractPriceResetLink(2012);
         });
 
         $( "#tab-pane-contract-price-2013" ).click(function() {
             initContractPriceTab(2013);
+            setContractPriceResetLink(2013);
+        });
+
+        $( "#tab-pane-contract-count-2011" ).click(function() {
+            setContractCountResetLink(2011);
         });
 
         $( "#tab-pane-contract-count-2012" ).click(function() {
             initContractCountTab(2012);
+            setContractCountResetLink(2012);
         });
 
         $( "#tab-pane-contract-count-2013" ).click(function() {
             initContractCountTab(2013);
+            setContractCountResetLink(2013);
         });
     });
+
+    function setContractValueResetLink(year){
+        setResetLink(year, "pane-contract-value-reset", "pane-")
+    }
+
+    function setContractPriceResetLink(year){
+        setResetLink(year, "pane-contract-price-reset", "pane-contract-price-")
+    }
+
+    function setContractCountResetLink(year){
+        setResetLink(year, "pane-contract-count-reset", "pane-contract-count-")
+    }
+
+    function setResetLink(year, resetLinkContainerDivId, linkIdPrefix){
+        $('#' + resetLinkContainerDivId + ' a').each(function(){
+            if($(this).attr('id') === linkIdPrefix + year + "-reset"){
+                $(this).parent().css('display', 'block');
+            }else{
+                $(this).parent().css('display', 'none');
+            }
+        });
+    }
 
     function initContractValueTab(year){
         if($('#pane-' + year).children().size() == 0){
@@ -101,8 +141,7 @@
         var options = {
             minColor: '#B2E0FF',
             midColor: '#19A3FF',
-            maxColor: '#003D66',
-            showScale: true,
+            maxColor: '#003D66'
         };
 
         if(isCurrency == true){
@@ -114,6 +153,16 @@
 
         var chart = new google.visualization.TreeMap(document.getElementById(chartContainerDivId));
         chart.draw(dataTable, options);
+        
+        $( "#" + chartContainerDivId + "-reset" ).click(function() {
+            chart.goUpAndDraw();
+        });
+
+    }
+
+    function myOnClickFunction(){
+        console.log(this);
+        alert('man!');
     }
 
     function showCurrencyStaticTooltip(row, size, value) {
@@ -161,13 +210,24 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div id="pane-2011" style="width: 100%; height: 500px;" class="tab-pane active">  
+                <div id="pane-2011" style="width: 100%; height: 500px;" class="tab-pane active"> 
                 </div>
                 <div id="pane-2012" style="width: 100%; height: 500px;" class="tab-pane">
                 </div>
                 <div id="pane-2013" style="width: 100%; height: 500px;" class="tab-pane">
                 </div>
             </div>
+            <div id="pane-contract-value-reset" align="right" style="padding-right:30px;cursor:pointer;">
+                <div>
+                    <a id="pane-2011-reset">rivë</a>
+                </div>
+                <div style="display:none;">
+                    <a id="pane-2012-reset">rivë</a>
+                </div>
+                <div style="display:none;">
+                    <a id="pane-2013-reset">rivë</a>
+                </div>
+            </div> 
         </div>
     </div>
 </div>
@@ -197,13 +257,24 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div id="pane-contract-price-2011" style="width: 100%; height: 500px;" class="tab-pane active">  
+                <div id="pane-contract-price-2011" style="width: 100%; height: 500px;" class="tab-pane active">
                 </div>
                 <div id="pane-contract-price-2012" style="width: 100%; height: 500px;" class="tab-pane">
                 </div>
                 <div id="pane-contract-price-2013" style="width: 100%; height: 500px;" class="tab-pane">
                 </div>
             </div>
+            <div id="pane-contract-price-reset" align="right" style="padding-right:30px;cursor:pointer;">
+                <div>
+                    <a id="pane-contract-price-2011-reset">rivë</a>
+                </div>
+                <div style="display:none;">
+                    <a id="pane-contract-price-2012-reset">rivë</a>
+                </div>
+                <div style="display:none;">
+                    <a id="pane-contract-price-2013-reset">rivë</a>
+                </div>
+            </div> 
         </div>
     </div>
 </div>
@@ -232,13 +303,24 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div id="pane-contract-count-2011" style="width: 100%; height: 500px;" class="tab-pane active">  
+                <div id="pane-contract-count-2011" style="width: 100%; height: 500px;" class="tab-pane active"> 
                 </div>
                 <div id="pane-contract-count-2012" style="width: 100%; height: 500px;" class="tab-pane">
                 </div>
                 <div id="pane-contract-count-2013" style="width: 100%; height: 500px;" class="tab-pane">
                 </div>
             </div>
+            <div id="pane-contract-count-reset" align="right" style="padding-right:30px;cursor:pointer;">
+                <div>
+                    <a id="pane-contract-count-2011-reset">rivë</a>
+                </div>
+                <div style="display:none;">
+                    <a id="pane-contract-count-2012-reset">rivë</a>
+                </div>
+                <div style="display:none;">
+                    <a id="pane-contract-count-2013-reset">rivë</a>
+                </div>
+            </div> 
         </div>
     </div>
 </div>
