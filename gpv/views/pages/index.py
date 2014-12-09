@@ -7,8 +7,8 @@ import json
 
 class Index(View):
     def dispatch_request(self):
-    	api_base_url = utils.get_api_url()
-        url = "%s/monthly-summary" % api_base_url
+        api_base_url = utils.get_api_url()
+        url = "%s/gjakova/monthly-summary" % api_base_url
 
         result_json = json.loads(urlopen(url).read())
 

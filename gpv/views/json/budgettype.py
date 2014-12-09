@@ -9,7 +9,7 @@ class BudgetType(View):
     def dispatch_request(self, year):
 
     	api_base_url = utils.get_api_url()
-        url = "%s/budget-type/%d" % (api_base_url, year)
+        url = "%s/gjakova/budget-type/%d" % (api_base_url, year)
 
         result = urlopen(url).read()
 

@@ -9,8 +9,8 @@ class ProcurementType(View):
     def dispatch_request(self, year):
 
     	api_base_url = utils.get_api_url()
-        url = "%s/procurement-type/%d" % (api_base_url, year)
-        
+        url = "%s/gjakova/procurement-type/%d" % (api_base_url, year)
+
         result = urlopen(url).read()
 
         # Build response object.

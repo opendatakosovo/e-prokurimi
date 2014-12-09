@@ -10,6 +10,8 @@ config.cfg
 *.so
 
 # Distribution / packaging
+logs
+.logs
 .Python
 env/
 .idea/
