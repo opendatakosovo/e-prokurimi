@@ -126,20 +126,20 @@ def register_json_url_rules(app):
     :param app: The Flask application instance.
     '''
     app.add_url_rule(
-        '/json/buxheti/<int:year>',
+        '/json/<string:komuna>/buxheti/<int:year>',
         view_func=BudgetType.as_view('budget_type_json'))
 
     app.add_url_rule(
-        '/json/prokurimi/<int:year>',
+        '/json/<string:komuna>/prokurimi/<int:year>',
         view_func=ProcurementType.as_view('procurement_type_json'))
 
     # Get JSON for TreeMap
     app.add_url_rule(
-        '/json/treemap/<int:year>',
+        '/json/<string:komuna>/treemap/<int:year>',
         view_func=TreeMap.as_view('treemap_json'))
 
     app.add_url_rule(
-        '/json/treemap/price/<int:year>',
+        '/json/<string:komuna>/treemap/price/<int:year>',
         view_func=TreeMapPrice.as_view('treemap_price_json'))
 
 
@@ -155,20 +155,20 @@ def register_page_url_rules(app):
 
     # Company Profile
     app.add_url_rule(
-        '/company/<string:company_slug>',
+        '/<string:komuna>/company/<string:company_slug>',
         view_func=CompanyDetails.as_view('company'))
 
     # Contract Distribution Amongst Companies
     app.add_url_rule(
-        '/shperndarja/perfituesit',
+        '/<string:komuna>/shperndarja/perfituesit',
         view_func=ProcurementDistribution.as_view('procurement_distribution'))
 
     # Budget/Procurement Type
     app.add_url_rule(
-        '/shperndarja/<string:type>',
+        '/<string:komuna>/shperndarja/<string:type>',
         view_func=TypeDistribution.as_view('type_distribution'))    
 
     # Map Page:
     app.add_url_rule(
-        '/harta',
+        '/<string:komuna>/harta',
         view_func=Map.as_view('maps'))

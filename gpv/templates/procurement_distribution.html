@@ -76,7 +76,7 @@
 
     function initContractValueTab(year){
         if($('#pane-' + year).children().size() == 0){
-            url = "{{ config.BASE_PATH }}/json/treemap/" + year;
+            url = "{{ config.BASE_PATH }}/json/{{komuna}}/treemap/" + year;
 
             $.get(url, function( results ) {
                 containerDivId = 'pane-' + year;
@@ -87,7 +87,7 @@
 
     function initContractPriceTab(year){
         if($('#pane-contract-price-' + year).children().size() == 0){
-            url = "{{ config.BASE_PATH }}/json/treemap/price/" + year;
+            url = "{{ config.BASE_PATH }}/json/{{komuna}}/treemap/price/" + year;
 
             $.get(url, function( results ) {
                 contractCountContainerDivId = 'pane-contract-price-' + year;
@@ -98,7 +98,7 @@
 
     function initContractCountTab(year){
         if($('#pane-contract-count-' + year).children().size() == 0){
-            url = "{{ config.BASE_PATH }}/json/treemap/" + year;
+            url = "{{ config.BASE_PATH }}/json/{{komuna}}/treemap/" + year;
 
             $.get(url, function( results ) {
                 contractCountContainerDivId = 'pane-contract-count-' + year;

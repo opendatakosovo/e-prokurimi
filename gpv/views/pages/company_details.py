@@ -5,8 +5,8 @@ import json
 
 
 class CompanyDetails(View):
-    def dispatch_request(self, company_slug):
-        url = "http://0.0.0.0:5000/gjakova/company/%s" % (company_slug)
+    def dispatch_request(self, komuna, company_slug):
+        url = "http://0.0.0.0:5000/%s/company/%s" % (komuna, company_slug)
         company = json.loads(urlopen(url).read())
 
-        return render_template('company_details.html', company=company)
+        return render_template('company_details.html', komuna=komuna, company=company)

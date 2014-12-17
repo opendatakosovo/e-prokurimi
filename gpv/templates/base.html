@@ -15,33 +15,75 @@
     <!-- Site styling -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
 <title>
-    Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komun&euml;s t&euml; Gjakov&euml;s
+    Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml; Kosov&euml;s
 </title>
 </head>
 <body>
+<script type="text/javascript">
+ $( document ).ready(function() {
 
+  qyteti = "ferizaj";
+  $("#qyteti").change(function(){
+    qyteti = $(this).val();
+    pathName = window.location.origin;
+    newUrl = pathName + '/'+qyteti;
+
+    ndertoLinkunShperndarja(newUrl);
+    
+  });
+  
+  function ndertoLinkunShperndarja(newUrl){
+    $('#shperndarja').children().children().children().each(function () {
+        teksti = $(this).text();
+      if(teksti == 'Lloji buxhetit'){
+        $(this).attr('href',newUrl+'/shperndarja/buxheti');
+      }
+      else if(teksti == 'Lloji prokurimit'){
+        $(this).attr('href',newUrl+'/shperndarja/prokurimi');
+      }
+      else if(teksti == 'Perfituesit'){
+        $(this).attr('href',newUrl+'/shperndarja/perfituesit');
+      }
+    });
+    $('#shperndarja').removeClass('disabled');
+    
+  }
+  
+});
+
+</script>
   <nav class="navbar navbar-default" role="navigation">
       
 
       {% if config.BASE_PATH == '' %}
-          <a class="navbar-brand" href="/">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komun&euml;s t&euml; Gjakov&euml;s</a>
+          <a class="navbar-brand" href="/">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml; Kosov&euml;s</a>
       {% else %}
-          <a class="navbar-brand" href="{{ config.BASE_PATH }}">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komun&euml;s t&euml; Gjakov&euml;s</a>
+          <a class="navbar-brand" href="{{ config.BASE_PATH }}">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml; Kosov&euml;s</a>
       {% endif %}
-
+      <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shp&euml;rndarja <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Qyteti <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="{{ config.BASE_PATH }}/shperndarja/buxheti">Lloji buxhetit</a></li>
-              <li><a href="{{ config.BASE_PATH }}/shperndarja/prokurimi">Lloji prokurimit</a></li>
-              <li><a href="{{ config.BASE_PATH }}/shperndarja/perfituesit">P&euml;rfituesit</a></li>
+              <select id="qyteti">
+              <<option value="ferizaj">Ferizaj</option>
+              <option value="gjakova">Gjakov&euml;</option>
+              </select>
             </ul>
           </li>
-          <li>
+          <li class="dropdown disabled" id="shperndarja">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shp&euml;rndarja <span class="caret"></span></a>
+            <ul class="dropdown-menu disabled" role="menu">
+              <li><a href="{{ config.BASE_PATH }}/shperndarja/buxheti">Lloji buxhetit</a></li>
+              <li><a href="{{ config.BASE_PATH }}/shperndarja/prokurimi">Lloji prokurimit</a></li>
+              <li><a href="{{ config.BASE_PATH }}/shperndarja/perfituesit">Perfituesit</a></li>
+            </ul>
+          </li>
+          <li class="disabled" id="harta">
             <a href="{{ config.BASE_PATH }}/harta">Harta</a>
           </li>
         </ul>
+      </div>
   </nav>
   <div class="container" style="padding-top:10px;">
   	{% block body %}{% endblock %}
