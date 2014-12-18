@@ -108,7 +108,7 @@ from views.pages.company_details import CompanyDetails
 from views.pages.typedistribution import TypeDistribution
 from views.pages.map import Map
 from views.pages.procurementdistribution import ProcurementDistribution
-
+from views.pages.home import Home
 
 def register_url_rules(app):
     ''' Register URLs
@@ -151,6 +151,11 @@ def register_page_url_rules(app):
     # Index.
     app.add_url_rule(
         '/',
+        view_func=Home.as_view('home'))
+
+
+    app.add_url_rule(
+        '/<string:komuna>/',
         view_func=Index.as_view('index'))
 
     # Company Profile
@@ -166,7 +171,7 @@ def register_page_url_rules(app):
     # Budget/Procurement Type
     app.add_url_rule(
         '/<string:komuna>/shperndarja/<string:type>',
-        view_func=TypeDistribution.as_view('type_distribution'))    
+        view_func=TypeDistribution.as_view('type_distribution'))
 
     # Map Page:
     app.add_url_rule(

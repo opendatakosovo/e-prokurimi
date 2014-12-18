@@ -6,9 +6,9 @@ from gpv import utils
 
 class ProcurementType(View):
 
-    def dispatch_request(self,komuna, year):
+    def dispatch_request(self, komuna, year):
 
-    	api_base_url = utils.get_api_url()
+        api_base_url = utils.get_api_url()
         url = "%s/%s/procurement-type/%d" % (api_base_url, komuna, year)
 
         result = urlopen(url).read()

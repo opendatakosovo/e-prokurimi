@@ -134,8 +134,11 @@
 
             var type = results[idx]['tipi'];
             var amount = results[idx][param];
-
-            dataTable.addRow([company, type, amount]);
+            
+            if(type != "Sherbime Keshillimi" && type != "n/a"){
+                dataTable.addRow([company, type, amount]);
+            }
+            
         }
 
         var options = {

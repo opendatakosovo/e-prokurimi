@@ -6,10 +6,10 @@ import json
 
 
 class Index(View):
-    def dispatch_request(self):
+    def dispatch_request(self, komuna):
         api_base_url = utils.get_api_url()
-        url = "%s/gjakova/monthly-summary" % api_base_url
+        url = "%s/%s/monthly-summary" % (api_base_url,komuna)
 
         result_json = json.loads(urlopen(url).read())
 
-        return render_template('index.html', result_json=result_json)
+        return render_template('index.html', komuna=komuna, result_json=result_json)
