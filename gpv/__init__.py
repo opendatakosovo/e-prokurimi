@@ -101,6 +101,7 @@ from views.json.budgettype import BudgetType
 from views.json.procurementtype import ProcurementType
 from views.json.treemap import TreeMap
 from views.json.treemapprice import TreeMapPrice
+from views.json.vleracmimi import VleraCmimi
 
 # Views for Page rendering
 from views.pages.index import Index
@@ -132,6 +133,11 @@ def register_json_url_rules(app):
     app.add_url_rule(
         '/json/<string:komuna>/prokurimi/<int:year>',
         view_func=ProcurementType.as_view('procurement_type_json'))
+
+
+    app.add_url_rule(
+        '/json/<string:komuna>/monthly-summary/<int:viti>',
+        view_func=VleraCmimi.as_view('vlera_cmimi_json'))
 
     # Get JSON for TreeMap
     app.add_url_rule(

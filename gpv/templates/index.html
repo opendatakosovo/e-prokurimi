@@ -2,14 +2,63 @@
 {% block body %}
     <script type="text/javascript">
           google.load("visualization", "1", {packages:["corechart"]});
-          
           $(document).ready(function(){
+            var pathname = window.location.pathname;
+            console.log(pathname);
+
+            drawValuePriceChart();
+            $('#viti-select').change(function(){
+                drawValuePriceChart();
+            })
+
             drawContractValueChart("Vlera e kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Shuma", "vlera", "linechart-vlera", true);
             drawContractValueChart("Çmimi e kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
             drawContractValueChart("Numri i kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Numri i kontratave", "count", "linechart-contract-count", false);
           });
 
+          function drawValuePriceChart(){
+            var year = $('#viti-select').val()
+            var pathname = window.location.pathname;
+            var url = '{{ config.BASE_PATH }}/json'+ pathname +'monthly-summary/' + year;
+            console.log(url);
+            $.get(url, function(jsonResult){
+
+              var data = new google.visualization.DataTable();
+              data.addColumn('string', 'Muaji');
+              data.addColumn('number', 'Vlera');
+              data.addColumn('number', 'Cmimi');
+
+              var monthArray = ["Janar", "Shkurt", "Mars", "Prill", "Maj", "Qershor", "Korrik",
+              "Gusht","Shtator","Tetor","Nëntor","Dhjetor"];
+
+              for ( var key in jsonResult){
+                var monthIndex = jsonResult[key].muaji - 1;
+                var month = monthArray[monthIndex];
+
+                data.addRow([month, jsonResult[key].vlera, jsonResult[key].qmimi]);
+              }
+              var formatter = new google.visualization.NumberFormat({
+                      fractionDigits: 0,
+                      prefix: '€ '
+              });
+
+              var options = {
+                  'title': "Vlera dhe cmimi i kontratave",
+                  'vAxis': {
+                    'title': "Vlera dhe Cmimi"
+                  },
+                  'hAxis': {
+                    'title': "Muaji"
+                  }
+                };
+              var chart = new google.visualization.LineChart(document.getElementById("linechart-vlera-cmimi"));
+
+              chart.draw(data, options);
+            })
+          }
+
           function drawContractValueChart(title, xAxisTitle, yAxisTitle, param, containerDivId, isCurrency) {
+
             var data = google.visualization.arrayToDataTable([
               ['Muji'],
               ["Janar"],
@@ -67,9 +116,21 @@
             var chart = new google.visualization.LineChart(document.getElementById(containerDivId));
 
             chart.draw(data, options);
-          }
+          };
 
+          
     </script>
+    <div id="select" style="margin-left:500px;">
+      <label>Viti</label>
+    <select id="viti-select">
+      <option selected="selected" value="2011">2011</option>
+      <option value="2012">2012</option>
+      <option value="2013">2013</option>
+    </select>
+    </div>
+    <div id="linechart-vlera-cmimi" style="height:450px; width: 900px;">
+    
+    </div>
 
     <div id="linechart-vlera">
     </div>
