@@ -20,54 +20,39 @@
 </head>
 <body>
 <script type="text/javascript">
- $( document ).ready(function() {
+$( document ).ready(function() {
 
   qyteti = "ferizaj";
-  $("#qyteti").change(function(){
-    qyteti = $(this).val();
-    pathName = window.location.origin;
+  $("#qyteti").click(function(){
+    qyteti = $(this).text();
     newUrl = pathName + '/'+qyteti;
-
-    ndertoLinkunShperndarja(newUrl);
-    
-  });
-  
-  function ndertoLinkunShperndarja(newUrl){
-    $('#shperndarja').children().children().children().each(function () {
-        teksti = $(this).text();
-      if(teksti == 'Lloji buxhetit'){
-        $(this).attr('href',newUrl+'/shperndarja/buxheti');
-      }
-      else if(teksti == 'Lloji prokurimit'){
-        $(this).attr('href',newUrl+'/shperndarja/prokurimi');
-      }
-      else if(teksti == 'Perfituesit'){
-        $(this).attr('href',newUrl+'/shperndarja/perfituesit');
-      }
     });
-    
-  }
-  
+
 });
+
+ function switchCommune(selectedCommune){
+  var currentCommune = '{{ komuna }}';
+  // get path
+  var currentPath = window.location.pathname;
+  var urlArray = currentPath.split("/");
+  for(var i = 0; i < urlArray.length; i++){
+    if(urlArray[i] == currentCommune){
+      urlArray[i] =  selectedCommune ;
+    }
+  }
+  urlArray = urlArray.join("/");
+  document.location.href =  urlArray;
+ }
 
 </script>
   <nav class="navbar navbar-default" role="navigation">
-      
-
       {% if config.BASE_PATH == '' %}
-          <a class="navbar-brand" href="/">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml; Kosov&euml;s</a>
+          <a class="navbar-brand" id="titulli" href="/">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml Kosov&euml;s </a>
       {% else %}
           <a class="navbar-brand" href="{{ config.BASE_PATH }}">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml; Kosov&euml;s</a>
       {% endif %}
       <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Komuna <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="/ferizaj">Ferizaj</a></li>
-                <li><a href="/gjakova">Gjakova</a></li>
-            </ul>
-          </li>
+        <ul class="nav navbar-nav navbar-left">
           <li class="dropdown" id="shperndarja">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shp&euml;rndarja <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
@@ -79,8 +64,20 @@
           <li id="harta">
             <a href="/{{komuna}}/harta">Harta</a>
           </li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ komuna }} <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href='javascript:switchCommune("ferizaj");'>Ferizaj</a></li>
+              <li class="divider"></li>
+              <li><a href='javascript:switchCommune("gjakova");'>Gjakova</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
+
   </nav>
   <div class="container" style="padding-top:10px;">
   	{% block body %}{% endblock %}
