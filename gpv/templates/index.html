@@ -38,7 +38,9 @@
              
 
               var options = {
-                  'title': "Vlera dhe cmimi i kontratave",
+                  'title': "Vlera dhe cmimi i kontratave - " + year,
+                  'width':1000,
+                  'height':800,
                   'vAxis': {
                     'title': "Vlera dhe Cmimi"
                   },
@@ -107,8 +109,8 @@
 
             var options = {
               'title': title,
-              'width':900,
-              'height':450,
+              'width':1000,
+              'height':800,
               'vAxis': {
                 'title': yAxisTitle
               },
@@ -124,17 +126,23 @@
 
           
     </script>
-    <div id="select" style="margin-left:500px;">
-      <label>Viti</label>
-    <select id="viti-select">
-      <option selected="selected" value="2011">2011</option>
-      <option value="2012">2012</option>
-      <option value="2013">2013</option>
-    </select>
-    </div>
-    <div id="linechart-vlera-cmimi" style="height:450px; width: 900px;">
     
-    </div>
+    <table>
+      <tr>
+        <td>
+          <div id="linechart-vlera-cmimi">  
+          </div>
+        </td>
+        <td valign="top" style="padding-top:145px;">
+            <div class="form-group">
+            <select id="viti-select" class="form-control">
+              <option value="2011">2011</option>
+              <option value="2012">2012</option>
+              <option value="2013" selected="selected">2013</option>
+            </select>
+        </td>
+      </tr>
+    </table>
 
     <div id="linechart-vlera">
     </div>
