@@ -34,10 +34,8 @@
 
                 data.addRow([month, jsonResult[key].vlera, jsonResult[key].qmimi]);
               }
-              var formatter = new google.visualization.NumberFormat({
-                      fractionDigits: 0,
-                      prefix: '€ '
-              });
+
+             
 
               var options = {
                   'title': "Vlera dhe cmimi i kontratave",
@@ -48,6 +46,15 @@
                     'title': "Muaji"
                   }
                 };
+
+                 var formatter = new google.visualization.NumberFormat({
+                      fractionDigits: 0,
+                      prefix: '€'
+                  });
+                 for(var i=1; i <= 2; i++){
+                    formatter.format(data, i);
+                  }
+
               var chart = new google.visualization.LineChart(document.getElementById("linechart-vlera-cmimi"));
 
               chart.draw(data, options);
