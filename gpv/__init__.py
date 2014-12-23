@@ -102,6 +102,7 @@ from views.json.procurementtype import ProcurementType
 from views.json.treemap import TreeMap
 from views.json.treemapprice import TreeMapPrice
 from views.json.vleracmimi import VleraCmimi
+from views.json.municipalityvleracmimi import MunicipalityVleraCmimi
 
 # Views for Page rendering
 from views.pages.index import Index
@@ -110,6 +111,7 @@ from views.pages.typedistribution import TypeDistribution
 from views.pages.map import Map
 from views.pages.procurementdistribution import ProcurementDistribution
 from views.pages.home import Home
+from views.pages.municipalityPriceValue import MunicipalityPriceValue
 
 def register_url_rules(app):
     ''' Register URLs
@@ -134,6 +136,9 @@ def register_json_url_rules(app):
         '/json/<string:komuna>/prokurimi/<int:year>',
         view_func=ProcurementType.as_view('procurement_type_json'))
 
+    app.add_url_rule(
+        '/json/monthly-summary/<int:viti>',
+        view_func=MunicipalityVleraCmimi.as_view('municipality_vlera_cmimi_json'))
 
     app.add_url_rule(
         '/json/<string:komuna>/monthly-summary/<int:viti>',
@@ -183,3 +188,7 @@ def register_page_url_rules(app):
     app.add_url_rule(
         '/<string:komuna>/harta',
         view_func=Map.as_view('maps'))
+
+    app.add_url_rule(
+        '/krahasimi',
+        view_func=MunicipalityPriceValue.as_view('municipality_price_value'))

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block body %}
+<script type=text/javascript>
+	google.load("visualization", "1", {packages:["corechart"]});
+	$(document).ready(function(){
+		var viti = $('#viti-select').val();
+		var vleraCmimi = $('#vleracmimi-select').val();
+
+		drawContractValueChart("Qmimi kontratave krahasuar me komunat e ndryshme", "qmimi")
+          $('#vleracmimi-select').change(function(){
+            var selected = $('#vleracmimi-select').val();
+            var selected_VC = capitaliseFirstLetter(selected)
+            var title = selected_VC + " kontratave krahasuar me komunat e ndryshme";
+          	drawContractValueChart(title, selected);
+          });
+          $('#viti-select').change(function(){
+            var selected = $('#vleracmimi-select').val();
+            var selected_VC = capitaliseFirstLetter(selected)
+            var title = selected_VC + " kontratave krahasuar me komunat e ndryshme";
+            drawContractValueChart(title, selected);
+          });
+	})
+
+
+	function drawContractValueChart(title, param) {
+        var viti = $('#viti-select').val();
+        var url = '/json/monthly-summary/'+ viti;
+        $.get(url, function(resultJson){
+          console.log(JSON.stringify(resultJson));
+
+            var data = google.visualization.arrayToDataTable([
+              ['Muji'],
+              ["Janar"],
+              ["Shkurt"],
+              ["Mars"],
+              ["Prill"],
+              ["Maj"],
+              ["Qershor"],
+              ["Korrik"],
+              ["Gusht"],
+              ["Shtator"],
+              ["Tetor"],
+              ["Nëntor"],
+              ["Dhjetor"]
+            ]);
+
+
+            var currentCity = '';
+            var columnIndex = 0;
+
+            for (var key in resultJson ){
+              if (resultJson[key].komuna != currentCity){
+                	data.addColumn('number', resultJson[key].komuna);
+                		currentCity = resultJson[key].komuna;
+                	columnIndex++; 
+              }
+              data.setCell(resultJson[key].muaji-1, columnIndex, resultJson[key][param]);
+            }
+
+            var options = {
+              'title': title,
+              'width':1000,
+              'height':600,
+              'vAxis': {
+                'title': 'Vlerat'
+              },
+              'hAxis': {
+                'title': 'Muaji'
+              }
+            };
+
+            var formatter = new google.visualization.NumberFormat({
+                      fractionDigits: 0,
+                      prefix: '€ '
+              });
+
+              for(var i=1; i <= 2; i++){
+                formatter.format(data, i);
+              }
+
+            var chart = new google.visualization.LineChart(document.getElementById('lineChart'));
+
+            chart.draw(data, options);
+
+        })
+      };
+
+          //Creating a function that convert the first characted of a string to uppercase
+          function capitaliseFirstLetter(string)
+            {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+</script>
+
+<div id="select">
+  <table>
+  <tr>
+  <td>
+    <label>Viti</label>
+  </td>
+ <td> 
+  	<select id="viti-select">
+  		<option value="2011">2011</option>
+  		<option value="2012">2012</option>
+  		<option selected="selected" value="2013">2013</option>
+  	</select>
+  </td>
+  </tr>
+  <tr>
+  <td>
+  	<label>Vlera apo Cmimi</label>
+    </td>
+    <td>
+  	<select id="vleracmimi-select">
+  		<option selected="selected" value="vlera">Vlera</option>
+  		<option value="qmimi">Cmimi</option>
+  	</select>
+    </td>
+    </tr>
+  </table>
+</div>
+<div id="lineChart">
+</div>
+
+{% endblock %}
