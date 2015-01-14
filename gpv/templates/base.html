@@ -62,10 +62,10 @@ $( document ).ready(function() {
             </ul>
           </li>
           <li id="harta">
-            <a href="/{{komuna}}/harta">Harta</a>
+            <a href="{{ config.BASE_PATH }}/{{komuna}}/harta">Harta</a>
           </li>
           <li id="krahasimi">
-            <a href="/krahasimi">Krahasimi</a>
+            <a href="{{ config.BASE_PATH }}/krahasimi">Krahasimi</a>
           </li>
 
         </ul>
@@ -83,7 +83,9 @@ $( document ).ready(function() {
 
   </nav>
   <div class="container" style="padding-top:10px;">
-  	{% block body %}{% endblock %}
+  	{% block body %}
+    {{ config.BASE_PATH }}
+    {% endblock %}
   </div>
 
   <div class="push-for-footer"></div>
