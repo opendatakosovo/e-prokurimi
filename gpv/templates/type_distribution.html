@@ -14,6 +14,10 @@
        initTab(2013);
     });
 
+    $( "#tab-pane-2014" ).click(function() {
+       initTab(2014);
+    });
+
     // Set title
     if("{{type}}" === "buxheti"){
       $('.panel-title').html('Prokurimi sipas llojit të buxhetit (përqindja)');
@@ -108,6 +112,11 @@
                         2013
                     </a>
                 </li>
+                <li id="tab-pane-2014">
+                    <a href="#pane-2014" data-toggle="tab">
+                        2014
+                    </a>
+                </li>
             </ul>
             <div class="tab-content">
                 <div id="pane-2011" class="tab-pane active">  
@@ -115,6 +124,8 @@
                 <div id="pane-2012" class="tab-pane">
                 </div>
                 <div id="pane-2013" class="tab-pane">
+                </div>
+                <div id="pane-2014" class="tab-pane">
                 </div>
             </div>
         </div>
