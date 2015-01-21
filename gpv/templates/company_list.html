@@ -69,9 +69,6 @@
             else if (qmimi_str.length >= 3 && qmimi_str.substr(-2) == '00'){
               numberOfRedFlags = numberOfRedFlags + 1;
             }
-            else if (qmimi_str.length >= 2 && qmimi_str.substr(-1) == '0'){
-              numberOfRedFlags = numberOfRedFlags + 1;
-            }
             
 
             // Set the red flag color indicator for the current row.
@@ -90,7 +87,7 @@
 
 
           var formatter = new google.visualization.NumberFormat({
-                      fractionDigits: 0,
+                      fractionDigits: 2,
                       prefix: '€'
                   });
           for(var k=2; k <= 4; k++){
