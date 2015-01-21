@@ -17,9 +17,14 @@
         $('#viti-select').change(function(){
           drawTable();
         })
+
+        $('#diff-select').change(function(){
+          drawTable();
+        })
       })
 
       function drawTable() {
+          var diff = $('#diff-select').val();
           var year = $('#viti-select').val();
           var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/company-list/'+ year;
 
@@ -29,12 +34,15 @@
           data.addColumn('string', 'Emri i Kompanise');
           data.addColumn('string', 'Pershkrimi i aktivitetit');
           data.addColumn('number', 'Vlera');
-          data.addColumn('number', 'Cmimi');
+          data.addColumn('number', 'Çmimi');
           data.addColumn('number', 'Aneks');
+          data.addColumn('number', 'Totali');
 
-
+          var totali = 0;
           for ( var key in jsonResult){
-              data.addRow([jsonResult[key].kompania, jsonResult[key].pershkrimi, jsonResult[key].vlera, jsonResult[key].qmimi, jsonResult[key].qmimiAneks]);
+              totali = jsonResult[key].qmimi + jsonResult[key].qmimiAneks;
+
+              data.addRow([jsonResult[key].kompania, jsonResult[key].pershkrimi, jsonResult[key].vlera, jsonResult[key].qmimi, jsonResult[key].qmimiAneks, totali]);
           }
 
           var cssClassNames = {
@@ -49,11 +57,26 @@
 
             var vlera = data.getValue(i, 2);
             var qmimi = data.getValue(i, 3);
+            var qmimiAneks = data.getValue(i, 4);
             var qmimi_str = qmimi.toString();
 
             // Check for red flag: vlera equals cmimi
             if(qmimi == vlera){
               numberOfRedFlags = numberOfRedFlags + 1;
+            }
+
+            // Check for red flag: difference between vlera and cmimi
+            if(Math.abs(vlera - qmimi) >= diff)
+            {
+              numberOfRedFlags = numberOfRedFlags + 1;
+            }
+
+            // Check for red flag: if qmimiAneks is greater than 10% of vlera
+            if(vlera>0){
+              if(qmimiAneks > 0 && qmimiAneks >= getPercentage(vlera, 10)){
+                numberOfRedFlags = numberOfRedFlags + 1;
+                console.log(getPercentage(vlera, 10))
+              }
             }
 
             // Check for red flag: cmimi is round number
@@ -69,12 +92,11 @@
             else if (qmimi_str.length >= 3 && qmimi_str.substr(-2) == '00'){
               numberOfRedFlags = numberOfRedFlags + 1;
             }
-            
 
             // Set the red flag color indicator for the current row.
             // The more red flags, the darker the color.
             
-              for (var j = 0; j <= 4; j++) {
+              for (var j = 0; j <= 5; j++) {
                 if(numberOfRedFlags > 0){
                     var colorHex = getRedFlagHexColor(numberOfRedFlags);
                       data.setProperty(i, j, 'style', 'font-size:14px; background-color:' + colorHex + ';');
@@ -90,7 +112,7 @@
                       fractionDigits: 2,
                       prefix: '€'
                   });
-          for(var k=2; k <= 4; k++){
+          for(var k=2; k <= 5; k++){
             formatter.format(data, k);
           }
           var table = new google.visualization.Table(document.getElementById('table_div'));
@@ -100,6 +122,10 @@
           table.draw(data, options);
 
         })
+      }
+
+      function getPercentage(nr1, nr2){
+        return Math.floor((nr1 * nr2) / 100);
       }
 
       function getRedFlagHexColor(numberOfRedFlags){
@@ -121,14 +147,44 @@
         return colorHex;
       }
 </script>
-<div id="select" style="text-align:center;">
-  <label>Viti: </label>
-  <select id="viti-select" style="width:100px; margin:0 auto 0 auto;" class="form-control">
-    <option value="2011">2011</option>
-    <option value="2012">2012</option>
-    <option selected="selected" value="2013">2013</option>
-    <option value="2014">2014</option>
-  </select>
+<div id="select" style="margin-left:300px;">
+  <table>
+    <tr>
+      <td style="text-align:right;">
+        <label for="#viti-select" style="text-align:right; margin-right:4px;">Viti: </label>
+      </td>
+      <td>
+        <select id="viti-select" style="" class="form-control">
+          <option value="2011">2011</option>
+          <option value="2012">2012</option>
+          <option selected="selected" value="2013">2013</option>
+          <option value="2014">2014</option>
+        </select>
+      </td>
+    <tr>
+      <td colspan="2">
+        <hr style="width:350px; color: black;">
+      </td>
+    </tr>
+      <td style="text-align:right;">
+        <label style="text-align:right; margin-right:4px;">Dallimi mes Vlerës dhe Çmimit:</label>
+      </td>
+      <td>
+        <select id="diff-select" style="margin:0 auto 0 auto;" class="form-control">
+          <option value="1000" selected="selected">€1000+</option>
+          <option value="2000">€2,000+</option>
+          <option value="3000">€3,000+</option>
+          <option value="4000">€4,000+</option>
+          <option value="5000">€5,000+</option>
+          <option value="6000">€6,000+</option>
+          <option value="7000">€7,000+</option>
+          <option value="8000">€8,000+</option>
+          <option value="9000">€9,000+</option>
+          <option value="10000">€10,000+</option>
+        </select>
+      </td>
+    </tr>
+</table>
 </div>
 <br>
 <div id="table_div">
