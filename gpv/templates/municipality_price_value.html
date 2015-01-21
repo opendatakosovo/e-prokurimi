@@ -26,8 +26,6 @@
         var viti = $('#viti-select').val();
         var url = '{{ config.BASE_PATH }}/json/monthly-summary/'+ viti;
         $.get(url, function(resultJson){
-          console.log(JSON.stringify(resultJson));
-
             var data = google.visualization.arrayToDataTable([
               ['Muji'],
               ["Janar"],

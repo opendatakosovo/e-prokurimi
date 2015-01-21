@@ -103,6 +103,7 @@ from views.json.treemap import TreeMap
 from views.json.treemapprice import TreeMapPrice
 from views.json.vleracmimi import VleraCmimi
 from views.json.municipalityvleracmimi import MunicipalityVleraCmimi
+from views.json.company_list_json import CompanyListJson
 
 # Views for Page rendering
 from views.pages.index import Index
@@ -112,6 +113,8 @@ from views.pages.map import Map
 from views.pages.procurementdistribution import ProcurementDistribution
 from views.pages.home import Home
 from views.pages.municipalityPriceValue import MunicipalityPriceValue
+from views.pages.company_list_page import CompanyListPage
+
 
 def register_url_rules(app):
     ''' Register URLs
@@ -144,6 +147,10 @@ def register_json_url_rules(app):
         '/json/<string:komuna>/monthly-summary/<int:viti>',
         view_func=VleraCmimi.as_view('vlera_cmimi_json'))
 
+    app.add_url_rule(
+        '/json/<string:komuna>/company-list/<int:viti>',
+        view_func=CompanyListJson.as_view('company_list_json'))
+
     # Get JSON for TreeMap
     app.add_url_rule(
         '/json/<string:komuna>/treemap/<int:year>',
@@ -154,7 +161,6 @@ def register_json_url_rules(app):
         view_func=TreeMapPrice.as_view('treemap_price_json'))
 
 
-
 def register_page_url_rules(app):
     ''' Register the URL rules for page requests.
     :param app: The Flask application instance.
@@ -163,7 +169,6 @@ def register_page_url_rules(app):
     app.add_url_rule(
         '/',
         view_func=Home.as_view('home'))
-
 
     app.add_url_rule(
         '/<string:komuna>/',
@@ -188,6 +193,10 @@ def register_page_url_rules(app):
     app.add_url_rule(
         '/<string:komuna>/harta',
         view_func=Map.as_view('maps'))
+
+    app.add_url_rule(
+        '/<string:komuna>/company-list',
+        view_func=CompanyListPage.as_view('company_list_page'))
 
     app.add_url_rule(
         '/krahasimi',

@@ -8,7 +8,7 @@ import json
 class Index(View):
     def dispatch_request(self, komuna):
         api_base_url = utils.get_api_url()
-        url = "%s/%s/monthly-summary" % (api_base_url,komuna)
+        url = "%s/%s/monthly-summary" % (api_base_url, komuna)
 
         result_json = json.loads(urlopen(url).read())
 
