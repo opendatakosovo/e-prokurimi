@@ -73,7 +73,7 @@
 
             // Check for red flag: if qmimiAneks is greater than 10% of vlera
             if(vlera>0){
-              if(qmimiAneks > 0 && qmimiAneks >= getPercentage(vlera, 10)){
+              if(qmimiAneks > 0 && qmimiAneks > getPercentage(vlera, 10)){
                 numberOfRedFlags = numberOfRedFlags + 1;
                 console.log(getPercentage(vlera, 10))
               }
