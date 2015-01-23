@@ -195,7 +195,7 @@ def register_page_url_rules(app):
         view_func=Map.as_view('maps'))
 
     app.add_url_rule(
-        '/<string:komuna>/company-list',
+        '/<string:komuna>/red-flags',
         view_func=CompanyListPage.as_view('company_list_page'))
 
     app.add_url_rule(

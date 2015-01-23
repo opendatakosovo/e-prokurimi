@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
+
+
 <style type="text/css">
   .bigAndBoldClass{
     font-size: 15px;
@@ -7,11 +9,49 @@
     border-color: black;
     text-align: center;
   }
+    .ui-widget-header, .ui-state-default, ui-button{
+            background:#2c3e50;
+            border: 1px solid #2c3e50;
+            color: #FFFFFF;
+            font-weight: bold;
+         }
+
+  .redflagInfo{
+    color:#2c3e50;
+    float:right;
+  }
+
+  .redflagInfo:hover{
+    text-decoration: underline;
+    color: blue;
+  }
+
 </style>
 <script type="text/javascript">
+      
+
       google.load("visualization", "1", {packages:["table"]});
+       $(function() {
+            
+            $( "#jqueryUI" ).dialog({
+               draggable: false,
+               autoOpen: false, 
+               resizable: false,
+               hide: "slide",
+               show : "slide",
+               position: ['top', 100],
+               closeOnEscape: true,
+               height: 400,
+               width: 600      
+            });
+
+            $( "#btn_red_flag_info" ).click(function() {
+               $( "#jqueryUI" ).dialog( "open" );
+            });
+       });
 
       $(document).ready(function(){
+
         drawTable();
 
         $('#viti-select').change(function(){
@@ -24,6 +64,14 @@
       })
 
       function drawTable() {
+          var redFlagTrackerArray = new Array();
+
+          // Define the different red flags we have: their ids and description.
+          var redFlags = new Array();
+          redFlags[0] = 'Cmimi eshte i barabarte me vleren.' + '\n';
+          redFlags[1] = 'Ndryshimi mes Cmimit dhe Vleres eshte shum i madh.' + '\n';
+          redFlags[2] = 'Cmimi Aneks eshte me i madh se 10% i vleres.' + '\n';
+          redFlags[3] = 'Cmimi eshte i rrumbullakesuar.' + '\n';
           var diff = $('#diff-select').val();
           var year = $('#viti-select').val();
           var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/company-list/'+ year;
@@ -31,12 +79,12 @@
           $.get(url, function(jsonResult){
 
           var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Emri i Kompanise');
-          data.addColumn('string', 'Pershkrimi i aktivitetit');
+          data.addColumn('string', 'Emri i Kompanisë');
+          data.addColumn('string', 'Përshkrimi i aktivitetit');
           data.addColumn('number', 'Vlera');
           data.addColumn('number', 'Çmimi');
           data.addColumn('number', 'Aneks');
-          data.addColumn('number', 'Totali');
+          data.addColumn('number', 'Çmimi + Aneks');
 
           var totali = 0;
           for ( var key in jsonResult){
@@ -63,66 +111,114 @@
             // Check for red flag: vlera equals cmimi
             if(qmimi == vlera){
               numberOfRedFlags = numberOfRedFlags + 1;
+
+              // Keep track of this red flag in the red flag array (a global variable)
+              trackRedFlag(redFlagTrackerArray, i, redFlags[0]);
             }
 
             // Check for red flag: difference between vlera and cmimi
             if(Math.abs(vlera - qmimi) >= diff)
             {
               numberOfRedFlags = numberOfRedFlags + 1;
+
+              // Keep track of this red flag in the red flag array (a global variable)
+              trackRedFlag(redFlagTrackerArray, i, redFlags[1]);
             }
 
             // Check for red flag: if qmimiAneks is greater than 10% of vlera
             if(vlera>0){
               if(qmimiAneks > 0 && qmimiAneks > getPercentage(vlera, 10)){
                 numberOfRedFlags = numberOfRedFlags + 1;
-                console.log(getPercentage(vlera, 10))
+
+                // Keep track of this red flag in the red flag array (a global variable)
+                trackRedFlag(redFlagTrackerArray, i, redFlags[2]);
               }
             }
 
             // Check for red flag: cmimi is round number
             if (qmimi_str.length >= 6 && qmimi_str.substr(-5) == '00000'){
               numberOfRedFlags = numberOfRedFlags + 1;
+
+              // Keep track of this red flag in the red flag array (a global variable)
+              trackRedFlag(i, redFlags[3]);
             }
             else if (qmimi_str.length >= 5 && qmimi_str.substr(-4) == '0000'){
               numberOfRedFlags = numberOfRedFlags + 1;
+              trackRedFlag(redFlagTrackerArray, i, redFlags[3]);
             }
             else if (qmimi_str.length >= 4 && qmimi_str.substr(-3) == '000'){
               numberOfRedFlags = numberOfRedFlags + 1;
+              trackRedFlag(redFlagTrackerArray, i, redFlags[3]);
             }
             else if (qmimi_str.length >= 3 && qmimi_str.substr(-2) == '00'){
               numberOfRedFlags = numberOfRedFlags + 1;
+              trackRedFlag(redFlagTrackerArray, i, redFlags[3]);
             }
 
             // Set the red flag color indicator for the current row.
-            // The more red flags, the darker the color.
-            
-              for (var j = 0; j <= 5; j++) {
-                if(numberOfRedFlags > 0){
-                    var colorHex = getRedFlagHexColor(numberOfRedFlags);
-                      data.setProperty(i, j, 'style', 'font-size:14px; background-color:' + colorHex + ';');
-                }
-                else{
-                    data.setProperty(i, j, 'style', 'font-size:14px;');
-                }
+            // The more red flags, the darker the color.          
+            for (var j = 0; j <= 5; j++) {
+              if(numberOfRedFlags > 0){
+                  var colorHex = getRedFlagHexColor(numberOfRedFlags);
+                    data.setProperty(i, j, 'style', 'font-size:14px; background-color:' + colorHex + ';');
+              }
+              else{
+                  data.setProperty(i, j, 'style', 'font-size:14px;');
+              }
             }
           }
 
-
+          // Format numerical values into price format (e.g. 10000 -> €10,000)
           var formatter = new google.visualization.NumberFormat({
                       fractionDigits: 2,
                       prefix: '€'
-                  });
+          });
+
           for(var k=2; k <= 5; k++){
             formatter.format(data, k);
           }
-          var table = new google.visualization.Table(document.getElementById('table_div'));
 
-          
+          // draw table
+          var table = new google.visualization.Table(document.getElementById('table_div'));
 
           table.draw(data, options);
 
-        })
+
+          // Add onClick handler to get info on the red flags
+          google.visualization.events.addListener(table, 'select', showRedFlagDetails);
+
+          function showRedFlagDetails() {
+            var selection = table.getSelection();
+            var rowId = selection[0].row;
+
+            $( "#jqueryUIRedFlag" ).dialog({
+               draggable: false,
+               autoOpen: false, 
+               resizable: false,
+               hide: "slide",
+               show : "slide",
+               position: ['top', 100],
+               closeOnEscape: true,
+               height: 400,
+               width: 600      
+            });
+
+             $( "#jqueryUIRedFlag" ).dialog( "open" );
+                $("#jqueryUIRedFlag").empty();
+                $( "#jqueryUIRedFlag" ).append(redFlagTrackerArray[rowId]);
+                console.log(redFlagTrackerArray[rowId]);
+          }
+          
+        });
       }
+
+      function trackRedFlag(redFlagTrackerArray, rowId, redFlagId){
+                  if(redFlagTrackerArray[rowId] == undefined){
+                    redFlagTrackerArray[rowId] = [redFlagId];
+                  }else{
+                    redFlagTrackerArray[rowId].push(redFlagId);
+                  }
+                }
 
       function getPercentage(nr1, nr2){
         return Math.floor((nr1 * nr2) / 100);
@@ -147,6 +243,12 @@
         return colorHex;
       }
 </script>
+<div id="jqueryUIRedFlag" title="Çfarë janë Red Flags ?">
+</div>
+<div id="jqueryUI" title="Çfarë janë Red Flags ?">
+  The Red Flags Rule requires many businesses and organizations to implement a written Identity Theft Prevention Program designed to detect the warning signs – or red flags – of identity theft in their day-to-day operations.
+</div>
+<label class="redflagInfo" id="btn_red_flag_info">Çfarë janë "Red Flags" ?</label>
 <div id="select" style="margin-left:300px;">
   <table>
     <tr>
@@ -190,5 +292,6 @@
 <div id="table_div">
   
 </div>
+
 
 {% endblock %}

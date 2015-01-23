@@ -6,11 +6,20 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 
+
+
+
     <!-- Bootstrap  JavaScript -->
     <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
 
+    <!-- JqueryUI -->
+    <link href="{{ url_for('static', filename='style/jquery-ui-1.8.11.custom.css') }}" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
     <!-- Bootstrap compiled and minified CSS -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
+
 
     <!-- Site styling -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
@@ -68,7 +77,7 @@ $( document ).ready(function() {
             <a href="{{ config.BASE_PATH }}/krahasimi?komuna={{komuna}}">Krahasimi</a>
           </li>
           <li id="red_flag">
-            <a href="{{ config.BASE_PATH }}/{{komuna}}/company-list">Red Flag</a>
+            <a href="{{ config.BASE_PATH }}/{{komuna}}/red-flags">Red Flags</a>
           </li>
 
         </ul>
