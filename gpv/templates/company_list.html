@@ -148,7 +148,7 @@
             }
 
             // if qmimi + aneks - vlera is greater than 10% of vlera
-            if(aneks > 0 && (qmimi + aneks - vlera) > getPercentage(vlera, 10))){
+            if(aneks > 0 && ((qmimi + aneks - vlera) > getPercentage(vlera, 10))){
               numberOfRedFlags = numberOfRedFlags + 1;
               trackRedFlag(redFlagTrackerArray, i, redFlags[2]);
             }  
