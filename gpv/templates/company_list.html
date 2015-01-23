@@ -28,7 +28,14 @@
 
 </style>
 <script type="text/javascript">
-      
+      var redFlags = new Array();
+          redFlags[0] = 'Çmimi është i barabarte me vlerën.';
+          redFlags[1] = 'Ndryshimi mes Çmimit dhe Vlerës është më i madh se 10% i vlerës.';
+          redFlags[2] = 'Ndryshimi në mes Çmimit me Çmimin Aneks dhe Vlerës është më i madh se 10% i vlerës.';
+          redFlags[3] = 'Çmimi është i rrumbullakesuar.';
+          redFlags[4] = 'Vlera është €0.';
+          redFlags[5] = 'Çmimi është €0.';
+
 
       google.load("visualization", "1", {packages:["table"]});
        $(function() {
@@ -41,12 +48,20 @@
                show : "slide",
                position: ['top', 100],
                closeOnEscape: true,
-               height: 400,
                width: 600      
             });
-
+            
             $( "#btn_red_flag_info" ).click(function() {
-               $( "#jqueryUI" ).dialog( "open" );
+                $( "#jqueryUI" ).empty();
+                $( "#jqueryUI" ).append('"Red Flags" mund të jenë atëherë kur:');
+
+                $( "#jqueryUI" ).append('<ul>');
+                for (var i = 0; i< redFlags.length; i++) {
+                  $( "#jqueryUI" ).append('<li>' + redFlags[i] + '</li>');
+                }
+                $( "#jqueryUI" ).append('</ul>');
+
+                $( "#jqueryUI" ).dialog( "open" );
             });
        });
 
@@ -67,11 +82,8 @@
           var redFlagTrackerArray = new Array();
 
           // Define the different red flags we have: their ids and description.
-          var redFlags = new Array();
-          redFlags[0] = 'Cmimi eshte i barabarte me vleren.' + '\n';
-          redFlags[1] = 'Ndryshimi mes Cmimit dhe Vleres eshte shum i madh.' + '\n';
-          redFlags[2] = 'Cmimi Aneks eshte me i madh se 10% i vleres.' + '\n';
-          redFlags[3] = 'Cmimi eshte i rrumbullakesuar.' + '\n';
+          
+
           var diff = $('#diff-select').val();
           var year = $('#viti-select').val();
           var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/company-list/'+ year;
@@ -105,7 +117,7 @@
 
             var vlera = data.getValue(i, 2);
             var qmimi = data.getValue(i, 3);
-            var qmimiAneks = data.getValue(i, 4);
+            var aneks = data.getValue(i, 4);
             var qmimi_str = qmimi.toString();
 
             // Check for red flag: vlera equals cmimi
@@ -116,24 +128,20 @@
               trackRedFlag(redFlagTrackerArray, i, redFlags[0]);
             }
 
-            // Check for red flag: difference between vlera and cmimi
-            if(Math.abs(vlera - qmimi) >= diff)
-            {
+        
+            // if qmimi - vlera is greater than 10% of vlera
+            if((qmimi - vlera) > getPercentage(vlera, 10)){
               numberOfRedFlags = numberOfRedFlags + 1;
-
-              // Keep track of this red flag in the red flag array (a global variable)
               trackRedFlag(redFlagTrackerArray, i, redFlags[1]);
             }
 
-            // Check for red flag: if qmimiAneks is greater than 10% of vlera
-            if(vlera>0){
-              if(qmimiAneks > 0 && qmimiAneks > getPercentage(vlera, 10)){
-                numberOfRedFlags = numberOfRedFlags + 1;
-
-                // Keep track of this red flag in the red flag array (a global variable)
-                trackRedFlag(redFlagTrackerArray, i, redFlags[2]);
-              }
+            
+            // if qmimi + aneks - vlera is greater than 10% of vlera
+            if((qmimi + aneks - vlera) > getPercentage(vlera, 10)){
+              numberOfRedFlags = numberOfRedFlags + 1;
+              trackRedFlag(redFlagTrackerArray, i, redFlags[2]);
             }
+              
 
             // Check for red flag: cmimi is round number
             if (qmimi_str.length >= 6 && qmimi_str.substr(-5) == '00000'){
@@ -153,6 +161,16 @@
             else if (qmimi_str.length >= 3 && qmimi_str.substr(-2) == '00'){
               numberOfRedFlags = numberOfRedFlags + 1;
               trackRedFlag(redFlagTrackerArray, i, redFlags[3]);
+            }
+
+            if(vlera == 0){
+              numberOfRedFlags = numberOfRedFlags + 1;
+              trackRedFlag(redFlagTrackerArray, i, redFlags[4]);
+            }
+
+            if(qmimi == 0){
+              numberOfRedFlags = numberOfRedFlags + 1;
+              trackRedFlag(redFlagTrackerArray, i, redFlags[5]);
             }
 
             // Set the red flag color indicator for the current row.
@@ -191,22 +209,36 @@
             var selection = table.getSelection();
             var rowId = selection[0].row;
 
-            $( "#jqueryUIRedFlag" ).dialog({
-               draggable: false,
-               autoOpen: false, 
-               resizable: false,
-               hide: "slide",
-               show : "slide",
-               position: ['top', 100],
-               closeOnEscape: true,
-               height: 400,
-               width: 600      
-            });
+            if(redFlagTrackerArray[rowId] != undefined){
 
-             $( "#jqueryUIRedFlag" ).dialog( "open" );
-                $("#jqueryUIRedFlag").empty();
-                $( "#jqueryUIRedFlag" ).append(redFlagTrackerArray[rowId]);
-                console.log(redFlagTrackerArray[rowId]);
+              var arrayLength = redFlagTrackerArray[rowId].length;
+         
+              var companyName = data.getValue(rowId, 0);
+
+              $( "#jqueryUIRedFlag" ).dialog({
+                 draggable: false,
+                 autoOpen: false, 
+                 resizable: false,
+                 hide: "slide",
+                 show : "slide",
+                 position: ['top', 100],
+                 closeOnEscape: true,
+                 width: 600      
+              });
+
+              $("#jqueryUIRedFlag").empty();
+            
+              $( "#jqueryUIRedFlag" ).append('"Red Flags" për kompaninë ' + companyName + ':');
+
+              $( "#jqueryUIRedFlag" ).append('<ul>');
+              for (var i = 0; i < arrayLength; i++) { 
+                  $( "#jqueryUIRedFlag" ).append('<li>' + redFlagTrackerArray[rowId][i] + '</li>'); 
+              }
+              $( "#jqueryUIRedFlag" ).append('</ul>');
+
+              $( "#jqueryUIRedFlag" ).dialog( "open" );
+            }
+            
           }
           
         });
@@ -216,7 +248,7 @@
                   if(redFlagTrackerArray[rowId] == undefined){
                     redFlagTrackerArray[rowId] = [redFlagId];
                   }else{
-                    redFlagTrackerArray[rowId].push(redFlagId);
+                    redFlagTrackerArray[rowId].push(redFlagId) + '<br>';
                   }
                 }
 
@@ -243,10 +275,9 @@
         return colorHex;
       }
 </script>
-<div id="jqueryUIRedFlag" title="Detajet e Red Flags">
+<div id="jqueryUIRedFlag" title='Detajet e "Red Flags"'>
 </div>
-<div id="jqueryUI" title="Çfarë janë Red Flags ?">
-  The Red Flags Rule requires many businesses and organizations to implement a written Identity Theft Prevention Program designed to detect the warning signs – or red flags – of identity theft in their day-to-day operations.
+<div id="jqueryUI" title='Çfarë janë "Red Flags" ?'>
 </div>
 <label class="redflagInfo" id="btn_red_flag_info">Çfarë janë "Red Flags" ?</label>
 <div id="select" style="margin-left:300px;">
@@ -263,30 +294,8 @@
           <option value="2014">2014</option>
         </select>
       </td>
-    <tr>
-      <td colspan="2">
-        <hr style="width:350px; color: black;">
-      </td>
     </tr>
-      <td style="text-align:right;">
-        <label style="text-align:right; margin-right:4px;">Dallimi mes Vlerës dhe Çmimit:</label>
-      </td>
-      <td>
-        <select id="diff-select" style="margin:0 auto 0 auto;" class="form-control">
-          <option value="1000" selected="selected">€1000+</option>
-          <option value="2000">€2,000+</option>
-          <option value="3000">€3,000+</option>
-          <option value="4000">€4,000+</option>
-          <option value="5000">€5,000+</option>
-          <option value="6000">€6,000+</option>
-          <option value="7000">€7,000+</option>
-          <option value="8000">€8,000+</option>
-          <option value="9000">€9,000+</option>
-          <option value="10000">€10,000+</option>
-        </select>
-      </td>
-    </tr>
-</table>
+  </table>
 </div>
 <br>
 <div id="table_div">
