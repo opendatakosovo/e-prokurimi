@@ -120,6 +120,18 @@
             var aneks = data.getValue(i, 4);
             var qmimi_str = qmimi.toString();
 
+            // Check if vlera is 0 EUR
+            if(vlera == 0){
+              numberOfRedFlags = numberOfRedFlags + 1;
+              trackRedFlag(redFlagTrackerArray, i, redFlags[4]);
+            }
+
+            // Check if cmimi is 0 EUR
+            if(qmimi == 0){
+              numberOfRedFlags = numberOfRedFlags + 1;
+              trackRedFlag(redFlagTrackerArray, i, redFlags[5]);
+            }
+
             // Check for red flag: vlera equals cmimi
             if(qmimi == vlera){
               numberOfRedFlags = numberOfRedFlags + 1;
@@ -135,13 +147,11 @@
               trackRedFlag(redFlagTrackerArray, i, redFlags[1]);
             }
 
-            
             // if qmimi + aneks - vlera is greater than 10% of vlera
-            if((qmimi + aneks - vlera) > getPercentage(vlera, 10)){
+            if(aneks > 0 && (qmimi + aneks - vlera) > getPercentage(vlera, 10))){
               numberOfRedFlags = numberOfRedFlags + 1;
               trackRedFlag(redFlagTrackerArray, i, redFlags[2]);
-            }
-              
+            }  
 
             // Check for red flag: cmimi is round number
             if (qmimi_str.length >= 6 && qmimi_str.substr(-5) == '00000'){
@@ -161,16 +171,6 @@
             else if (qmimi_str.length >= 3 && qmimi_str.substr(-2) == '00'){
               numberOfRedFlags = numberOfRedFlags + 1;
               trackRedFlag(redFlagTrackerArray, i, redFlags[3]);
-            }
-
-            if(vlera == 0){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[4]);
-            }
-
-            if(qmimi == 0){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[5]);
             }
 
             // Set the red flag color indicator for the current row.
