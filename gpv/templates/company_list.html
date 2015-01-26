@@ -146,6 +146,19 @@
 
               // Keep track of this red flag in the red flag array (a global variable)
               trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_PRICE_ARE_EQUAL]);
+            }else{
+              
+              // if qmimi - vlera is lesser than 10 EUR
+              if(Math.abs(qmimi - vlera) <= 10){
+                numberOfRedFlags = numberOfRedFlags + 1;
+                trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_TOO_SMALL]);
+              }
+
+              // if qmimi + aneks - vlera is lesser than 10 EUR
+              if(aneks > 0 && (Math.abs(qmimi + aneks - vlera) <= 10)){
+                numberOfRedFlags = numberOfRedFlags + 1;
+                trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF_TOO_SMALL]);
+              }  
             }
 
             // Check for red flag: cmimi is round number
@@ -179,18 +192,6 @@
               numberOfRedFlags = numberOfRedFlags + 1;
               trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF]);
             }
-
-            // if qmimi - vlera is lesser than 10 EUR
-            if(Math.abs(qmimi - vlera) <= 10){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_TOO_SMALL]);
-            }
-
-            // if qmimi + aneks - vlera is lesser than 10 EUR
-            if(aneks > 0 && (Math.abs(qmimi + aneks - vlera) <= 10)){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF_TOO_SMALL]);
-            }  
 
             // Set the red flag color indicator for the current row.
             // The more red flags, the darker the color.          
