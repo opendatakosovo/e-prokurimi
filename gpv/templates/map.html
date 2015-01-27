@@ -69,7 +69,7 @@ $(document).ready(function(){
                         markerArray.push(marker);
                     }
                     else {
-                        var popupContent = '<strong>' + selia + '</strong><br>' + tipi + ': '+ toCurrency(tip) + '<inp';
+                        var popupContent = '<strong>' + selia + '</strong><br>' + tipi + ': '+ '€' +toCurrency(tip) + '<inp';
 
                         var marker = L.marker([lat, lon]);
                         marker.bindPopup(popupContent);
