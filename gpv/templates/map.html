@@ -1,42 +1,120 @@
 {% extends "base.html" %}
 {% block body %}
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<style>
+    #map { 
+        height: 800px;
+        width: 100%; 
+    }
+</style>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title"> P&euml;rfituesit e prokurimit publik, sipas vendit t&euml; regjistrimit t&euml; biznesit (2011 - 2013)</h3>
-    </div>
-    <div class="panel-body">
-        <div class="tabbable">
-            <ul class="nav nav-tabs">
-                <li id="tab-pane-contract-value" class="active">
-                    <a href="#pane-contract-value" data-toggle="tab">
-                       Sipas vler&euml;s t&euml; kontrat&euml;s
-                    </a>
-                </li>
-                <li id="tab-pane-contract-price">
-                    <a href="#pane-contract-price" data-toggle="tab">
-                        Sipas &ccedil;mimit t&euml; kontrat&euml;s
-                    </a>
-                </li>
-                <li id="tab-pane-contract-count">
-                    <a href="#pane-contract-count" data-toggle="tab">
-                       Sipas numrit t&euml; kontratave
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div id="pane-contract-value" class="tab-pane active">
-                    <iframe width='100%' height='520' frameborder='0' src='http://opendatakosovo.cartodb.com/viz/9c07b48c-5c38-11e4-9794-0e853d047bba/embed_map' allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
-                </div>
-                <div id="pane-contract-price" class="tab-pane">
-                    <iframe width='100%' height='520' frameborder='0' src='http://opendatakosovo.cartodb.com/viz/06399ef6-5c39-11e4-814c-0e018d66dc29/embed_map' allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
-                </div>
-                <div id="pane-contract-count" class="tab-pane">
-                    <iframe width='100%' height='520' frameborder='0' src='http://opendatakosovo.cartodb.com/viz/6ded6f28-5c39-11e4-9de4-0e853d047bba/embed_map' allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- leaflets JS -->
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    
+<script type="text/javascript">
+var markerLayerGroup = undefined;
+var markerArray = [];
+$(document).ready(function(){
+    var komuna = '{{komuna}}';
+    $('#viti-select').change(function(){
+        initMap();
+    })
+    $('#tipi-select').change(function(){
+        initMap();
+    })
+    var map = L.map('map').setView([42.551056983385934, 20.87127685546875], 9);
+
+    L.tileLayer('http://{s}.tiles.mapbox.com/v3/georges.jjc3k7b1/{z}/{x}/{y}.png', {
+        attribution: 'Data Source: <a href="http://opendatakosovo.org">Open Data Kosovo</a>',
+        maxZoom: 18
+    }).addTo(map);
+
+    initMap();
+
+    function initMap(){
+        // Init map with markers for default year, months and measurement selection.
+        var year = $('#viti-select').val();
+        var tipi = $('#tipi-select').val();
+
+        addMarkers(komuna, year, tipi);
+    }
+    
+    function addMarkers(komuna, viti, tipi){
+        markerArray = [];
+
+        if(markerLayerGroup != undefined){
+            map.removeLayer(markerLayerGroup);
+        }
+
+        var tipi = $('#tipi-select').val();
+        var year = $('#viti-select').val();
+        var url = '{{ config.BASE_PATH }}/json/'+ komuna +'/map/'+ year;
+
+        var popup = L.popup();
+
+        $.get(url, function(jsonResult){
+            for (var key in jsonResult){
+                var tip = jsonResult[key][tipi];
+                var selia = jsonResult[key].selia;
+
+                if (selia != undefined && selia != ''){
+                    var lon = jsonResult[key].gjatesia;
+                    var lat = jsonResult[key].gjeresia;
+
+                    if(tipi == 'numriKontratave'){
+                        var popupContent = '<strong>' + selia + '</strong><br>' + tipi + ': '+ tip + '<inp';
+
+                        var marker = L.marker([lat, lon]);
+                        marker.bindPopup(popupContent);
+                        markerArray.push(marker);
+                    }
+                    else {
+                        var popupContent = '<strong>' + selia + '</strong><br>' + tipi + ': '+ toCurrency(tip) + '<inp';
+
+                        var marker = L.marker([lat, lon]);
+                        marker.bindPopup(popupContent);
+                        markerArray.push(marker);
+                    }
+                }
+            }
+
+            markerLayerGroup = L.layerGroup(markerArray);
+            map.addLayer(markerLayerGroup);
+        })
+        
+        
+    }
+})
+</script>
+<div id="select" style="display: block; margin-left: 400px;">
+    <table>
+        <tr>
+            <td style="text-align:right;">
+                <label>Viti: </label>&nbsp
+            </td>
+            <td>
+                <select id="viti-select" class="form-control">
+                    <option value="2011">2011</option>
+                    <option value="2012">2012</option>
+                    <option value="2013" selected="selected">2013</option>
+                    <option value="2014">2014</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">
+                <label>Zgjidhja: </label>&nbsp
+            </td>
+            <td>
+                <select id="tipi-select" class="form-control">
+                    <option value="vlera" selected="selected">Vlera</option>
+                    <option value="qmimi">Cmimi</option>
+                    <option value="numriKontratave">Numri i Kontratave</option>
+                </select>
+            </td>
+        </tr>
+    </table>
 </div>
-
+<br><br>
+<div id="map"></div>
 {% endblock %}

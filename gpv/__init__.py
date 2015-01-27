@@ -104,6 +104,7 @@ from views.json.treemapprice import TreeMapPrice
 from views.json.vleracmimi import VleraCmimi
 from views.json.municipalityvleracmimi import MunicipalityVleraCmimi
 from views.json.company_list_json import CompanyListJson
+from views.json.map import MapJson
 
 # Views for Page rendering
 from views.pages.index import Index
@@ -146,6 +147,10 @@ def register_json_url_rules(app):
     app.add_url_rule(
         '/json/<string:komuna>/monthly-summary/<int:viti>',
         view_func=VleraCmimi.as_view('vlera_cmimi_json'))
+
+    app.add_url_rule(
+        '/json/<string:komuna>/map/<int:viti>',
+        view_func=MapJson.as_view('map_view_json'))
 
     app.add_url_rule(
         '/json/<string:komuna>/company-list/<int:viti>',

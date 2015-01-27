@@ -3,6 +3,5 @@ from flask import render_template
 
 
 class Map(View):
-
-    def dispatch_request(self,komuna):
+    def dispatch_request(self, komuna):
         return render_template('map.html', komuna=komuna)

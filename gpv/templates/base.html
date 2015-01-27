@@ -13,6 +13,12 @@
     <!-- jQueryUI JavaScript -->
     <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.11.2/jquery-ui.min.js') }}"></script>
 
+    <script type="text/javascript">
+      function toCurrency(number){
+          return (number + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+      }
+    </script>
+
     <!-- jQueryUI CSS-->
     <link href="{{ url_for('static', filename='jquery-ui-1.11.2/jquery-ui.min.css') }}" rel="stylesheet">
 
