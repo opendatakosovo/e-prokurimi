@@ -2,24 +2,22 @@
 <head>
     <!-- Google Charts -->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-
-
-
+      
+    <!-- jQuery JavaScript -->
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-1.11.2/jquery-1.11.2.min.js') }}"></script>
 
     <!-- Bootstrap  JavaScript -->
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 
-    <!-- JqueryUI -->
-    <link href="{{ url_for('static', filename='style/jquery-ui-1.8.11.custom.css') }}" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    <!-- jQueryUI JavaScript -->
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.11.2/jquery-ui.min.js') }}"></script>
+
+    <!-- jQueryUI CSS-->
+    <link href="{{ url_for('static', filename='jquery-ui-1.11.2/jquery-ui.min.css') }}" rel="stylesheet">
 
     <!-- Bootstrap compiled and minified CSS -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
-
 
     <!-- Site styling -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
