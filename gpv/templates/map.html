@@ -3,8 +3,100 @@
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <style>
     #map { 
-        height: 800px;
+        height: 600px;
         width: 100%; 
+        margin-top: 35px;
+    }
+    #colors{
+        margin-right: 2px;
+        border: 1px solid gray;
+        border-radius: 4px;
+        height: 70px;
+        width: 250px;
+        float: right;
+        box-shadow: 3px 3px 2px #888888;
+        background-color: transparent;
+    }
+    #colors-container{
+        margin-left: 18px;
+        margin-top: 30px;
+    }
+    #color1{
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-left: 1px solid gray;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        float:left;
+        width: 30px;
+        height: 30px;
+        background-color: #FFFFB2;
+    }
+    #color2{
+        float:left;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        width: 30px;
+        height: 30px;
+        background-color: #FED976;
+    }
+    #color3{
+        float:left;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        width: 30px;
+        height: 30px;
+        background-color: #FEB24C;
+    }
+    #color4{
+        float:left;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        width: 30px;
+        height: 30px;
+        background-color: #FD8D3C;
+    }
+    #color5{
+        float:left;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        width: 30px;
+        height: 30px;
+        background-color: #FC4E2A;
+    }
+    #color6{
+        float:left;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        width: 30px;
+        height: 30px;
+        background-color: #E31A1C;
+    }
+    #color7{
+        float:left;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        border-right: 1px solid gray;
+        width: 30px;
+        height: 30px;
+        background-color: #B10026;
+    }
+
+    #min-value{
+        margin-top: 5px;
+        font-size: 13px;
+        float: left;
+        margin-left: 18px;
+        color: #2C3E50;
+    }
+    #max-value{
+        margin-top: 5px;
+        font-size: 13px;
+        float: right;
+        margin-right: 18px;
+        color: #2C3E50;
     }
 </style>
 
@@ -12,76 +104,142 @@
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     
 <script type="text/javascript">
-var markerLayerGroup = undefined;
-var markerArray = [];
-$(document).ready(function(){
-    var komuna = '{{komuna}}';
-    $('#viti-select').change(function(){
+    var gradOfColor = new Array();
+    gradOfColor[0] = '#FFFFB2';
+    gradOfColor[1] = '#FED976';
+    gradOfColor[2] = '#FEB24C';
+    gradOfColor[3] = '#FD8D3C';
+    gradOfColor[4] = '#FC4E2A';
+    gradOfColor[5] = '#E31A1C';
+    gradOfColor[6] = '#B10026';
+
+    var markerLayerGroup = undefined;
+    var markerArray = [];
+    var valueArray = [];
+    $(document).ready(function(){
+        var komuna = '{{komuna}}';
+        $('#viti-select').change(function(){
+            initMap();
+        })
+        $('#tipi-select').change(function(){
+            initMap();
+        })
+        var map = L.map('map').setView([42.551056983385934, 20.87127685546875], 9);
+
+        L.tileLayer('http://{s}.tiles.mapbox.com/v3/georges.jjc3k7b1/{z}/{x}/{y}.png', {
+            attribution: 'Data Source: <a href="http://opendatakosovo.org">Open Data Kosovo</a>',
+            maxZoom: 18
+        }).addTo(map);
+
         initMap();
-    })
-    $('#tipi-select').change(function(){
-        initMap();
-    })
-    var map = L.map('map').setView([42.551056983385934, 20.87127685546875], 9);
 
-    L.tileLayer('http://{s}.tiles.mapbox.com/v3/georges.jjc3k7b1/{z}/{x}/{y}.png', {
-        attribution: 'Data Source: <a href="http://opendatakosovo.org">Open Data Kosovo</a>',
-        maxZoom: 18
-    }).addTo(map);
+        function initMap(){
+            // Init map with markers for default year, months and measurement selection.
+            var year = $('#viti-select').val();
+            var tipi = $('#tipi-select').val();
 
-    initMap();
-
-    function initMap(){
-        // Init map with markers for default year, months and measurement selection.
-        var year = $('#viti-select').val();
-        var tipi = $('#tipi-select').val();
-
-        addMarkers(komuna, year, tipi);
-    }
-    
-    function addMarkers(komuna, viti, tipi){
-        markerArray = [];
-
-        if(markerLayerGroup != undefined){
-            map.removeLayer(markerLayerGroup);
+            addMarkers(komuna, year, tipi);
         }
+        
+        function addMarkers(komuna, viti, tipi){
+            markerArray = [];
 
-        var tipi = $('#tipi-select').val();
-        var year = $('#viti-select').val();
-        var url = '{{ config.BASE_PATH }}/json/'+ komuna +'/map/'+ year;
-
-        var popup = L.popup();
-
-        $.get(url, function(jsonResult){
-            for (var key in jsonResult){
-                var value = jsonResult[key][tipi];
-                var selia = jsonResult[key].selia;
-
-                if (selia != undefined && selia != ''){
-                    var lon = jsonResult[key].gjatesia;
-                    var lat = jsonResult[key].gjeresia;
-
-                    if(tipi != 'numriKontratave'){
-                        value = '€' + toCurrency(value);
-                    }
-
-                    var popupContent = '<strong>' + selia + '</strong><br>' + value;
-
-                    var marker = L.marker([lat, lon]);
-                    marker.bindPopup(popupContent);
-                    markerArray.push(marker);
-                    
-                }
+            if(markerLayerGroup != undefined){
+                map.removeLayer(markerLayerGroup);
             }
 
-            markerLayerGroup = L.layerGroup(markerArray);
-            map.addLayer(markerLayerGroup);
-        })
-        
-        
-    }
-})
+            var tipi = $('#tipi-select').val();
+            var year = $('#viti-select').val();
+            var url = '{{ config.BASE_PATH }}/json/'+ komuna +'/map/'+ year;
+
+            var popup = L.popup();
+
+            $.get(url, function(jsonResult){
+
+                // Get max and min value of select parameter.
+                // We need this to calculate colorpleth buckets
+                var min = jsonResult['bounds'][tipi]['min'];
+                var max = jsonResult['bounds'][tipi]['max'];
+                
+                // Build gradient legend bucket array.
+                var gradientUnit = ( max - min ) / 7;
+                var gradiantBounds = new Array();
+
+                // Define first boun
+                gradiantBounds[0] = Math.ceil(min);
+
+                // Define the rest of the bounds, based on the first bound
+                for(var x = 1; x < 7; x++){
+                    gradiantBounds[x] = Math.ceil(gradiantBounds[x-1] + gradientUnit);
+                }
+
+                // Build colorpleth legend
+                if(tipi != 'numriKontratave'){
+                    max = '€ ' + toCurrency(max);
+                    min = '€ ' + toCurrency(min);
+
+                    $('#min-value').text(min);
+                    $('#max-value').text(max);
+                }
+                else{
+                    $('#min-value').text(min);
+                    $('#max-value').text(max);
+                }
+
+                for (var key in jsonResult['result']){
+                    
+                    var value = jsonResult['result'][key][tipi];
+                    var selia = jsonResult['result'][key].selia;
+
+                    var color = '';
+                    for(var c = 6; c >= 0; c--){
+                        if(value >= gradiantBounds[c]){
+                            color = gradOfColor[c];
+                            break;
+                        }
+                    }
+                    
+                    var lon = jsonResult['result'][key].gjatesia;
+                    var lat = jsonResult['result'][key].gjeresia;
+
+                    if(tipi != 'numriKontratave'){
+                        displayValue = '€ ' + toCurrency(value);
+                    }else{
+                        displayValue = value;
+                    }
+
+                    var popupContent = '<strong>' + selia + '</strong><br>' + displayValue;
+
+                    var circle = L.circle([lat, lon], 3000, {
+                        color: color,
+                        fillColor: color,
+                        fillOpacity: 0.9
+                    });
+
+                    circle.bindPopup(popupContent);
+                    markerArray.push(circle);            
+                }
+
+                markerLayerGroup = L.layerGroup(markerArray);
+                map.addLayer(markerLayerGroup);
+
+            })
+        }
+    })
 </script>
+<div id="colors">
+    <label id="min-value"></label>
+    <label id="max-value"></label>
+    <div id="colors-container">
+        <div id="color1"></div>
+        <div id="color2"></div>
+        <div id="color3"></div>
+        <div id="color4"></div>
+        <div id="color5"></div>
+        <div id="color6"></div>
+        <div id="color7"></div>
+    </div>
+</div>
 <div id="select" style="display: block; margin-left: 400px;">
     <table>
         <tr>
@@ -96,21 +254,20 @@ $(document).ready(function(){
                     <option value="2014">2014</option>
                 </select>
             </td>
-        </tr>
-        <tr>
+            <td>&nbsp&nbsp&nbsp</td>
             <td style="text-align:right;">
                 <label>Zgjidhja: </label>&nbsp
             </td>
             <td>
                 <select id="tipi-select" class="form-control">
                     <option value="vlera" selected="selected">Vlera</option>
-                    <option value="qmimi">Cmimi</option>
+                    <option value="cmimi">Cmimi</option>
                     <option value="numriKontratave">Numri i Kontratave</option>
                 </select>
             </td>
         </tr>
     </table>
 </div>
-<br><br>
-<div id="map"></div>
+<div id="map">
+</div>
 {% endblock %}
