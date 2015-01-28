@@ -54,27 +54,23 @@ $(document).ready(function(){
 
         $.get(url, function(jsonResult){
             for (var key in jsonResult){
-                var tip = jsonResult[key][tipi];
+                var value = jsonResult[key][tipi];
                 var selia = jsonResult[key].selia;
 
                 if (selia != undefined && selia != ''){
                     var lon = jsonResult[key].gjatesia;
                     var lat = jsonResult[key].gjeresia;
 
-                    if(tipi == 'numriKontratave'){
-                        var popupContent = '<strong>' + selia + '</strong><br>' + tipi + ': '+ tip + '<inp';
-
-                        var marker = L.marker([lat, lon]);
-                        marker.bindPopup(popupContent);
-                        markerArray.push(marker);
+                    if(tipi != 'numriKontratave'){
+                        value = '€' + toCurrency(value);
                     }
-                    else {
-                        var popupContent = '<strong>' + selia + '</strong><br>' + tipi + ': '+ '€' +toCurrency(tip) + '<inp';
 
-                        var marker = L.marker([lat, lon]);
-                        marker.bindPopup(popupContent);
-                        markerArray.push(marker);
-                    }
+                    var popupContent = '<strong>' + selia + '</strong><br>' + value;
+
+                    var marker = L.marker([lat, lon]);
+                    marker.bindPopup(popupContent);
+                    markerArray.push(marker);
+                    
                 }
             }
 
