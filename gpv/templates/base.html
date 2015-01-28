@@ -14,8 +14,10 @@
     <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.11.2/jquery-ui.min.js') }}"></script>
 
     <script type="text/javascript">
-      function toCurrency(number){
-          return (number + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+      function toCurrency(amount){
+          var amount = parseFloat(Math.round(amount * 100) / 100).toFixed(2);
+
+          return (amount + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       }
     </script>
 

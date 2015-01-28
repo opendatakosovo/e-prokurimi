@@ -184,10 +184,8 @@
     }
 
     function showCurrencyStaticTooltip(row, size, value) {
-        amount = parseFloat(Math.round(size * 100) / 100).toFixed(2);
-
         return '<div style="background:#fd9; padding:10px; border-style:solid">' +
-           '<strong>&euro; ' + toCurrency(amount) + '</strong>' +
+           '<strong>&euro; ' + toCurrency(size) + '</strong>' +
            '</div>';
     }
 
