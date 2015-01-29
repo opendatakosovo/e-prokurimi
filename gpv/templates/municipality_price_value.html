@@ -3,25 +3,27 @@
 <script type=text/javascript>
 	google.load("visualization", "1", {packages:["corechart"]});
 	$(document).ready(function(){
-		var viti = $('#viti-select').val();
-		var vleraCmimi = $('#vleracmimi-select').val();
+      //draw chart on load
+      drawContractValueChart("Vlera e kontratave krahasuar me komunat e ndryshme", "vlera");
 
-		drawContractValueChart("Vlera e kontratave krahasuar me komunat e ndryshme", "vlera")
-          $('#vleracmimi-select').change(function(){
-            var selected = $('#vleracmimi-select').val();
-            var selected_VC = capitaliseFirstLetter(selected)
-            var title = selected_VC + " kontratave krahasuar me komunat e ndryshme";
-          	drawContractValueChart(title, selected);
-          });
-          $('#viti-select').change(function(){
-            var selected = $('#vleracmimi-select').val();
-            var selected_VC = capitaliseFirstLetter(selected)
-            var title = selected_VC + " kontratave krahasuar me komunat e ndryshme";
-            drawContractValueChart(title, selected);
-          });
+      //binding the chart on vleracmimi-select index change
+      $('#vleracmimi-select').change(function(){
+        var selected = $('#vleracmimi-select').val();
+        var selected_VC = capitaliseFirstLetter(selected);
+        var title = selected_VC + " kontratave krahasuar me komunat e ndryshme";
+      	drawContractValueChart(title, selected);
+      });
+
+      //binding the chart on viti-select index change
+      $('#viti-select').change(function(){
+        var selected = $('#vleracmimi-select').val();
+        var selected_VC = capitaliseFirstLetter(selected);
+        var title = selected_VC + " kontratave krahasuar me komunat e ndryshme";
+        drawContractValueChart(title, selected);
+      });
 	})
 
-
+  //creating a function that draws the chart.
 	function drawContractValueChart(title, param) {
         var viti = $('#viti-select').val();
         var url = '{{ config.BASE_PATH }}/json/monthly-summary/'+ viti;
@@ -49,8 +51,8 @@
             for (var key in resultJson ){
               if (resultJson[key].komuna != currentCity){
                 	data.addColumn('number', resultJson[key].komuna);
-                		currentCity = resultJson[key].komuna;
-                	columnIndex++; 
+                	currentCity = resultJson[key].komuna;
+                	columnIndex++;
               }
               data.setCell(resultJson[key].muaji-1, columnIndex, resultJson[key][param]);
             }
@@ -83,18 +85,22 @@
         })
       };
 
-          //Creating a function that convert the first characted of a string to uppercase
-          function capitaliseFirstLetter(string)
-            {
-                return string.charAt(0).toUpperCase() + string.slice(1);
-            }
+      //Creating a function that convert the first characted of a string to uppercase
+      function capitaliseFirstLetter(string){
+        if(string != "qmimi"){
+          return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+        else{
+          return string.replace('q','Ç');
+        }
+      }
 </script>
 
-<div id="select">
+<div id="select" style="margin-left: 300px;">
   <table>
   <tr>
   <td>
-    <label style="float:right;">Viti: </label>
+    <label style="float:right;">Viti: &nbsp</label>
   </td>
  <td> 
   	<select id="viti-select" class="form-control">
@@ -103,15 +109,14 @@
   		<option selected="selected" value="2013">2013</option>
   	</select>
   </td>
-  </tr>
-  <tr>
+  <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>
   <td>
-  	<label style="float:right;">Vlera apo Cmimi: </label>
+  	<label style="float:right;">Vlera apo Çmimi: &nbsp</label>
     </td>
     <td>
   	<select id="vleracmimi-select" class="form-control">
   		<option selected="selected" value="vlera">Vlera</option>
-  		<option value="qmimi">Cmimi</option>
+  		<option value="qmimi">Çmimi</option>
   	</select>
     </td>
     </tr>
