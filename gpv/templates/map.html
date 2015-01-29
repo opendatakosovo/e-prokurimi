@@ -170,7 +170,7 @@
 
                 // Define the rest of the bounds, based on the first bound
                 for(var x = 1; x < 7; x++){
-                    gradiantBounds[x] = Math.ceil(gradiantBounds[x-1] + gradientUnit);
+                    gradiantBounds[x] = Math.floor(gradiantBounds[x-1] + gradientUnit);
                 }
 
                 // Build colorpleth legend
@@ -193,7 +193,7 @@
 
                     var color = '';
                     for(var c = 6; c >= 0; c--){
-                        if(value >= gradiantBounds[c]){
+                        if(Math.ceil(value) >= gradiantBounds[c]){
                             color = gradOfColor[c];
                             break;
                         }
