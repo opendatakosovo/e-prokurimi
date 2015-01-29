@@ -9,9 +9,9 @@
                 drawValuePriceChart();
             })
 
-            drawContractValueChart("Vlera e kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Shuma", "vlera", "linechart-vlera", true);
-            drawContractValueChart("Çmimi e kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
-            drawContractValueChart("Numri i kontratave të prokurimit sipas muajit, krahasuar ndër viteve", "Muaji", "Numri i kontratave", "count", "linechart-contract-count", false);
+            drawContractValueChart("Vlera e kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "vlera", "linechart-vlera", true);
+            drawContractValueChart("Çmimi i kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
+            drawContractValueChart("Numri i kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Numri i kontratave", "count", "linechart-contract-count", false);
           });
 
           function drawValuePriceChart(){
@@ -35,14 +35,14 @@
                 data.addRow([month, jsonResult[key].vlera, jsonResult[key].qmimi]);
               }
 
-             
+             var komuna = '{{komuna}}'
 
               var options = {
-                  'title': "Vlera dhe cmimi i kontratave - " + year,
+                  'title': "Krahasimi i Vlerës dhe Çmimit të kontratave sipas muajit,"  + " për komunën e " + replaceNameOfCity(komuna) + ", për vitin " + year,
                   'width':1000,
                   'height':800,
                   'vAxis': {
-                    'title': "Vlera dhe Cmimi"
+                    'title': "Vlera dhe Çmimi"
                   },
                   'hAxis': {
                     'title': "Muaji"
@@ -123,6 +123,16 @@
 
             chart.draw(data, options);
           };
+
+          function replaceNameOfCity(name){
+            if(name == "vitia"){
+              return "Vitisë";
+            }else if(name == "gjakova"){
+              return "Gjakovës";
+            }else if(name == "ferizaj"){
+              return "Ferizajit";
+            }
+          }
 
           
     </script>

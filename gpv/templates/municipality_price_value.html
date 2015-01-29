@@ -3,28 +3,37 @@
 <script type=text/javascript>
 	google.load("visualization", "1", {packages:["corechart"]});
 	$(document).ready(function(){
+      
+
       //draw chart on load
-      drawContractValueChart("Vlera e kontratave krahasuar me komunat e ndryshme", "vlera");
+      drawContractValueChart("Vlera e kontratave krahasuar me komunat e ndryshme, për vitin 2013", "vlera");
 
       //binding the chart on vleracmimi-select index change
       $('#vleracmimi-select').change(function(){
+        var year = $('#viti-select').val();
         var selected = $('#vleracmimi-select').val();
         var selected_VC = capitaliseFirstLetter(selected);
         if (selected != 'numriKontratave'){
-          var title = selected_VC + " kontratave krahasuar me komunat e ndryshme";
+          var title = selected_VC + " kontratave krahasuar me komunat e ndryshme, për vitin " + year;
         	drawContractValueChart(title, selected);
         }else{
-          var title = "Numri i Kontratave krahasuar me komunat e ndryshme";
+          var title = "Numri i Kontratave krahasuar me komunat e ndryshme, për vitin " + year;
           drawContractValueChart(title, selected);
         }
       });
 
       //binding the chart on viti-select index change
       $('#viti-select').change(function(){
+        var year = $('#viti-select').val();
         var selected = $('#vleracmimi-select').val();
         var selected_VC = capitaliseFirstLetter(selected);
-        var title = selected_VC + " kontratave krahasuar me komunat e ndryshme";
-        drawContractValueChart(title, selected);
+        if (selected != 'numriKontratave'){
+          var title = selected_VC + " kontratave krahasuar me komunat e ndryshme, për vitin " + year;
+          drawContractValueChart(title, selected);
+        }else{
+          var title = "Numri i Kontratave krahasuar me komunat e ndryshme, për vitin " + year;
+          drawContractValueChart(title, selected);
+        }
       });
 	})
 
