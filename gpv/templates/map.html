@@ -208,7 +208,7 @@
                         displayValue = value;
                     }
 
-                    var popupContent = '<strong>' + selia + '</strong><br>' + displayValue;
+                    var popupContent = '<strong>' + capitaliseFirstLetter(selia) + '</strong><br>' + displayValue;
 
                     var circle = L.circle([lat, lon], 3000, {
                         color: color,
@@ -219,13 +219,17 @@
                     circle.bindPopup(popupContent);
                     markerArray.push(circle);            
                 }
-
+                
                 markerLayerGroup = L.layerGroup(markerArray);
                 map.addLayer(markerLayerGroup);
-
             })
         }
     })
+
+    //Creating a function that convert the first characted of a string to uppercase
+    function capitaliseFirstLetter(string){
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 </script>
 <div id="colors">
     <label id="min-value"></label>
