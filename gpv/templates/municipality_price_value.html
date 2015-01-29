@@ -61,15 +61,18 @@
 
             var currentCity = '';
             var columnIndex = 0;
+            var cityArray = [];
 
             for (var key in resultJson ){
               if (resultJson[key].komuna != currentCity){
-                	data.addColumn('number', resultJson[key].komuna);
-                	currentCity = resultJson[key].komuna;
-                	columnIndex++;
+              	data.addColumn('number', resultJson[key].komuna);
+              	currentCity = resultJson[key].komuna;
+              	columnIndex++;
+                cityArray.push(resultJson[key].komuna);
               }
               data.setCell(resultJson[key].muaji-1, columnIndex, resultJson[key][param]);
             }
+            console.log(cityArray.length);
 
             var options = {
               'title': title,
@@ -89,7 +92,7 @@
               });
 
               if( param != 'numriKontratave'){
-                for(var i=1; i <= 3; i++){
+                for(var i=1; i <= cityArray.length; i++){
                   formatter.format(data, i);
                 }
               }
