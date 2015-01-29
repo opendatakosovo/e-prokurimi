@@ -10,8 +10,13 @@
       $('#vleracmimi-select').change(function(){
         var selected = $('#vleracmimi-select').val();
         var selected_VC = capitaliseFirstLetter(selected);
-        var title = selected_VC + " kontratave krahasuar me komunat e ndryshme";
-      	drawContractValueChart(title, selected);
+        if (selected != 'numriKontratave'){
+          var title = selected_VC + " kontratave krahasuar me komunat e ndryshme";
+        	drawContractValueChart(title, selected);
+        }else{
+          var title = "Numri i Kontratave krahasuar me komunat e ndryshme";
+          drawContractValueChart(title, selected);
+        }
       });
 
       //binding the chart on viti-select index change
