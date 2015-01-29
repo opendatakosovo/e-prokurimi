@@ -74,8 +74,10 @@
                       prefix: '€ '
               });
 
-              for(var i=1; i <= 3; i++){
-                formatter.format(data, i);
+              if( param != 'numriKontratave'){
+                for(var i=1; i <= 3; i++){
+                  formatter.format(data, i);
+                }
               }
 
             var chart = new google.visualization.LineChart(document.getElementById('lineChart'));
@@ -95,32 +97,29 @@
         }
       }
 </script>
-
-<div id="select" style="margin-left: 300px;">
-  <table>
-  <tr>
-  <td>
-    <label style="float:right;">Viti: &nbsp</label>
-  </td>
- <td> 
-  	<select id="viti-select" class="form-control">
-  		<option value="2011">2011</option>
-  		<option value="2012">2012</option>
-  		<option selected="selected" value="2013">2013</option>
-  	</select>
-  </td>
-  <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>
-  <td>
-  	<label style="float:right;">Vlera apo Çmimi: &nbsp</label>
-    </td>
-    <td>
-  	<select id="vleracmimi-select" class="form-control">
-  		<option selected="selected" value="vlera">Vlera</option>
-  		<option value="qmimi">Çmimi</option>
-  	</select>
-    </td>
-    </tr>
-  </table>
+<div id="select" style="margin-left:350px;">
+  <form class="form-inline">
+      <div class="form-group">
+          <label>Viti: </label>
+      </div>
+      <div class="form-group">
+          <select id="viti-select" class="form-control">
+              <option value="2011">2011</option>
+              <option value="2012">2012</option>
+              <option value="2013" selected="selected">2013</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label>Zgjidhja: </label>
+      </div>
+      <div class="form-group">
+        <select id="vleracmimi-select" class="form-control">
+          <option selected="selected" value="vlera">Vlera</option>
+          <option value="qmimi">Çmimi</option>
+          <option value="numriKontratave">Numri i Kontratave</option>
+         </select>
+      </div>
+  </form>
 </div>
 <div id="lineChart">
 </div>
