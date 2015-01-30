@@ -18,7 +18,8 @@
 
   .redflagInfo{
     color:#2c3e50;
-    float:right;
+    float: right;
+    
   }
 
   .redflagInfo:hover{
@@ -295,32 +296,40 @@
         return colorHex;
       }
 </script>
-<div id="jqueryUIRedFlag" title='Detajet e "Red Flags"'>
+
+
+<div style="color:red;" align="center">
+  <strong>Vërejtje:</strong> Hijëzimi me të kuqe nuk do të thotë që tenderi është i korruptuar por që përmbush kushtet e parapara për "red flag"
 </div>
-<div id="jqueryUI" title='Çfarë janë "Red Flags" ?'>
+<br>
+<br>
+
+<div>
+  <label class="redflagInfo" id="btn_red_flag_info">Çfarë janë "Red Flags" ?<label>
 </div>
-<label class="redflagInfo" id="btn_red_flag_info">Çfarë janë "Red Flags" ?</label>
-<div id="select" style="margin-left:300px;">
-  <table>
-    <tr>
-      <td style="text-align:right;">
-        <label for="#viti-select" style="text-align:right; margin-right:4px;">Viti: </label>
-      </td>
-      <td>
-        <select id="viti-select" style="" class="form-control">
+
+<form class="form-horizontal">
+  <div class="form-group">
+      <label for="viti-select" class="control-label col-xs-2">Viti:</label>
+      <div class="col-xs-2">
+        <select class="form-control" id="viti-select" name="viti-select">
           <option value="2010">2010</option>
           <option value="2011">2011</option>
           <option value="2012">2012</option>
           <option selected="selected" value="2013">2013</option>
           <option value="2014">2014</option>
         </select>
-      </td>
-    </tr>
-  </table>
-</div>
-<br>
+      </div>
+  </div>
+</form>
+
 <div id="table_div">
-  
+</div>
+
+<div id="jqueryUIRedFlag" title='Detajet e "Red Flags"'>
+</div>
+
+<div id="jqueryUI" title='Çfarë janë "Red Flags" ?'>
 </div>
 
 
