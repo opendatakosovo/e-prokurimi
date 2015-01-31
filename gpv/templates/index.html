@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
     <script>
-    // Remove commune dropdown for the landing page.
+        // Remove commune dropdown for the landing page.
         $( document ).ready(function() {
           $(".commune-dropdown").hide();
         });
@@ -50,10 +50,10 @@
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
                     <h2 class="section-heading">Visualize Procurement Data</h2>
-                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href="/ferizaj">shp&euml;rndarja</a>, <a href="/ferizaj/shperndarja/buxheti">buxhetit</a>, <a href="/ferizaj/shperndarja/prokurimi">prokurimit</a>, dhe <a href="/ferizaj/shperndarja/perfituesit">perfituesit</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href="/{{ komuna }}">shp&euml;rndarja</a>, <a href="/{{ komuna }}/shperndarja/buxheti">buxhetit</a>, <a href="/{{ komuna }}/shperndarja/prokurimi">prokurimit</a>, dhe <a href="/{{ komuna }}/shperndarja/perfituesit">perfituesit</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 </div>
                 <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/ipad.png') }}" alt="">
+                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/ipad-piechart.png') }}" alt="">
                 </div>
             </div>
 
@@ -72,10 +72,10 @@
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
                     <h2 class="section-heading">Geolocate Winning Tenders</h2>
-                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href="/ferizaj/harta">harta</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href="/{{ komuna }}/harta">harta</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 </div>
                 <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/dog.png') }}" alt="">
+                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/desktop-map.png') }}" alt="">
                 </div>
             </div>
 
@@ -94,10 +94,10 @@
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
                     <h2 class="section-heading">Conduct Comparitive Analysis</h2>
-                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href="/ferizaj/red-flags">krahasimi</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href="/krahasimi?komuna={{ komuna }}">krahasimi</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 </div>
                 <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/phones.png') }}" alt="">
+                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/phones-linechart.png') }}" alt="">
                 </div>
             </div>
 
@@ -117,10 +117,10 @@
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
                     <h2 class="section-heading">Detect Red Flags</h2>
-                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit  <a href="/ferizaj/harta">&quot;Red Flags&quot;</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit  <a href="/{{ komuna }}/harta">&quot;Red Flags&quot;</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 </div>
                 <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/dog.png') }}" alt="">
+                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/ipad-redflags.png') }}" alt="">
                 </div>
             </div>
 
