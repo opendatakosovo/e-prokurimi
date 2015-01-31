@@ -1,5 +1,12 @@
 <html>
 <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     <!-- Google Charts -->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
       
@@ -9,18 +16,10 @@
     <!-- Bootstrap  JavaScript -->
     <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 
-
     <!-- jQueryUI JavaScript -->
     <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.11.2/jquery-ui.min.js') }}"></script>
 
-    <script type="text/javascript">
-      function toCurrency(amount){
-          var amount = parseFloat(Math.round(amount * 100) / 100).toFixed(2);
-
-          return (amount + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-      }
-    </script>
-
+    <!-- Google Analytics -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -38,104 +37,152 @@
     <!-- Bootstrap compiled and minified CSS -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
 
+    <!-- Landing Page CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='landing-page/css/landing-page.css') }}" />
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='landing-page/font-awesome/css/font-awesome.min.css') }}" />
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
     <!-- Site styling -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
-<title>
-    Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml; Kosov&euml;s
-</title>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  <title>
+      Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml; Kosov&euml;s
+  </title>
 </head>
+
 <body>
-<script type="text/javascript">
-$( document ).ready(function() {
 
-  qyteti = "ferizaj";
-  $("#qyteti").click(function(){
-    qyteti = $(this).text();
-    newUrl = pathName + '/'+qyteti;
+  <script type="text/javascript">
+
+    $( document ).ready(function() {
+      // Display the selected commune
+      var communes = new Array()
+      communes['ferizaj'] = 'Ferizaj';
+      communes['gjakova'] = 'Gjakova';
+      communes['prishtina'] = 'Prishtina';
+      communes['vitia'] = 'Vitia';
+
+      $(".commune-dropdown-toggle").html(communes['{{ komuna }}'] + " <span class='caret'></span>");
     });
-
-});
-
- function switchCommune(selectedCommune){
-  var currentCommune = '{{ komuna }}';
-  // get path
-  var currentPath = window.location.pathname;
-  var urlArray = currentPath.split("/");
-  for(var i = 0; i < urlArray.length; i++){
-    if(urlArray[i] == currentCommune){
-      urlArray[i] =  selectedCommune ;
+    
+    function toCurrency(amount){
+        var amount = parseFloat(Math.round(amount * 100) / 100).toFixed(2);
+        return (amount + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     }
-  }
-  urlArray = urlArray.join("/");
-  document.location.href =  urlArray;
- }
 
-</script>
-  <nav class="navbar navbar-default" role="navigation">
-      {% if config.BASE_PATH == '' %}
-          <a class="navbar-brand" id="titulli" href="/">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml Kosov&euml;s </a>
-      {% else %}
-          <a class="navbar-brand" href="{{ config.BASE_PATH }}">Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml; Kosov&euml;s</a>
-      {% endif %}
-      <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-left">
-          <li class="dropdown" id="shperndarja">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shp&euml;rndarja <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="{{ config.BASE_PATH }}/{{komuna}}/shperndarja/buxheti">Lloji buxhetit</a></li>
-              <li><a href="{{ config.BASE_PATH }}/{{komuna}}/shperndarja/prokurimi">Lloji prokurimit</a></li>
-              <li><a href="{{ config.BASE_PATH }}/{{komuna}}/shperndarja/perfituesit">Perfituesit</a></li>
-            </ul>
-          </li>
-          <li id="harta">
-            <a href="{{ config.BASE_PATH }}/{{komuna}}/harta">Harta</a>
-          </li>
-          <li id="krahasimi">
-            <a href="{{ config.BASE_PATH }}/krahasimi?komuna={{komuna}}">Krahasimi</a>
-          </li>
-          <li id="red_flag">
-            <a href="{{ config.BASE_PATH }}/{{komuna}}/red-flags">Red Flags</a>
-          </li>
+    function switchCommune(selectedCommune){
+      var currentCommune = '{{ komuna }}';
+      // get path
+      var currentPath = window.location.pathname;
+      var urlArray = currentPath.split("/");
 
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ komuna }} <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href='javascript:switchCommune("ferizaj");'>Ferizaj</a></li>
-              <li class="divider"></li>
-              <li><a href='javascript:switchCommune("gjakova");'>Gjakova</a></li>
-              <li class="divider"></li>
-              <li><a href='javascript:switchCommune("vitia");'>Vitia</a></li>
-              <li class="divider"></li>
-              <li><a href='javascript:switchCommune("prishtina");'>Prishtina</a></li>
-            </ul>
-          </li>
-        </ul>
+      for(var i = 0; i < urlArray.length; i++){
+        if(urlArray[i] == currentCommune){
+          urlArray[i] =  selectedCommune ;
+        }
+      }
+
+      urlArray = urlArray.join("/");
+      document.location.href =  urlArray;
+    }
+
+  </script>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+      <div class="container topnav">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand topnav" href="/"><em>e-prokurimi</em></a>
+          </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown" id="shperndarja">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shp&euml;rndarja <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/{{ komuna }}">Shp&euml;rndarja</a></li>
+                    <li><a href="/{{ komuna }}/shperndarja/buxheti">Lloji buxhetit</a></li>
+                    <li><a href="/{{ komuna }}/shperndarja/prokurimi">Lloji prokurimit</a></li>
+                    <li><a href="/{{ komuna }}/shperndarja/perfituesit">Perfituesit</a></li>
+                  </ul>
+                </li>
+                <li id="harta">
+                  <a href="/{{ komuna }}/harta">Harta</a>
+                </li>
+                <li id="krahasimi">
+                  <a href="/krahasimi?komuna={{ komuna }}">Krahasimi</a>
+                </li>
+                <li id="red_flag">
+                  <a href="/{{ komuna }}/red-flags">Red Flags</a>
+                </li>
+              </ul>
+
+              <!-- Commune selection dropdown -->
+              <ul class="nav navbar-nav navbar-right commune-dropdown">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle commune-dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href='javascript:switchCommune("ferizaj");'>Ferizaj</a></li>
+                    <li><a href='javascript:switchCommune("gjakova");'>Gjakova</a></li>
+                    <li><a href='javascript:switchCommune("prishtina");'>Prishtina</a></li>
+                    <li><a href='javascript:switchCommune("vitia");'>Vitia</a></li>
+                  </ul>
+                </li>
+              </ul>
+          </div>
+          <!-- /.navbar-collapse -->
       </div>
-
+      <!-- /.container -->
   </nav>
-  <div class="container" style="padding-top:10px;">
-  	{% block body %}
-    {{ config.BASE_PATH }}
-    {% endblock %}
-  </div>
 
-  <div class="push-for-footer"></div>
+	{% block body %}
+  {% endblock %}
 
-  <div class="footer">
-      <div class="footer-container" align="center">
-          <p class="text-muted">
-              <br>Made in Kosovo by <a href="http://opendatakosovo.org" target="_blank">Open Data Kosovo</a>.
-              <br>
-                Source code available on 
-                  <a href="https://github.com/opendatakosovo/gjakova-procurement-visualizer" target="_blank">
-                    GitHub
-                  </a>.
-              <br>
-          </p>
+  <!-- Footer -->
+  <footer>
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <ul class="list-inline">
+                      <li>
+                          <a href="/{{ komuna }}">Shp&euml;rndarja</a>
+                      </li>
+                      <li class="footer-menu-divider">&sdot;</li>
+                      <li>
+                          <a href="/{{ komuna }}/harta">Harta</a>
+                      </li>
+                      <li class="footer-menu-divider">&sdot;</li>
+                      <li>
+                          <a href="/krahasimi?komuna={{ komuna }}">Krahasimi</a>
+                      </li>
+                      <li class="footer-menu-divider">&sdot;</li>
+                      <li>
+                          <a href="/{{ komuna }}/red-flags">Red Flags</a>
+                      </li>
+                  </ul>
+                  <p class="copyright text-muted small">Made in Kosovo by <a href="http://opendatakosovo.org">Open Data Kosovo</a></p>
+              </div>
+          </div>
       </div>
-  </div>
+  </footer>
+
+  
 
 </body>
 </html>

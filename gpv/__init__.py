@@ -108,13 +108,12 @@ from views.json.map import MapJson
 
 # Views for Page rendering
 from views.pages.index import Index
-from views.pages.company_details import CompanyDetails
+from views.pages.distribution import Distribution
 from views.pages.typedistribution import TypeDistribution
 from views.pages.map import Map
 from views.pages.procurementdistribution import ProcurementDistribution
-from views.pages.home import Home
 from views.pages.municipalityPriceValue import MunicipalityPriceValue
-from views.pages.company_list_page import CompanyListPage
+from views.pages.redflags import RedFlags
 
 
 def register_url_rules(app):
@@ -173,16 +172,11 @@ def register_page_url_rules(app):
     # Index.
     app.add_url_rule(
         '/',
-        view_func=Home.as_view('home'))
+        view_func=Index.as_view('index'))
 
     app.add_url_rule(
         '/<string:komuna>/',
-        view_func=Index.as_view('index'))
-
-    # Company Profile
-    app.add_url_rule(
-        '/<string:komuna>/company/<string:company_slug>',
-        view_func=CompanyDetails.as_view('company'))
+        view_func=Distribution.as_view('distibution'))
 
     # Contract Distribution Amongst Companies
     app.add_url_rule(
@@ -201,7 +195,7 @@ def register_page_url_rules(app):
 
     app.add_url_rule(
         '/<string:komuna>/red-flags',
-        view_func=CompanyListPage.as_view('company_list_page'))
+        view_func=RedFlags.as_view('redflags'))
 
     app.add_url_rule(
         '/krahasimi',

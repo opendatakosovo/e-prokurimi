@@ -72,7 +72,6 @@
               }
               data.setCell(resultJson[key].muaji-1, columnIndex, resultJson[key][param]);
             }
-            console.log(cityArray.length);
 
             var options = {
               'title': title,
@@ -114,34 +113,37 @@
         }
       }
 </script>
-<div id="select" style="margin-left:350px;">
-  <form class="form-inline">
-      <div class="form-group">
-          <label>Viti: </label>
-      </div>
-      <div class="form-group">
-          <select id="viti-select" class="form-control">
-              <option value="2010">2010</option>
-              <option value="2011">2011</option>
-              <option value="2012">2012</option>
-              <option value="2013" selected="selected">2013</option>
-              <option value="2014">2014</option>
-          </select>
-      </div>
-      <div class="form-group" style="margin-left:10px;">
-          <label>Zgjidhja: </label>
-      </div>
-      <div class="form-group">
-        <select id="vleracmimi-select" class="form-control">
-          <option selected="selected" value="vlera">Vlera</option>
-          <option value="qmimi">Çmimi</option>
-          <option value="numriKontratave">Numri i Kontratave</option>
-         </select>
-      </div>
-  </form>
-</div>
 
-<div id="lineChart">
+<div id="container" style="padding-top:100px;padding-left:100px; padding-right:100px;">
+  <div id="select">
+    <form class="form-inline">
+        <div class="form-group">
+            <label>Viti: </label>
+        </div>
+        <div class="form-group">
+            <select id="viti-select" class="form-control">
+                <option value="2010">2010</option>
+                <option value="2011">2011</option>
+                <option value="2012">2012</option>
+                <option value="2013" selected="selected">2013</option>
+                <option value="2014">2014</option>
+            </select>
+        </div>
+        <div class="form-group" style="margin-left:10px;">
+            <label>Zgjidhja: </label>
+        </div>
+        <div class="form-group">
+          <select id="vleracmimi-select" class="form-control">
+            <option selected="selected" value="vlera">Vlera</option>
+            <option value="qmimi">Çmimi</option>
+            <option value="numriKontratave">Numri i Kontratave</option>
+           </select>
+        </div>
+    </form>
+  </div>
+
+  <div id="lineChart">
+  </div>
 </div>
 
 {% endblock %}

@@ -1,172 +1,162 @@
 {% extends "base.html" %}
 {% block body %}
-    <script type="text/javascript">
-          google.load("visualization", "1", {packages:["corechart"]});
-          $(document).ready(function(){
-
-            drawValuePriceChart();
-            $('#viti-select').change(function(){
-                drawValuePriceChart();
-            })
-
-            drawContractValueChart("Vlera e kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "vlera", "linechart-vlera", true);
-            drawContractValueChart("Çmimi i kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
-            drawContractValueChart("Numri i kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Numri i kontratave", "count", "linechart-contract-count", false);
-          });
-
-          function drawValuePriceChart(){
-            var year = $('#viti-select').val()
-
-            var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/monthly-summary/' + year;
-            $.get(url, function(jsonResult){
-
-              var data = new google.visualization.DataTable();
-              data.addColumn('string', 'Muaji');
-              data.addColumn('number', 'Vlera');
-              data.addColumn('number', 'Çmimi');
-
-              var monthArray = ["Janar", "Shkurt", "Mars", "Prill", "Maj", "Qershor", "Korrik",
-              "Gusht","Shtator","Tetor","Nëntor","Dhjetor"];
-
-              for ( var key in jsonResult){
-                var monthIndex = jsonResult[key].muaji - 1;
-                var month = monthArray[monthIndex];
-
-                data.addRow([month, jsonResult[key].vlera, jsonResult[key].qmimi]);
-              }
-
-             var komuna = '{{komuna}}'
-
-              var options = {
-                  'title': "Krahasimi i Vlerës dhe Çmimit të kontratave sipas muajit,"  + " për komunën e " + replaceNameOfCity(komuna) + ", për vitin " + year,
-                  'width':1000,
-                  'height':800,
-                  'vAxis': {
-                    'title': "Vlera dhe Çmimi"
-                  },
-                  'hAxis': {
-                    'title': "Muaji"
-                  }
-                };
-
-                 var formatter = new google.visualization.NumberFormat({
-                      fractionDigits: 0,
-                      prefix: '€'
-                  });
-                 for(var i=1; i <= 2; i++){
-                    formatter.format(data, i);
-                  }
-
-              var chart = new google.visualization.LineChart(document.getElementById("linechart-vlera-cmimi"));
-
-              chart.draw(data, options);
-            })
-          }
-
-          function drawContractValueChart(title, xAxisTitle, yAxisTitle, param, containerDivId, isCurrency) {
-
-            var data = google.visualization.arrayToDataTable([
-              ['Muji'],
-              ["Janar"],
-              ["Shkurt"],
-              ["Mars"],
-              ["Prill"],
-              ["Maj"],
-              ["Qershor"],
-              ["Korrik"],
-              ["Gusht"],
-              ["Shtator"],
-              ["Tetor"],
-              ["Nëntor"],
-              ["Dhjetor"]
-            ]);
-
-            var resultJson = {{result_json|tojson}};
-
-            var currentYear = 0;
-            var columnIndex = 0;
-
-            for (var key in resultJson ){
-              if (resultJson[key].viti != currentYear){
-                data.addColumn('number', resultJson[key].viti);
-                currentYear = resultJson[key].viti;
-                columnIndex++; 
-              }
-              data.setCell(resultJson[key].muaji-1, columnIndex, resultJson[key][param]);
-            }
-
-            if(isCurrency == true){
-              // Formater for column cells to display numbers as currency
-              var formatter = new google.visualization.NumberFormat({
-                      fractionDigits: 0,
-                      prefix: '€ '
-              });
-
-              for(var i=1; i <= 2; i++){
-                formatter.format(data, i);
-              }
-            }
-
-            var options = {
-              'title': title,
-              'width':1000,
-              'height':800,
-              'vAxis': {
-                'title': yAxisTitle
-              },
-              'hAxis': {
-                'title': xAxisTitle
-              }
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById(containerDivId));
-
-            chart.draw(data, options);
-          };
-
-          function replaceNameOfCity(name){
-            if(name == "vitia"){
-              return "Vitisë";
-            }else if(name == "gjakova"){
-              return "Gjakovës";
-            }else if(name == "ferizaj"){
-              return "Ferizajit";
-            }else if(name == "prishtina"){
-              return "Prishtinës";
-            }
-          }
-
-          
+    <script>
+    // Remove commune dropdown for the landing page.
+        $( document ).ready(function() {
+          $(".commune-dropdown").hide();
+        });
     </script>
-    
-    <table>
-      <tr>
-        <td>
-          <div id="linechart-vlera-cmimi">  
-          </div>
-        </td>
-        <td valign="top" style="padding-top:145px;">
-            <div class="form-group">
-            <select id="viti-select" class="form-control">
-              <option value="2010">2010</option>
-              <option value="2011">2011</option>
-              <option value="2012">2012</option>
-              <option value="2013" selected="selected">2013</option>
-              <option value="2014">2014</option>
-            </select>
-        </td>
-      </tr>
-    </table>
 
-    <div id="linechart-vlera">
+    <!-- Header -->
+    <a name="about"></a>
+    <div class="intro-header">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="intro-message">
+                        <h1>e-prokurimi</h1>
+                        <h3>Vizuelizimi i t&euml; dh&euml;nave t&euml; prokurimit t&euml; Komunave t&euml; Kosov&euml;s</h3>
+                        <hr class="intro-divider">
+                        <ul class="list-inline intro-social-buttons">
+                            <li>
+                                <a href="http://opendatakosovo.org/data" class="btn btn-default btn-lg"><i class="fa fa-database fa-fw"></i> <span class="network-name">T&euml; Dh&euml;nat</span></a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/opendatakosovo" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                            </li>
+                            <li>
+                                <a href="https://www.facebook.com/opendatakosovo" class="btn btn-default btn-lg"><i class="fa fa-facebook fa-fw"></i> <span class="network-name">Facebook</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
     </div>
+    <!-- /.intro-header -->
 
-    <div id="linechart-qmimi">
+    <!-- Page Content -->
+
+	<a  name="services"></a>
+    <div class="content-section-a">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Visualize Procurement Data</h2>
+                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href="/ferizaj">shp&euml;rndarja</a>, <a href="/ferizaj/shperndarja/buxheti">buxhetit</a>, <a href="/ferizaj/shperndarja/prokurimi">prokurimit</a>, dhe <a href="/ferizaj/shperndarja/perfituesit">perfituesit</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/ipad.png') }}" alt="">
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
     </div>
+    <!-- /.content-section-a -->
 
-    <div id="linechart-contract-count">
+    <div class="content-section-b">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Geolocate Winning Tenders</h2>
+                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href="/ferizaj/harta">harta</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/dog.png') }}" alt="">
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
     </div>
+    <!-- /.content-section-b -->
+
+    <div class="content-section-a">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5 col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Conduct Comparitive Analysis</h2>
+                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href="/ferizaj/red-flags">krahasimi</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/phones.png') }}" alt="">
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.content-section-a -->
 
 
+    <div class="content-section-b">
 
-{% endblock %}
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Detect Red Flags</h2>
+                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit  <a href="/ferizaj/harta">&quot;Red Flags&quot;</a> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+                    <img class="img-responsive" src="{{ url_for('static', filename='landing-page/img/dog.png') }}" alt="">
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.content-section-b -->
+
+	<a  name="contact"></a>
+    <div class="banner">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2>Open Data Kosovo:</h2>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="list-inline banner-social-buttons">
+                        <li>
+                            <a href="http://opendatakosovo.org/data" class="btn btn-default btn-lg"><i class="fa fa-database fa-fw"></i> <span class="network-name">T&euml; Dh&euml;nat</span></a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/opendatakosovo" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/opendatakosovo" class="btn btn-default btn-lg"><i class="fa fa-facebook fa-fw"></i> <span class="network-name">Facebook</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.banner -->
+{% endblock body %}

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
 
-
 <style type="text/css">
   .bigAndBoldClass{
     font-size: 15px;
@@ -297,39 +296,40 @@
       }
 </script>
 
-
-<div style="color:red;" align="center">
-  <strong>Vërejtje:</strong> Hijëzimi me të kuqe nuk do të thotë që tenderi është i korruptuar por që përmbush kushtet e parapara për "red flag"
-</div>
-<br>
-<br>
-
-<div>
-  <label class="redflagInfo" id="btn_red_flag_info">Çfarë janë "Red Flags" ?<label>
-</div>
-
-<form class="form-horizontal">
-  <div class="form-group">
-      <label for="viti-select" class="control-label col-xs-2">Viti:</label>
-      <div class="col-xs-2">
-        <select class="form-control" id="viti-select" name="viti-select">
-          <option value="2010">2010</option>
-          <option value="2011">2011</option>
-          <option value="2012">2012</option>
-          <option selected="selected" value="2013">2013</option>
-          <option value="2014">2014</option>
-        </select>
-      </div>
+<div id="container" style="padding-top:100px;padding-left:100px;padding-right:100px;">
+  <div style="color:red;" align="center">
+    <strong>Vërejtje:</strong> Hijëzimi me të kuqe nuk do të thotë që tenderi është i korruptuar por që përmbush kushtet e parapara për "red flag"
   </div>
-</form>
+  <br>
+  <br>
 
-<div id="table_div">
-</div>
+  <div>
+    <label class="redflagInfo" id="btn_red_flag_info">Çfarë janë "Red Flags" ?</label>
+  </div>
 
-<div id="jqueryUIRedFlag" title='Detajet e "Red Flags"'>
-</div>
+  <form class="form-horizontal">
+    <div class="form-group">
+        <label for="viti-select" class="control-label col-xs-2">Viti:</label>
+        <div class="col-xs-2">
+          <select class="form-control" id="viti-select" name="viti-select">
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option selected="selected" value="2013">2013</option>
+            <option value="2014">2014</option>
+          </select>
+        </div>
+    </div>
+  </form>
 
-<div id="jqueryUI" title='Çfarë janë "Red Flags" ?'>
+  <div id="table_div">
+  </div>
+
+  <div id="jqueryUIRedFlag" title='Detajet e "Red Flags"'>
+  </div>
+
+  <div id="jqueryUI" title='Çfarë janë "Red Flags" ?'>
+  </div>
 </div>
 
 
