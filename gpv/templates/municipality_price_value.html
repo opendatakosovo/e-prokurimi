@@ -4,6 +4,9 @@
 	google.load("visualization", "1", {packages:["corechart"]});
 	$(document).ready(function(){
       
+      // Remove commune dropdown for the landing page.
+      $(".commune-dropdown").hide();
+
 
       //draw chart on load
       drawContractValueChart("Vlera e kontratave krahasuar me komunat e ndryshme, për vitin 2013", "vlera");
