@@ -128,82 +128,8 @@
             var aneks = data.getValue(i, 4);
             var qmimi_str = qmimi.toString();
 
-            // Check if vlera is 0 EUR
-            if(vlera == 0){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_ZERO]);
-            }
-
-            // Check if cmimi is 0 EUR
-            if(qmimi == 0){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_PRICE_ZERO]);
-            }
-
-            // Check for red flag: vlera equals cmimi
-            if(qmimi == vlera){
-              numberOfRedFlags = numberOfRedFlags + 1;
-
-              // Keep track of this red flag in the red flag array (a global variable)
-              trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_PRICE_ARE_EQUAL]);
-            }else{
-              
-              // if qmimi - vlera is lesser than 10 EUR
-              if(Math.abs(qmimi - vlera) <= 10){
-                numberOfRedFlags = numberOfRedFlags + 1;
-                trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_TOO_SMALL]);
-              }
-
-              // if qmimi + aneks - vlera is lesser than 10 EUR
-              if(aneks > 0 && (Math.abs(qmimi + aneks - vlera) <= 10)){
-                numberOfRedFlags = numberOfRedFlags + 1;
-                trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF_TOO_SMALL]);
-              }  
-            }
-
-            // Check for red flag: cmimi is round number
-            if (qmimi_str.length >= 6 && qmimi_str.substr(-5) == '00000'){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              // Keep track of this red flag in the red flag array (a global variable)
-              trackRedFlag(i, redFlags[RED_FLAG_ID_PRICE_IS_ROUND_NUMBER]);
-            }
-            else if (qmimi_str.length >= 5 && qmimi_str.substr(-4) == '0000'){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_PRICE_IS_ROUND_NUMBER]);
-            }
-            else if (qmimi_str.length >= 4 && qmimi_str.substr(-3) == '000'){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_PRICE_IS_ROUND_NUMBER]);
-            }
-            else if (qmimi_str.length >= 3 && qmimi_str.substr(-2) == '00'){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_PRICE_IS_ROUND_NUMBER]);
-            }
-
-        
-            // if qmimi - vlera is greater than 10% of vlera
-            if((qmimi - vlera) > getPercentage(vlera, 10)){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF]);
-            }
-
-            // if qmimi + aneks - vlera is greater than 10% of vlera
-            if(aneks > 0 && ((qmimi + aneks - vlera) > getPercentage(vlera, 10))){
-              numberOfRedFlags = numberOfRedFlags + 1;
-              trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF]);
-            }
-
-            // Set the red flag color indicator for the current row.
-            // The more red flags, the darker the color.          
-            for (var j = 0; j <= 5; j++) {
-              if(numberOfRedFlags > 0){
-                  var colorHex = getRedFlagHexColor(numberOfRedFlags);
-                    data.setProperty(i, j, 'style', 'font-size:14px; background-color:' + colorHex + ';');
-              }
-              else{
-                  data.setProperty(i, j, 'style', 'font-size:14px;');
-              }
-            }
+            
+            // IMPLEMENT REDFLAGS ALGORITHM
           }
 
           // Format numerical values into price format (e.g. 10000 -> €10,000)
