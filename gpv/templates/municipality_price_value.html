@@ -78,7 +78,7 @@
 
             for (var key in resultJson ){
               if (resultJson[key].komuna != currentCity){
-              	data.addColumn('number', resultJson[key].komuna);
+              	data.addColumn('number', capitalise(resultJson[key].komuna));
               	currentCity = resultJson[key].komuna;
               	columnIndex++;
                 columnLenght = columnLenght + 1;
@@ -116,6 +116,11 @@
         })
       };
 
+
+      // Capitalise the words
+      function capitalise(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+      }
       //Creating a function that convert the first characted of a string to uppercase
       function capitaliseFirstLetter(string){
         if(string != "qmimi"){
