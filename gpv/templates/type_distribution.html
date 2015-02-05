@@ -53,7 +53,7 @@
       // Because some years do not have "Konkurs projektimi," it messes up
       // the pie chart's colouring consistency.
       if(type != "Konkurs projektimi" && type != "n/a" && type != "" && type != null){
-		type = type.toString();
+		    type = type.join(', ');
         dataTable.addRow([type, sum]);
       }
     }
