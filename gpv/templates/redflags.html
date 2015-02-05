@@ -185,9 +185,11 @@
             //if vlera < 10000
             if (vlera > 0 && vlera <= 10000){
               //if ((qmimi + aneks) - vlera) <= 100
-              if(Math.abs(qmimi + aneks - vlera) <= 100){
-                numberOfRedFlags = numberOfRedFlags + 1;
-                trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10000]);
+              if (vlera != ( qmimi + aneks)){
+                if(Math.abs(qmimi + aneks - vlera) <= 100){
+                  numberOfRedFlags = numberOfRedFlags + 1;
+                  trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10000]);
+                }
               }
             }
             // if qmimi - vlera is greater than 10% of vlera
