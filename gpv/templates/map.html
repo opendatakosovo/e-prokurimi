@@ -201,25 +201,25 @@
                     
                     var lon = jsonResult['result'][key].gjatesia;
                     var lat = jsonResult['result'][key].gjeresia;
+                    if (lat != null){
+                        if(tipi != 'numriKontratave'){
+                            displayValue = '€ ' + toCurrency(value);
+                        }else{
+                            displayValue = value;
+                        }
 
-                    if(tipi != 'numriKontratave'){
-                        displayValue = '€ ' + toCurrency(value);
-                    }else{
-                        displayValue = value;
+                        var popupContent = '<strong>' + capitaliseFirstLetter(selia) + '</strong><br>' + displayValue;
+
+                        var circle = L.circle([lat, lon], 3000, {
+                            color: color,
+                            fillColor: color,
+                            fillOpacity: 0.9
+                        });
                     }
-
-                    var popupContent = '<strong>' + capitaliseFirstLetter(selia) + '</strong><br>' + displayValue;
-
-                    var circle = L.circle([lat, lon], 3000, {
-                        color: color,
-                        fillColor: color,
-                        fillOpacity: 0.9
-                    });
 
                     circle.bindPopup(popupContent);
                     markerArray.push(circle);            
                 }
-                
                 markerLayerGroup = L.layerGroup(markerArray);
                 map.addLayer(markerLayerGroup);
             })

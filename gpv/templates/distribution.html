@@ -85,11 +85,13 @@
 
             var currentYear = 0;
             var columnIndex = 0;
+            var columnLenght = 0;
 
             for (var key in resultJson ){
               if (resultJson[key].viti != currentYear){
                 data.addColumn('number', resultJson[key].viti);
                 currentYear = resultJson[key].viti;
+                columnLenght = columnLenght + 1;
                 columnIndex++; 
               }
               data.setCell(resultJson[key].muaji-1, columnIndex, resultJson[key][param]);
@@ -102,7 +104,7 @@
                       prefix: '€ '
               });
 
-              for(var i=1; i <= 2; i++){
+              for(var i=1; i <= columnLenght; i++){
                 formatter.format(data, i);
               }
             }

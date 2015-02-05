@@ -64,14 +64,14 @@
 
             var currentCity = '';
             var columnIndex = 0;
-            var cityArray = [];
+            var columnLenght = 0;
 
             for (var key in resultJson ){
               if (resultJson[key].komuna != currentCity){
               	data.addColumn('number', resultJson[key].komuna);
               	currentCity = resultJson[key].komuna;
               	columnIndex++;
-                cityArray.push(resultJson[key].komuna);
+                columnLenght = columnLenght + 1;
               }
               data.setCell(resultJson[key].muaji-1, columnIndex, resultJson[key][param]);
             }
@@ -94,7 +94,7 @@
               });
 
               if( param != 'numriKontratave'){
-                for(var i=1; i <= cityArray.length; i++){
+                for(var i=1; i <= columnLenght; i++){
                   formatter.format(data, i);
                 }
               }
