@@ -9,7 +9,7 @@
 
 
       //draw chart on load
-      drawContractValueChart("Vlera e kontratave krahasuar me komunat e ndryshme, për vitin 2013", "vlera");
+      drawContractValueChart("Vlera e paraparë e kontratave nga komunat, krahasimi mes komunave, viti 2013", "vlera");
 
       //binding the chart on vleracmimi-select index change
       $('#vleracmimi-select').change(function(){
@@ -17,10 +17,15 @@
         var selected = $('#vleracmimi-select').val();
         var selected_VC = capitaliseFirstLetter(selected);
         if (selected != 'numriKontratave'){
-          var title = selected_VC + " kontratave krahasuar me komunat e ndryshme, për vitin " + year;
-        	drawContractValueChart(title, selected);
+          if (selected == "qmimi"){
+            var title = selected_VC + " i kontraktuar i kontratave nga komunat, krahasimi mes komunave, viti " + year;
+              drawContractValueChart(title, selected);
+          }else if (selected == "vlera"){
+            var title = selected_VC + " e paraparë e kontratave nga komunat, krahasimi mes komunave, viti " + year;
+              drawContractValueChart(title, selected);
+          }
         }else{
-          var title = "Numri i Kontratave krahasuar me komunat e ndryshme, për vitin " + year;
+          var title = "Numri i kontratave të kontraktuara nga komunat, krahasimi mes komunave, viti " + year;
           drawContractValueChart(title, selected);
         }
       });
@@ -31,10 +36,15 @@
         var selected = $('#vleracmimi-select').val();
         var selected_VC = capitaliseFirstLetter(selected);
         if (selected != 'numriKontratave'){
-          var title = selected_VC + " kontratave krahasuar me komunat e ndryshme, për vitin " + year;
-          drawContractValueChart(title, selected);
+          if (selected == "qmimi"){
+            var title = selected_VC + " i kontraktuar i kontratave nga komunat, krahasimi mes komunave, viti " + year;
+            drawContractValueChart(title, selected);
+          }else if (selected == "vlera"){
+            var title = selected_VC + " e paraparë e kontratave nga komunat, krahasimi mes komunave, viti " + year;
+            drawContractValueChart(title, selected);
+          }
         }else{
-          var title = "Numri i Kontratave krahasuar me komunat e ndryshme, për vitin " + year;
+          var title = "Numri i kontratave të kontraktuara nga komunat, krahasimi mes komunave, viti " + year;
           drawContractValueChart(title, selected);
         }
       });
@@ -133,13 +143,13 @@
             </select>
         </div>
         <div class="form-group" style="margin-left:10px;">
-            <label>Zgjidhja: </label>
+            <label>Krahasimi sipas: </label>
         </div>
         <div class="form-group">
           <select id="vleracmimi-select" class="form-control">
-            <option selected="selected" value="vlera">Vlera</option>
-            <option value="qmimi">Çmimi</option>
-            <option value="numriKontratave">Numri i Kontratave</option>
+            <option selected="selected" value="vlera">Vlerës të paraparë nga komuna</option>
+            <option value="qmimi">Çmimit të kontraktuar</option>
+            <option value="numriKontratave">Numrit të kontratave</option>
            </select>
         </div>
     </form>

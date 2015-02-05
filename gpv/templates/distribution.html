@@ -9,8 +9,8 @@
                 drawValuePriceChart();
             })
 
-            drawContractValueChart("Vlera e kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "vlera", "linechart-vlera", true);
-            drawContractValueChart("Çmimi i kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
+            drawContractValueChart("Vlera e paraparë e kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "vlera", "linechart-vlera", true);
+            drawContractValueChart("Çmimi kontraktues i kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
             drawContractValueChart("Numri i kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Numri i kontratave", "count", "linechart-contract-count", false);
           });
 
@@ -38,7 +38,7 @@
              var komuna = '{{komuna}}'
 
               var options = {
-                  'title': "Krahasimi i Vlerës dhe Çmimit të kontratave sipas muajit,"  + " për komunën e " + replaceNameOfCity(komuna) + ", për vitin " + year,
+                  'title': "Krahasimi i Vlerës së paraparë dhe Çmimit të kontraktuar të kontratave sipas muajit,"  + " për komunën e " + replaceNameOfCity(komuna) + ", për vitin " + year,
                   'width':1000,
                   'height':800,
                   'vAxis': {
