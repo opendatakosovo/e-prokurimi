@@ -18,7 +18,7 @@
         var selected_VC = capitaliseFirstLetter(selected);
         if (selected != 'numriKontratave'){
           if (selected == "qmimi"){
-            var title = selected_VC + " i kontraktuar i kontratave nga komunat, krahasimi mes komunave, viti " + year;
+            var title = "Vlera e kontraktuar nga komunat, krahasimi mes komunave, viti " + year;
               drawContractValueChart(title, selected);
           }else if (selected == "vlera"){
             var title = selected_VC + " e paraparë e kontratave nga komunat, krahasimi mes komunave, viti " + year;
@@ -37,7 +37,7 @@
         var selected_VC = capitaliseFirstLetter(selected);
         if (selected != 'numriKontratave'){
           if (selected == "qmimi"){
-            var title = selected_VC + " i kontraktuar i kontratave nga komunat, krahasimi mes komunave, viti " + year;
+            var title = selected_VC + "Vlera e kontraktuar nga komunat, krahasimi mes komunave, viti " + year;
             drawContractValueChart(title, selected);
           }else if (selected == "vlera"){
             var title = selected_VC + " e paraparë e kontratave nga komunat, krahasimi mes komunave, viti " + year;
@@ -153,7 +153,7 @@
         <div class="form-group">
           <select id="vleracmimi-select" class="form-control">
             <option selected="selected" value="vlera">Vlerës të paraparë nga komuna</option>
-            <option value="qmimi">Çmimit të kontraktuar</option>
+            <option value="qmimi">Vlerës së kontraktuar nga komuna</option>
             <option value="numriKontratave">Numrit të kontratave</option>
            </select>
         </div>

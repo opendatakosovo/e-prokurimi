@@ -10,7 +10,7 @@
             })
 
             drawContractValueChart("Vlera e paraparë e kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "vlera", "linechart-vlera", true);
-            drawContractValueChart("Çmimi kontraktues i kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
+            drawContractValueChart("Vlera kontraktuese sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
             drawContractValueChart("Numri i kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Numri i kontratave", "count", "linechart-contract-count", false);
           });
 
@@ -22,8 +22,8 @@
 
               var data = new google.visualization.DataTable();
               data.addColumn('string', 'Muaji');
-              data.addColumn('number', 'Vlera');
-              data.addColumn('number', 'Çmimi');
+              data.addColumn('number', 'Vlera e paraparë');
+              data.addColumn('number', 'Vlera kontratuese');
 
               var monthArray = ["Janar", "Shkurt", "Mars", "Prill", "Maj", "Qershor", "Korrik",
               "Gusht","Shtator","Tetor","Nëntor","Dhjetor"];
@@ -38,7 +38,7 @@
              var komuna = '{{komuna}}'
 
               var options = {
-                  'title': "Krahasimi i vlerës së paraparë dhe çmimit të kontraktuar të kontratave sipas muajit,"  + " për komunën e " + replaceNameOfCity(komuna) + ", për vitin " + year,
+                  'title': "Krahasimi i vlerës së paraparë dhe vlerës së kontraktuar sipas muajit,"  + " për komunën e " + replaceNameOfCity(komuna) + ", për vitin " + year,
                   'width':1000,
                   'height':800,
                   'vAxis': {

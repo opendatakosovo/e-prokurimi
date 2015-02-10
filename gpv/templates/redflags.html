@@ -41,14 +41,14 @@
 
         var redFlags = new Array();
         redFlags[RED_FLAG_ID_VALUE_ZERO] = 'Vlera e paraparë nga komuna është €0.';
-        redFlags[RED_FLAG_ID_PRICE_ZERO] = 'Çmimi i kontraktuar nga komuna është €0.';
-        redFlags[RED_FLAG_ID_PRICE_ARE_EQUAL] = ' Çmimi i kontraktuar nga komuna është i barabartë me vlerën e paraparë nga komuna.';
-        redFlags[RED_FLAG_ID_PRICE_IS_ROUND_NUMBER] = 'Çmimi i kontraktuar nga komuna është i rrumbullakësuar.';
-        redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF] = 'Çmimi i kontraktuar nga komuna dallon nga vlera e paraparë nga komuna më shumë se 10% .';
-        redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF] = 'Ndryshimi në mes (Çmimit të kontraktuar + Çmimit Aneks) dhe Vlerës së planifikuar është më i madh se 10% i vlerës së planifikuar.';
-        redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_TOO_SMALL] = 'Ndryshimi mes çmimit të kontraktuar nga komuna dhe vlerës së paraparë nga komuna është më i vogël se €100.';
-        redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF_TOO_SMALL] = 'Ndryshimi në mes (Çmimit të kontraktuar + Çmimit Aneks) dhe Vlerës së planifikuar është shum i vogel (nën €100).';
-        redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10000] = "Ndryshimi në mes (Çmimit të kontraktuar + Çmimit Aneks) dhe Vlerës së planifikuar për 'Vlerën e planifikuar deri €10,000', është shum i vogel (nën €100).";
+        redFlags[RED_FLAG_ID_PRICE_ZERO] = 'Vlera e kontraktuar nga komuna është €0.';
+        redFlags[RED_FLAG_ID_PRICE_ARE_EQUAL] = ' Vlera e kontraktuar nga komuna është e barabartë me vlerën e paraparë nga komuna.';
+        redFlags[RED_FLAG_ID_PRICE_IS_ROUND_NUMBER] = 'Vlera e kontraktuar nga komuna është e rrumbullakësuar.';
+        redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF] = 'Vlera e kontraktuar nga komuna dallon nga vlera e paraparë nga komuna më shumë se 10% .';
+        redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF] = 'Ndryshimi në mes (Vlerës së kontraktuar + Çmimit Aneks) dhe Vlerës së paraparë është më i madh se 10% i vlerës së paraparë.';
+        redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_TOO_SMALL] = 'Ndryshimi mes vlerës së kontraktuar nga komuna dhe vlerës së paraparë nga komuna është më i vogël se €100.';
+        redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF_TOO_SMALL] = 'Ndryshimi në mes (Vlerës së kontraktuar + Çmimit Aneks) dhe Vlerës së paraparë është shum i vogel (nën €100).';
+        redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10000] = "Ndryshimi në mes (Vlerës të kontraktuar + Çmimit Aneks) dhe vlerës së paraparë për 'Vlerën e paraparë deri €10,000', është shum i vogel (nën €100).";
 
       google.load("visualization", "1", {packages:["table"]});
        $(function() {
@@ -104,9 +104,9 @@
           data.addColumn('string', 'Emri i Kompanisë');
           data.addColumn('string', 'Përshkrimi i aktivitetit');
           data.addColumn('number', 'Vlera e paraparë nga komuna');
-          data.addColumn('number', 'Çmimi i kontraktuar nga komuna');
+          data.addColumn('number', 'Vlera e kontraktuar nga komuna');
           data.addColumn('number', 'Aneks');
-          data.addColumn('number', 'Çmimi + Aneks');
+          data.addColumn('number', 'Vlera e kontraktuar + Aneks');
 
           var totali = 0;
           for ( var key in jsonResult){
