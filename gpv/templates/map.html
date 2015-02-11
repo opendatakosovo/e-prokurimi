@@ -209,7 +209,9 @@
                             displayValue = value;
                         }
 
-                        var popupContent = '<strong>' + emri + '</strong><br>' + displayValue;
+                        if (emri != undefined){
+                            var popupContent = '<strong>' + emri + '</strong><br>' + displayValue;
+                        }
 
                         var circle = L.circle([lat, lon], 3000, {
                             color: color,
@@ -217,9 +219,10 @@
                             fillOpacity: 0.9
                         });
                     }
-
-                    circle.bindPopup(popupContent);
-                    markerArray.push(circle);            
+                    if(popupContent != undefined){
+                        circle.bindPopup(popupContent);
+                        markerArray.push(circle);
+                    }
                 }
                 markerLayerGroup = L.layerGroup(markerArray);
                 map.addLayer(markerLayerGroup);
