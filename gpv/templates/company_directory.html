@@ -47,8 +47,8 @@
             for ( var key in jsonResult){
             	var klientet = jsonResult[key].klientet;
             	var adresa = jsonResult[key].adresa;
-            	klientet_str = klientet.join(',');
-            	adresa_str = adresa.join(',');
+            	klientet_str = klientet.join(', ');
+            	adresa_str = adresa.join(', ');
 
 				totali = jsonResult[key].cmimi + jsonResult[key].aneks;
                 data.addRow([jsonResult[key].emrat[0],adresa_str, klientet_str, jsonResult[key].count, jsonResult[key].cmimi, jsonResult[key].aneks, totali]);
