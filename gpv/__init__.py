@@ -103,7 +103,7 @@ from views.json.treemap import TreeMap
 from views.json.treemapprice import TreeMapPrice
 from views.json.vleracmimi import VleraCmimi
 from views.json.municipalityvleracmimi import MunicipalityVleraCmimi
-from views.json.company_list_json import CompanyListJson
+from views.json.redflags import RedFlagsJson
 from views.json.map import MapJson
 from views.json.company_dir_json import CompanyDirectory
 
@@ -154,8 +154,8 @@ def register_json_url_rules(app):
         view_func=MapJson.as_view('map_view_json'))
 
     app.add_url_rule(
-        '/json/<string:komuna>/company-list/<int:viti>',
-        view_func=CompanyListJson.as_view('company_list_json'))
+        '/json/<string:komuna>/red-flags/<int:viti>',
+        view_func=RedFlagsJson.as_view('red_flags_json'))
 
     # Get JSON for TreeMap
     app.add_url_rule(

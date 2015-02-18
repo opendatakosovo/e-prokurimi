@@ -98,7 +98,7 @@
 
           var diff = $('#diff-select').val();
           var year = $('#viti-select').val();
-          var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/company-list/'+ year;
+          var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/red-flags/'+ year;
 
           $.get(url, function(jsonResult){
 

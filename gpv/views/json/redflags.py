@@ -4,10 +4,10 @@ from urllib2 import urlopen
 from gpv import utils
 
 
-class CompanyListJson(View):
+class RedFlagsJson(View):
     def dispatch_request(self, viti, komuna):
         api_base_url = utils.get_api_url()
-        url = "%s/%s/company-names/%d" % (api_base_url, komuna, viti)
+        url = "%s/%s/red-flags/%d" % (api_base_url, komuna, viti)
 
         result = urlopen(url).read()
 
