@@ -181,7 +181,7 @@ def register_page_url_rules(app):
         view_func=Index.as_view('index'))
 
     app.add_url_rule(
-        '/shperndarja/kompanite',
+        '/kompanite',
         view_func=CompanyDir.as_view('company-directory'))
 
     app.add_url_rule(
