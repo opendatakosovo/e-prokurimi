@@ -105,6 +105,7 @@ from views.json.vleracmimi import VleraCmimi
 from views.json.municipalityvleracmimi import MunicipalityVleraCmimi
 from views.json.company_list_json import CompanyListJson
 from views.json.map import MapJson
+from views.json.company_dir_json import CompanyDirectory
 
 # Views for Page rendering
 from views.pages.index import Index
@@ -114,6 +115,7 @@ from views.pages.map import Map
 from views.pages.procurementdistribution import ProcurementDistribution
 from views.pages.municipalityPriceValue import MunicipalityPriceValue
 from views.pages.redflags import RedFlags
+from views.pages.company_dir_pages import CompanyDir
 
 
 def register_url_rules(app):
@@ -164,6 +166,10 @@ def register_json_url_rules(app):
         '/json/<string:komuna>/treemap/price/<int:year>',
         view_func=TreeMapPrice.as_view('treemap_price_json'))
 
+    app.add_url_rule(
+        '/json/kompanite/<string:kompania>',
+        view_func=CompanyDirectory.as_view('company_dir_json'))
+
 
 def register_page_url_rules(app):
     ''' Register the URL rules for page requests.
@@ -173,6 +179,10 @@ def register_page_url_rules(app):
     app.add_url_rule(
         '/',
         view_func=Index.as_view('index'))
+
+    app.add_url_rule(
+        '/shperndarja/kompanite',
+        view_func=CompanyDir.as_view('company-directory'))
 
     app.add_url_rule(
         '/<string:komuna>/',

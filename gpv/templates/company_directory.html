@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block body %}
+<style type="text/css">
+	.bigAndBoldClass{
+    font-size: 15px;
+    font-weight: bold;
+    border-color: black;
+    text-align: center;
+  }
+</style>
+<script type="text/javascript">
+	$(".commune-dropdown").hide();
+
+	google.load("visualization", "1", {packages:["table"]});
+	$(document).ready(function(){
+		drawTableOnLoad();
+
+		$('#txt_emriKompanise').on('input', function() {
+            var selected = $("#txt_emriKompanise").val();
+            if(selected != ''){
+                drawTable();
+            } else {
+                drawTableOnLoad();
+            }
+        });
+	})
+
+    function drawTableOnLoad() {
+    var url = '{{ config.BASE_PATH }}/json/kompanite/bbb';
+        $.get(url, function(jsonResult){
+            var json_bound = jsonResult['bounds'];
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Emri i Kompanisë');
+            data.addColumn('number', 'Numri i kontratave');
+            data.addColumn('number', 'Vlera e kontraktuar');
+            data.addColumn('number', 'Aneks');
+            data.addColumn('number', 'Totali (Vlera e kontraktuar + Aneks)');
+            var totali = 0;
+            for ( var key in json_bound){
+				totali = json_bound[key].cmimi + json_bound[key].aneks;
+                data.addRow([json_bound[key].emri, json_bound[key].count, json_bound[key].cmimi, json_bound[key].aneks, totali]);
+            }
+
+            var rowInds = data.getNumberOfRows();
+            for (var i = 0; i < rowInds; i++) {
+            	for (var j= 0; j<5; j++){
+                	data.setProperty(i, j, 'style', 'font-size:15px;');
+            	}
+            }
+
+
+            var formatter = new google.visualization.NumberFormat({
+        	    fractionDigits: 2,
+            	prefix: '€ '
+          	});
+
+          	for(var k=2; k <= 4; k++){
+            	formatter.format(data, k);
+         	}
+
+            var cssClassNames = {
+                      'headerRow': 'bigAndBoldClass'};
+
+            var options = {'allowHtml': true, 'cssClassNames': cssClassNames};
+
+            var table = new google.visualization.Table(document.getElementById('table_div'));
+           
+            table.draw(data, options);
+        })
+    }
+
+	function drawTable() {
+	var kompania = $('#txt_emriKompanise').val();
+	var kompania_slug = slugify(kompania);
+	var url = '{{ config.BASE_PATH }}/json/kompanite/' + kompania_slug;
+	if (kompania_slug.length > 2){
+		$.get(url, function(jsonResult){
+			var json_res = jsonResult['result'];
+			var json_bound = jsonResult['bounds'];
+
+
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Emri i Kompanisë');
+			data.addColumn('number', 'Numri i kontratave');
+			data.addColumn('number', 'Vlera e kontraktuar');
+            data.addColumn('number', 'Aneks');
+            data.addColumn('number', 'Totali (Vlera e kontraktuar + Aneks)');
+            var totali = 0;
+            for ( var key in json_res){
+				totali = json_res[key].cmimi + json_res[key].aneks;
+                data.addRow([json_res[key].emri, json_res[key].count, json_res[key].cmimi, json_res[key].aneks, totali]);
+            }
+
+            var rowInds = data.getNumberOfRows();
+            for (var i = 0; i < rowInds; i++) {
+            	for (var j= 0; j<5; j++){
+                	data.setProperty(i, j, 'style', 'font-size:14px;');
+            	}
+            }
+
+
+            var formatter = new google.visualization.NumberFormat({
+        	    fractionDigits: 2,
+            	prefix: '€ '
+          	});
+
+          	for(var k = 2; k <= 4; k++){
+            	formatter.format(data, k);
+         	}
+
+			var cssClassNames = {
+		              'headerRow': 'bigAndBoldClass'};
+
+			var options = {'allowHtml': true, 'cssClassNames': cssClassNames};
+
+			var table = new google.visualization.Table(document.getElementById('table_div'));
+
+			table.draw(data, options);
+		})
+	  }
+	}
+
+	function slugify(text){
+		return text.toString().toLowerCase()
+		.replace(/\s+/g, '-') // Replace spaces with -
+		.replace(/[^\w\-]+/g, '') // Remove all non-word chars
+		.replace(/\-\-+/g, '-') // Replace multiple - with single -
+		.replace(/^-+/, '') // Trim - from start of text
+		.replace(/-+$/, ''); // Trim - from end of text
+	}
+
+</script>
+<div id="container" style="padding-top:100px;padding-left:100px;padding-right:100px;">
+	<div id="input_div">
+		<form class="form-horizontal">
+		    <div class="form-group">
+		        <label for="txt_emriKompanise" style="margin: 0 auto;" class="control-label col-xs-2">Emri i Kompanisë:</label>
+		        <div class="col-xs-2">
+		       		<input class="form-control" type="text" id="txt_emriKompanise">
+		        </div>
+		    </div>
+		</form>
+	</div>
+    <br>
+    <div id="table_container">
+	   <div id="table_div"></div>
+    </div>
+</div>
+{% endblock %}
