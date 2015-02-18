@@ -13,89 +13,50 @@
 
 	google.load("visualization", "1", {packages:["table"]});
 	$(document).ready(function(){
-		drawTableOnLoad();
-
+        $("#table_div").append( "<h4 style='color: red; margin-left:100px;'>Plotësoni fushën me emrin e kompanisë që dëshironi të kërkoni</h4>" );
 		$('#txt_emriKompanise').on('input', function() {
             var selected = $("#txt_emriKompanise").val();
             if(selected != ''){
+                $("#table_div").empty();
                 drawTable();
             } else {
-                drawTableOnLoad();
+                $("#table_div").empty();
+                $("#table_div").append( "<h4 style='color: red; margin-left:100px;'>Plotësoni fushën me emrin e kompanisë që dëshironi të kërkoni</h4>" );
             }
         });
 	})
-
-    function drawTableOnLoad() {
-    var url = '{{ config.BASE_PATH }}/json/kompanite/bbb';
-        $.get(url, function(jsonResult){
-            var json_bound = jsonResult['bounds'];
-
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Emri i Kompanisë');
-            data.addColumn('number', 'Numri i kontratave');
-            data.addColumn('number', 'Vlera e kontraktuar');
-            data.addColumn('number', 'Aneks');
-            data.addColumn('number', 'Totali (Vlera e kontraktuar + Aneks)');
-            var totali = 0;
-            for ( var key in json_bound){
-				totali = json_bound[key].cmimi + json_bound[key].aneks;
-                data.addRow([json_bound[key].emri, json_bound[key].count, json_bound[key].cmimi, json_bound[key].aneks, totali]);
-            }
-
-            var rowInds = data.getNumberOfRows();
-            for (var i = 0; i < rowInds; i++) {
-            	for (var j= 0; j<5; j++){
-                	data.setProperty(i, j, 'style', 'font-size:15px;');
-            	}
-            }
-
-
-            var formatter = new google.visualization.NumberFormat({
-        	    fractionDigits: 2,
-            	prefix: '€ '
-          	});
-
-          	for(var k=2; k <= 4; k++){
-            	formatter.format(data, k);
-         	}
-
-            var cssClassNames = {
-                      'headerRow': 'bigAndBoldClass'};
-
-            var options = {'allowHtml': true, 'cssClassNames': cssClassNames};
-
-            var table = new google.visualization.Table(document.getElementById('table_div'));
-           
-            table.draw(data, options);
-        })
-    }
-
+	
 	function drawTable() {
 	var kompania = $('#txt_emriKompanise').val();
 	var kompania_slug = slugify(kompania);
 	var url = '{{ config.BASE_PATH }}/json/kompanite/' + kompania_slug;
 	if (kompania_slug.length > 2){
 		$.get(url, function(jsonResult){
-			var json_res = jsonResult['result'];
-			var json_bound = jsonResult['bounds'];
-
 
 			var data = new google.visualization.DataTable();
 			data.addColumn('string', 'Emri i Kompanisë');
+			data.addColumn('string', 'Adresa e Kompanisë');
+			data.addColumn('string', 'Klientët');
 			data.addColumn('number', 'Numri i kontratave');
 			data.addColumn('number', 'Vlera e kontraktuar');
             data.addColumn('number', 'Aneks');
             data.addColumn('number', 'Totali (Vlera e kontraktuar + Aneks)');
             var totali = 0;
-            for ( var key in json_res){
-				totali = json_res[key].cmimi + json_res[key].aneks;
-                data.addRow([json_res[key].emri, json_res[key].count, json_res[key].cmimi, json_res[key].aneks, totali]);
+            var klientet_str = "";
+            var adresa_str = "";
+            for ( var key in jsonResult){
+            	var klientet = jsonResult[key].klientet;
+            	var adresa = jsonResult[key].adresa;
+            	klientet_str = klientet.join(',');
+            	adresa_str = adresa.join(',');
+
+				totali = jsonResult[key].cmimi + jsonResult[key].aneks;
+                data.addRow([jsonResult[key].emrat[0],adresa_str, klientet_str, jsonResult[key].count, jsonResult[key].cmimi, jsonResult[key].aneks, totali]);
             }
 
             var rowInds = data.getNumberOfRows();
             for (var i = 0; i < rowInds; i++) {
-            	for (var j= 0; j<5; j++){
+            	for (var j= 0; j < 7; j++){
                 	data.setProperty(i, j, 'style', 'font-size:14px;');
             	}
             }
@@ -106,7 +67,7 @@
             	prefix: '€ '
           	});
 
-          	for(var k = 2; k <= 4; k++){
+          	for(var k = 4; k <= 6; k++){
             	formatter.format(data, k);
          	}
 
@@ -136,9 +97,9 @@
 	<div id="input_div">
 		<form class="form-horizontal">
 		    <div class="form-group">
-		        <label for="txt_emriKompanise" style="margin: 0 auto;" class="control-label col-xs-2">Emri i Kompanisë:</label>
+		        <label for="txt_emriKompanise" class="control-label col-xs-2">Emri i Kompanisë:</label>
 		        <div class="col-xs-2">
-		       		<input class="form-control" type="text" id="txt_emriKompanise">
+		       		<input class="form-control" style="width:200px;" type="text" id="txt_emriKompanise">
 		        </div>
 		    </div>
 		</form>
@@ -148,4 +109,5 @@
 	   <div id="table_div"></div>
     </div>
 </div>
+<div id="separator" style="height:400px;"></div>
 {% endblock %}
