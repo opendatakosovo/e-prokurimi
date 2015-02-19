@@ -24,18 +24,18 @@
 	})
 
 	function drawTableChart(){
-		var pathname = document.location.pathname;
-		var url = '{{config.BASE_PATH}}/json' + pathname;
+		var url = '{{config.BASE_PATH}}/json/kompanite/{{ kompania_slug }}';
 
 		$.get(url, function(jsonResult){
 			var data = new google.visualization.DataTable();
 			data.addColumn('string', 'Data e nënshkrimit');
-            data.addColumn('string', 'Përshkrimi i aktivitetit');
+      data.addColumn('string', 'Përshkrimi i aktivitetit');
 			data.addColumn('string', 'Klientët');
 			data.addColumn('number', 'Vlera e paraparë');
 			data.addColumn('number', 'Vlera e kontraktuar');
-            data.addColumn('number', 'Aneks');
-            data.addColumn('number', 'Vlera e kontraktuar + Aneks');
+      data.addColumn('number', 'Aneks');
+      data.addColumn('number', 'Vlera e kontraktuar + Aneks');
+
             var totali = 0;
             var qmimi = 0;
             var vlera = 0;
@@ -43,6 +43,7 @@
             var d;
             var date_string = '';
             var emriKompanise = jsonResult[0]['kompania']['emri'];
+
 			$('h3').append("Detajet per tenderat e fituar nga kompania: \"" + emriKompanise + "\"");
 
             for ( var key in jsonResult){

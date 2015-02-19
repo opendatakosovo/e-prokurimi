@@ -148,10 +148,6 @@ def register_json_url_rules(app):
         view_func=MunicipalityVleraCmimi.as_view('municipality_vlera_cmimi_json'))
 
     app.add_url_rule(
-        '/json/kompania-detajet/<string:kompania_slug>',
-        view_func=CompanyDetails.as_view('company_details_json'))
-
-    app.add_url_rule(
         '/json/<string:komuna>/monthly-summary/<int:viti>',
         view_func=VleraCmimi.as_view('vlera_cmimi_json'))
 
@@ -173,8 +169,12 @@ def register_json_url_rules(app):
         view_func=TreeMapPrice.as_view('treemap_price_json'))
 
     app.add_url_rule(
-        '/json/kompanite/<string:kompania>',
+        '/json/kompanite/kerko/<string:kompania>',
         view_func=CompanyDirectory.as_view('company_dir_json'))
+
+    app.add_url_rule(
+        '/json/kompanite/<string:kompania_slug>',
+        view_func=CompanyDetails.as_view('company_details_json'))
 
 
 def register_page_url_rules(app):
@@ -218,7 +218,7 @@ def register_page_url_rules(app):
         view_func=RedFlags.as_view('redflags'))
 
     app.add_url_rule(
-        '/kompania-detajet/<string:kompania_slug>',
+        '/kompanite/<string:kompania_slug>',
         view_func=CompanyDetailsPage.as_view('company_details'))
 
 

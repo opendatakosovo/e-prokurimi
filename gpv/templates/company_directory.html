@@ -36,7 +36,7 @@
 	function drawTable() {
 	var kompania = $('#txt_emriKompanise').val();
 	var kompania_slug = slugify(kompania);
-	var url = '{{ config.BASE_PATH }}/json/kompanite/' + kompania_slug;
+	var url = '{{ config.BASE_PATH }}/json/kompanite/kerko/' + kompania_slug;
 	if (kompania_slug.length > 2){
 		$.get(url, function(jsonResult){
 
@@ -97,7 +97,7 @@
                 var selection = table.getSelection();
                 var rowId = selection[0].row;
                 var slug = data.getValue(rowId, 0);
-                window.location.href = '{{config.BASE_PATH}}/kompania-detajet/' + slug;
+                window.location.href = '{{config.BASE_PATH}}/kompanite/' + slug + "?komuna={{ komuna }}";
             }         
 		})
 	  }
