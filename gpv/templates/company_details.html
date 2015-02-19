@@ -1,100 +1,83 @@
 {% extends "base.html" %}
 {% block body %}
-<style type="text/css">
-  .italic-white-font {
-    font-style: italic;
-    color: #fff;
-    background-color: #2C3E50;
-    font-size: 15px;
-
-  }
-  .tableCell {
-  	border: 1px solid #2C3E50;
-  }
-  .headerCell {
-  	border: 1px solid black;
-  }
-</style>
 <script type="text/javascript">
-	$(".commune-dropdown").hide();
+    $(".commune-dropdown").hide();
 
-	google.load("visualization", "1", {packages:["table"]});
-	$(document).ready(function(){
-		drawTableChart();
-	})
+    google.load("visualization", "1", {packages:["table"]});
+    $(document).ready(function(){
+        drawTableChart();
+    })
 
-	function drawTableChart(){
-		var url = '{{config.BASE_PATH}}/json/kompanite/{{ kompania_slug }}';
+    function drawTableChart(){
+      var url = '{{config.BASE_PATH}}/json/kompanite/{{ kompania_slug }}';
 
-		$.get(url, function(jsonResult){
-			var data = new google.visualization.DataTable();
-			data.addColumn('string', 'Data e nënshkrimit');
-      data.addColumn('string', 'Përshkrimi i aktivitetit');
-			data.addColumn('string', 'Klientët');
-			data.addColumn('number', 'Vlera e paraparë');
-			data.addColumn('number', 'Vlera e kontraktuar');
-      data.addColumn('number', 'Aneks');
-      data.addColumn('number', 'Vlera e kontraktuar + Aneks');
+      $.get(url, function(jsonResult){
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Data e nënshkrimit');
+        data.addColumn('string', 'Aktivitetit');
+        data.addColumn('string', 'Klientët');
+        data.addColumn('number', 'Vlera e paraparë');
+        data.addColumn('number', 'Vlera e kontraktuar');
+        data.addColumn('number', 'Aneks');
+        data.addColumn('number', 'Vlera e kontraktuar + Aneks');
 
-            var totali = 0;
-            var qmimi = 0;
-            var vlera = 0;
-            var aneks = 0;
-            var d;
-            var date_string = '';
-            var emriKompanise = jsonResult[0]['kompania']['emri'];
+        var totali = 0;
+        var qmimi = 0;
+        var vlera = 0;
+        var aneks = 0;
+        var d;
+        var date_string = '';
+        var emriKompanise = jsonResult[0]['kompania']['emri'];
 
-			$('h3').append("Detajet per tenderat e fituar nga kompania: \"" + emriKompanise + "\"");
+        $('h3').append("Detajet per tenderat e fituar nga kompania: \"" + emriKompanise + "\"");
 
-            for ( var key in jsonResult){
-            	d = new Date(jsonResult[key]["dataNenshkrimit"]['$date']);
-				date_string =  d.getDate() + "/" + (d.getMonth() + 1) + "/" + (d.getYear() + 1900)
-				vlera = jsonResult[key]['kontrata']['vlera'];
-				qmimi = jsonResult[key]['kontrata']['qmimi'];
-				aneks = jsonResult[key]['kontrata']['qmimiAneks'];
-				totali = qmimi + aneks;
-                data.addRow([date_string, jsonResult[key].aktiviteti, jsonResult[key]['komuna']['emri'], vlera, qmimi, aneks, totali]);
-            }
+        for ( var key in jsonResult){
+          d = new Date(jsonResult[key]["dataNenshkrimit"]['$date']);
+          date_string =  d.getDate() + "/" + (d.getMonth() + 1) + "/" + (d.getYear() + 1900)
+          vlera = jsonResult[key]['kontrata']['vlera'];
+          qmimi = jsonResult[key]['kontrata']['qmimi'];
+          aneks = jsonResult[key]['kontrata']['qmimiAneks'];
+          totali = qmimi + aneks;
 
-            var rowInds = data.getNumberOfRows();
+          data.addRow([date_string, jsonResult[key].aktiviteti, jsonResult[key]['komuna']['emri'], vlera, qmimi, aneks, totali]);
+        }
+
+        var rowInds = data.getNumberOfRows();
             for (var i = 0; i < rowInds; i++) {
-            	for (var j= 0; j < 6; j++){
-                	data.setProperty(i, j, 'style', 'font-size:15px;');
-            	}
-            }
+                for (var j= 0; j < 6; j++){
+                    data.setProperty(i, j, 'style', 'font-size:15px;');
+                }
+        }
 
 
-            var formatter = new google.visualization.NumberFormat({
-        	    fractionDigits: 2,
-            	prefix: '€ '
-          	});
+        var formatter = new google.visualization.NumberFormat({
+            fractionDigits: 2,
+            prefix: '€ '
+        });
 
-          	for(var k = 3; k <= 6; k++){
-            	formatter.format(data, k);
-         	}
+        for(var k = 3; k <= 6; k++){
+            formatter.format(data, k);
+        }
 
-            var cssClassNames = {
-				'headerRow': 'italic-white-font',
-                'tableCell': 'tableCell',
-                'headerCell': 'headerCell'
-            };
 
-            var options = {'allowHtml': true, 'cssClassNames': cssClassNames};
-			var table = new google.visualization.Table(document.getElementById('table_div'));
+        var options = {'allowHtml': true};
+        var table = new google.visualization.Table(document.getElementById('table_div'));
 
-			table.draw(data, options);
-            google.visualization.events.addListener(table, 'select', showCompanyDetails);
+        table.draw(data, options);
+        // Hack to resolve CSS conflicts between googlecharts tabel and bootstrap
+        $('.top-level').removeAttr('style');
+        $($('.google-visualization-table-tr-head')[1]).remove();
 
-            function showCompanyDetails() {
-                var selection = table.getSelection();
-                var rowId = selection[0].row;
-            }         
-		})
-	}
+        google.visualization.events.addListener(table, 'select', showCompanyDetails);
+
+        function showCompanyDetails() {
+            var selection = table.getSelection();
+            var rowId = selection[0].row;
+        }         
+      })
+    }
 </script>
-<div id="container" style="padding:100px 100px 0 100px;">
-	<h3 style="margin-left:100px;"></h3>	
-	<br>
-	<div id="table_div" style="height:900px;"></div>
+<div id="container" style="padding:100px;">
+    <div id="table_div"></div>
 </div>
 {% endblock %}

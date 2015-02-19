@@ -2,18 +2,13 @@
 {% block body %}
 
 <style type="text/css">
-  .bigAndBoldClass{
-    font-size: 15px;
-    font-weight: bold;
-    border-color: black;
-    text-align: center;
-  }
-    .ui-widget-header, .ui-state-default, ui-button{
-            background:#2c3e50;
-            border: 1px solid #2c3e50;
-            color: #FFFFFF;
-            font-weight: bold;
-         }
+
+  .ui-widget-header, .ui-state-default, ui-button{
+          background:#2c3e50;
+          border: 1px solid #2c3e50;
+          color: #FFFFFF;
+          font-weight: bold;
+       }
 
   .redflagInfo{
     color:#2c3e50;
@@ -103,10 +98,10 @@
           $.get(url, function(jsonResult){
 
           var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Emri i Kompanisë');
-          data.addColumn('string', 'Përshkrimi i aktivitetit');
-          data.addColumn('number', 'Vlera e paraparë nga komuna');
-          data.addColumn('number', 'Vlera e kontraktuar nga komuna');
+          data.addColumn('string', 'Kompania');
+          data.addColumn('string', 'Aktivitetit');
+          data.addColumn('number', 'Vlera e paraparë');
+          data.addColumn('number', 'Vlera e kontraktuar');
           data.addColumn('number', 'Aneks');
           data.addColumn('number', 'Vlera e kontraktuar + Aneks');
 
@@ -116,11 +111,6 @@
 
               data.addRow([jsonResult[key].kompania, jsonResult[key].pershkrimi, jsonResult[key].vlera, jsonResult[key].qmimi, jsonResult[key].qmimiAneks, totali]);
           }
-
-          var cssClassNames = {
-              'headerRow': 'bigAndBoldClass'};
-
-          var options = {'allowHtml': true, 'cssClassNames': cssClassNames};
 
           var rowInds = data.getNumberOfRows();
           for (var i = 0; i < rowInds; i++) {
@@ -240,8 +230,13 @@
           // draw table
           var table = new google.visualization.Table(document.getElementById('table_div'));
 
+          var options = {'allowHtml': true};
+
           table.draw(data, options);
 
+          // Hack to resolve CSS conflicts between googlecharts tabel and bootstrap
+          $('.top-level').removeAttr('style');
+          $($('.google-visualization-table-tr-head')[1]).remove();
 
           // Add onClick handler to get info on the red flags
           google.visualization.events.addListener(table, 'select', showRedFlagDetails);
@@ -344,6 +339,9 @@
 
   <div id="table_div">
   </div>
+
+  <br>
+  <br>
 
   <div id="jqueryUIRedFlag" title='Detajet e "Red Flags"'>
   </div>
