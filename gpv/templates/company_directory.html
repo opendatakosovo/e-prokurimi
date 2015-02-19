@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 {% block body %}
 <style type="text/css">
-	.bigAndBoldClass{
+  .italic-white-font {
+    font-style: italic;
+    color: #fff;
+    background-color: #2C3E50;
     font-size: 15px;
-    font-weight: bold;
-    border-color: black;
-    text-align: center;
+
+  }
+  .tableCell {
+    border: 1px solid #2C3E50;
+  }
+  .headerCell {
+    border: 1px solid black;
   }
 </style>
 <script type="text/javascript">
@@ -34,6 +41,7 @@
 		$.get(url, function(jsonResult){
 
 			var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Kompania Slug');
 			data.addColumn('string', 'Emri i Kompanisë');
 			data.addColumn('string', 'Adresa e Kompanisë');
 			data.addColumn('string', 'Klientët');
@@ -51,12 +59,12 @@
             	adresa_str = adresa.join(', ');
 
 				totali = jsonResult[key].cmimi + jsonResult[key].aneks;
-                data.addRow([jsonResult[key].emrat[0],adresa_str, klientet_str, jsonResult[key].count, jsonResult[key].cmimi, jsonResult[key].aneks, totali]);
+                data.addRow([jsonResult[key].slug, jsonResult[key].emrat[0],adresa_str, klientet_str, jsonResult[key].count, jsonResult[key].cmimi, jsonResult[key].aneks, totali]);
             }
 
             var rowInds = data.getNumberOfRows();
             for (var i = 0; i < rowInds; i++) {
-            	for (var j= 0; j < 7; j++){
+            	for (var j= 0; j < 8; j++){
                 	data.setProperty(i, j, 'style', 'font-size:14px;');
             	}
             }
@@ -67,18 +75,30 @@
             	prefix: '€ '
           	});
 
-          	for(var k = 4; k <= 6; k++){
+          	for(var k = 5; k <= 7; k++){
             	formatter.format(data, k);
          	}
 
-			var cssClassNames = {
-		              'headerRow': 'bigAndBoldClass'};
+            var cssClassNames = {
+                'headerRow': 'italic-white-font',
+                'tableCell': 'tableCell',
+                'headerCell': 'headerCell'
+            };
 
-			var options = {'allowHtml': true, 'cssClassNames': cssClassNames};
-
+            var options = {'allowHtml': true, 'cssClassNames': cssClassNames};
 			var table = new google.visualization.Table(document.getElementById('table_div'));
+            var myView = new google.visualization.DataView(data)
+            myView.hideColumns([0]);
 
-			table.draw(data, options);
+			table.draw(myView, options);
+            google.visualization.events.addListener(table, 'select', showCompanyDetails);
+
+            function showCompanyDetails() {
+                var selection = table.getSelection();
+                var rowId = selection[0].row;
+                var slug = data.getValue(rowId, 0);
+                window.location.href = '{{config.BASE_PATH}}/kompania-detajet/' + slug;
+            }         
 		})
 	  }
 	}
@@ -106,7 +126,7 @@
 	</div>
     <br>
     <div id="table_container">
-	   <div id="table_div"></div>
+	   <div id="table_div" style="margin-top:40px;"></div>
     </div>
 </div>
 <div id="separator" style="height:400px;"></div>

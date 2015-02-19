@@ -106,6 +106,7 @@ from views.json.municipalityvleracmimi import MunicipalityVleraCmimi
 from views.json.redflags import RedFlagsJson
 from views.json.map import MapJson
 from views.json.company_dir_json import CompanyDirectory
+from views.json.company_details import CompanyDetails
 
 # Views for Page rendering
 from views.pages.index import Index
@@ -116,6 +117,7 @@ from views.pages.procurementdistribution import ProcurementDistribution
 from views.pages.municipalityPriceValue import MunicipalityPriceValue
 from views.pages.redflags import RedFlags
 from views.pages.company_dir_pages import CompanyDir
+from views.pages.company_details_page import CompanyDetailsPage
 
 
 def register_url_rules(app):
@@ -144,6 +146,10 @@ def register_json_url_rules(app):
     app.add_url_rule(
         '/json/monthly-summary/<int:viti>',
         view_func=MunicipalityVleraCmimi.as_view('municipality_vlera_cmimi_json'))
+
+    app.add_url_rule(
+        '/json/kompania-detajet/<string:kompania_slug>',
+        view_func=CompanyDetails.as_view('company_details_json'))
 
     app.add_url_rule(
         '/json/<string:komuna>/monthly-summary/<int:viti>',
@@ -184,6 +190,10 @@ def register_page_url_rules(app):
         '/kompanite',
         view_func=CompanyDir.as_view('company-directory'))
 
+    #app.add_url_rule(
+    #    '/kompania/<string:company_slug>',
+    #    view_func=CompanyDetails.as_view('company_details'))
+
     app.add_url_rule(
         '/<string:komuna>/',
         view_func=Distribution.as_view('distibution'))
@@ -206,6 +216,11 @@ def register_page_url_rules(app):
     app.add_url_rule(
         '/<string:komuna>/red-flags',
         view_func=RedFlags.as_view('redflags'))
+
+    app.add_url_rule(
+        '/kompania-detajet/<string:kompania_slug>',
+        view_func=CompanyDetailsPage.as_view('company_details'))
+
 
     app.add_url_rule(
         '/krahasimi',
