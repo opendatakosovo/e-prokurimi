@@ -29,7 +29,7 @@
         var date_string = '';
         var emriKompanise = jsonResult[0]['kompania']['emri'];
 
-        $('h3').append("Detajet per tenderat e fituar nga kompania: \"" + emriKompanise + "\"");
+        $('.company-detail-header').append("Detajet per tenderat e fituar nga kompania: \"" + emriKompanise + "\"");
 
         for ( var key in jsonResult){
           d = new Date(jsonResult[key]["dataNenshkrimit"]['$date']);
@@ -78,6 +78,8 @@
     }
 </script>
 <div id="container" style="padding:100px;">
+    <h3 class="company-detail-header"></h3>  
+    <br>
     <div id="table_div"></div>
 </div>
 {% endblock %}
