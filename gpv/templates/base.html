@@ -75,9 +75,15 @@
       $(".commune-dropdown-toggle").html(communes['{{ komuna }}'] + " <span class='caret'></span>");
     });
     
-    function toCurrency(amount){
+    function toCurrency(amount, euroPrefix){
         var amount = parseFloat(Math.round(amount * 100) / 100).toFixed(2);
-        return (amount + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        var currencyAmount = (amount + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+        if(euroPrefix){
+          return '&euro; ' + currencyAmount;
+        }else{
+          return currencyAmount;
+        }
     }
 
     function switchCommune(selectedCommune){

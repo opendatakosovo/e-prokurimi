@@ -185,7 +185,7 @@
 
     function showCurrencyStaticTooltip(row, size, value) {
         return '<div style="background:#fd9; padding:10px; border-style:solid">' +
-           '<strong>&euro; ' + toCurrency(size) + '</strong>' +
+           '<strong>' + toCurrency(size, true) + '</strong>' +
            '</div>';
     }
 

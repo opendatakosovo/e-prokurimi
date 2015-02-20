@@ -175,8 +175,8 @@
 
                 // Build colorpleth legend
                 if(tipi != 'numriKontratave'){
-                    max = '€ ' + toCurrency(max);
-                    min = '€ ' + toCurrency(min);
+                    max = toCurrency(max, true);
+                    min = toCurrency(min, true);
 
                     $('#min-value').text(min);
                     $('#max-value').text(max);
@@ -204,7 +204,7 @@
                     var lat = jsonResult['result'][key].gjeresia;
                     if (lat != null){
                         if(tipi != 'numriKontratave'){
-                            displayValue = '€ ' + toCurrency(value);
+                            displayValue = toCurrency(value, true);
                         }else{
                             displayValue = value;
                         }

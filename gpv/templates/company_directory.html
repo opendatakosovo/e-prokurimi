@@ -5,29 +5,41 @@
 
   google.load("visualization", "1", {packages:["table"]});
 
+  var data = null;
+
   $(document).ready(function(){
-        $("#table_div").append( "<h4 style='color: red; margin-left:100px;'>Plotësoni fushën me emrin e kompanisë që dëshironi të kërkoni</h4>" );
+    $( ".btn-csv-download" ).click(function() {
+      var csvContent = "data:text/csv;charset=utf-8,";
+
+      var csvContent = csvContent + google.visualization.dataTableToCsv(data);
+      var encodedCsvUri = encodeURI(csvContent);
+
+      window.open(encodedCsvUri);
+    });
+
     $('#txt_emriKompanise').on('input', function() {
-            var selected = $("#txt_emriKompanise").val();
-            if(selected != ''){
-                $("#table_div").empty();
-                drawTable();
-            } else {
-                $("#table_div").empty();
-                $("#table_div").append( "<h4 style='color: red; margin-left:100px;'>Plotësoni fushën me emrin e kompanisë që dëshironi të kërkoni</h4>" );
-            }
-        });
+        var kompania = $("#txt_emriKompanise").val();
+        var kompania_slug = slugify(kompania);
+
+        if(kompania_slug.length > 2){
+          drawTable(kompania_slug);
+        }
+    });
   })
   
-  function drawTable() {
-    var kompania = $('#txt_emriKompanise').val();
-    var kompania_slug = slugify(kompania);
+  function drawTable(kompania_slug) {
+    // Clear table
+    $("#table_div").empty();
+    
     var url = '{{ config.BASE_PATH }}/json/kompanite/kerko/' + kompania_slug;
 
-    if (kompania_slug.length > 1){
-      $.get(url, function(jsonResult){
+    $.get(url, function(jsonResult){
 
-        var data = new google.visualization.DataTable();
+      if(jsonResult.length > 0 ){
+
+        $("#message").css('display', 'none');
+
+        data = new google.visualization.DataTable();
         data.addColumn('string', 'Kompania Slug');
         data.addColumn('string', 'Kompania');
         data.addColumn('string', 'Adresa e Kompanisë');
@@ -36,47 +48,62 @@
         data.addColumn('number', 'Vlera e kontraktuar');
         data.addColumn('number', 'Aneks');
         data.addColumn('number', 'Vlera e kontraktuar + Aneks');
-        
-        var totali = 0;
-        var klientet_str = "";
-        var adresa_str = "";
+
+        var totalCount = 0;
+        var totalCmimi = 0;
+        var totalAneks = 0;
+        var totalTotal = 0;
 
         for (var key in jsonResult){
-          var klientet = jsonResult[key].klientet;
+
+          var kompaniaSlug = jsonResult[key].slug;
+          var kompania = jsonResult[key].emrat[0];
           var adresa = jsonResult[key].adresa;
-          klientet_str = klientet.join(', ');
-          adresa_str = adresa.join(', ');
+          var klientet = jsonResult[key].klientet;
+          var klientet = klientet.join(', ');
+          var adresa = adresa.join(', ');
 
-          totali = jsonResult[key].cmimi + jsonResult[key].aneks;
-          data.addRow([jsonResult[key].slug, jsonResult[key].emrat[0],adresa_str, klientet_str, jsonResult[key].count, jsonResult[key].cmimi, jsonResult[key].aneks, totali]);
+          var count = jsonResult[key].count;
+          totalCount = totalCount + count;
+
+          var cmimi = {v: jsonResult[key].cmimi, f: toCurrency(jsonResult[key].cmimi, true)};
+          totalCmimi = totalCmimi + jsonResult[key].cmimi;
+
+          var aneks = {v: jsonResult[key].aneks, f: toCurrency(jsonResult[key].aneks, true)};
+          totalAneks = totalAneks + jsonResult[key].aneks;
+
+          var totalVal = jsonResult[key].cmimi + jsonResult[key].aneks;
+          var totali = {v: totalVal, f: toCurrency(totalVal, true)};
+          totalTotal = totalTotal + totalVal;
+
+          data.addRow([kompaniaSlug, kompania, adresa, klientet, count, cmimi, aneks, totali]);
         }
 
-        var rowInds = data.getNumberOfRows();
-        for (var i = 0; i < rowInds; i++) {
-          for (var j= 0; j < 8; j++){
-              data.setProperty(i, j, 'style', 'font-size:14px;');
-          }
-        }
+        // Add last row for totals
+        var tCmimi = {v: totalCmimi, f: toCurrency(totalCmimi, true)};
+        var tAneks = {v: totalAneks, f: toCurrency(totalAneks, true)};
+        var tTotal = {v: totalTotal, f: toCurrency(totalTotal, true)};
 
+        data.addRow(['', '', '', '', totalCount, tCmimi, tAneks, tTotal]);
 
-        var formatter = new google.visualization.NumberFormat({
-          fractionDigits: 2,
-          prefix: '€ '
-        });
-
-        for(var k = 5; k <= 7; k++){
-          formatter.format(data, k);
-        }
+        // Set apart the styling of the last row (the one showing the totals)
+        for(var i=3; i <= 7; i++){
+          data.setProperty(jsonResult.length, i, 'style', 'color: red; font-weight: bold;');
+        };
 
         var options = {'allowHtml': true};
         var table = new google.visualization.Table(document.getElementById('table_div'));
 
-        var myView = new google.visualization.DataView(data)
-        myView.hideColumns([0]);
+        var dataView = new google.visualization.DataView(data)
+        dataView.hideColumns([0]);
 
-        table.draw(myView, options);
+        table.draw(dataView, options);
+
+        // Hack to resolve CSS conflicts between googlecharts tabel and bootstrap
         $('.top-level').removeAttr('style');
         $($('.google-visualization-table-tr-head')[1]).remove();
+
+        $(".btn-csv-download-container").css('display', 'block');
 
         google.visualization.events.addListener(table, 'select', showCompanyDetails);
 
@@ -84,10 +111,15 @@
             var selection = table.getSelection();
             var rowId = selection[0].row;
             var slug = data.getValue(rowId, 0);
-            window.location.href = '{{config.BASE_PATH}}/kompanite/' + slug + "?komuna={{ komuna }}";
-        }         
-      })
-    }
+            if(slug.length > 0){
+              window.location.href = '{{config.BASE_PATH}}/kompanite/' + slug + "?komuna={{ komuna }}";
+            }
+        }
+      }else{
+        $("#message").css('display', 'block');
+        $(".btn-csv-download-container").css('display', 'none');
+      }
+    })
   }
 
   function slugify(text){
@@ -105,16 +137,23 @@
   <div id="input_div">
     <form class="form-horizontal">
         <div class="form-group">
-            <label for="txt_emriKompanise" class="control-label col-xs-2">Emri i Kompanisë:</label>
-            <div class="col-xs-2">
-              <input class="form-control" style="width:200px;" type="text" id="txt_emriKompanise">
+            <label for="txt_emriKompanise" class="control-label col-xs-3">Emri i Kompanisë:</label>
+            <div class="col-xs-6">
+              <input class="form-control" type="text" id="txt_emriKompanise">
             </div>
         </div>
     </form>
   </div>
     <br>
+    <div id="message" align="center">
+      <h4 style='color: red;'>Plotësoni fushën me emrin e kompanisë që dëshironi të kërkoni</h4>
+    </div>
     <div id="table_container">
-     <div id="table_div" style="margin-top:40px;"></div>
+      <div id="table_div" style="padding-top:40px;"></div>
+
+      <div class="btn-csv-download-container" style="padding-top:10px;display:none;" align="right">
+        <a class="btn btn-success btn-xs btn-csv-download"><i class="fa fa-download fa-fw"></i> <span class="network-name">Export to CSV</span></a>
+      </div>
     </div>
 </div>
 
