@@ -30,7 +30,7 @@
   function initTab(year){
     // Only initialize the tab if it hasn't been initialized already.
     if($('#pane-' + year).children().size() == 0){
-      url = "{{ config.BASE_PATH }}/json/{{komuna}}/{{type}}/" + year;
+      url = "{{ config.BASE_PATH }}/json/{{type}}/{{komuna}}/" + year;
 
       $.get(url, function( results ) {
         piechartDivId = 'pane-' + year;

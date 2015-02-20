@@ -111,8 +111,9 @@
             var selection = table.getSelection();
             var rowId = selection[0].row;
             var slug = data.getValue(rowId, 0);
+            console.log(slug);
             if(slug.length > 0){
-              window.location.href = '{{config.BASE_PATH}}/kompanite/' + slug + "?komuna={{ komuna }}";
+              document.location.href = '{{config.BASE_PATH}}/kompanite/' + slug + "?komuna={{ komuna }}";
             }
         }
       }else{

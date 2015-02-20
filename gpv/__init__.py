@@ -136,12 +136,21 @@ def register_json_url_rules(app):
     :param app: The Flask application instance.
     '''
     app.add_url_rule(
-        '/json/<string:komuna>/buxheti/<int:year>',
+        '/json/buxheti/<string:komuna>/<int:year>',
         view_func=BudgetType.as_view('budget_type_json'))
 
     app.add_url_rule(
-        '/json/<string:komuna>/prokurimi/<int:year>',
+        '/json/buxheti/<string:company_slug>',
+        view_func=BudgetType.as_view('budget_type_company_json'))
+
+    app.add_url_rule(
+        '/json/prokurimi/<string:komuna>/<int:year>',
         view_func=ProcurementType.as_view('procurement_type_json'))
+
+
+    app.add_url_rule(
+        '/json/prokurimi/<string:company_slug>',
+        view_func=ProcurementType.as_view('procurement_company_type_json'))
 
     app.add_url_rule(
         '/json/monthly-summary/<int:viti>',

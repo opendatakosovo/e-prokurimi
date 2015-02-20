@@ -2,29 +2,76 @@
 {% block body %}
 <script type="text/javascript">
     $(".commune-dropdown").hide();
-
     google.load("visualization", "1", {packages:["table"]});
+    google.load("visualization", "1", {packages:["corechart"]});
+
+    var data = null;
+
     $(document).ready(function(){
         drawTableChart();
+        drawPieChart('Tipi Buxhetit', 'buxheti', 'pie-buxheti');
+        drawPieChart('Tipi Prokurimit', 'prokurimi', 'pie-prokurimi');
+
+        $( ".btn-csv-download" ).click(function() {
+            var csvContent = "data:text/csv;charset=utf-8,";
+
+            var csvContent = csvContent + google.visualization.dataTableToCsv(data);
+            var encodedCsvUri = encodeURI(csvContent);
+
+            window.open(encodedCsvUri);
+        });
     })
+
+    function drawPieChart(tittle, tipi, div_id){
+        var url = '{{config.BASE_PATH}}/json/'+ tipi +'/{{ kompania_slug }}';
+        $.get(url, function(jsonResult){
+            var dataTable = new google.visualization.DataTable();            
+            dataTable.addColumn('string', 'Tipi');
+            dataTable.addColumn('number', 'Shuma');
+
+            for (var key in jsonResult){
+                var tipi = jsonResult[key]['tipi'];
+                var tipi_str = tipi.toString();
+                var shuma = jsonResult[key]['shuma'];
+
+                dataTable.addRow([tipi_str, shuma]);
+            }
+
+            var formatter = new google.visualization.NumberFormat({
+                prefix: "€",
+                fractionDigits: 0
+            });
+
+            formatter.format(dataTable, 1);
+
+            var options = {
+            title: tittle
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById(div_id));
+
+            chart.draw(dataTable, options);
+        })
+    }
 
     function drawTableChart(){
       var url = '{{config.BASE_PATH}}/json/kompanite/{{ kompania_slug }}';
 
       $.get(url, function(jsonResult){
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Data e nënshkrimit');
-        data.addColumn('string', 'Aktivitetit');
-        data.addColumn('string', 'Klientët');
+        data = new google.visualization.DataTable();
+        data.addColumn('date', 'Data e nënshkrimit');
+        data.addColumn('string', 'Aktiviteti');
+        data.addColumn('string', 'Klienti');
         data.addColumn('number', 'Vlera e paraparë');
         data.addColumn('number', 'Vlera e kontraktuar');
         data.addColumn('number', 'Aneks');
         data.addColumn('number', 'Vlera e kontraktuar + Aneks');
 
-        var totali = 0;
-        var qmimi = 0;
-        var vlera = 0;
-        var aneks = 0;
+
+        var totalVlera = 0;
+        var totalCmimi = 0;
+        var totalAneks = 0;
+        var totalTotal = 0;
         var d;
         var date_string = '';
         var emriKompanise = jsonResult[0]['kompania']['emri'];
@@ -32,32 +79,52 @@
         $('.company-detail-header').append("Detajet per tenderat e fituar nga kompania: \"" + emriKompanise + "\"");
 
         for ( var key in jsonResult){
-          d = new Date(jsonResult[key]["dataNenshkrimit"]['$date']);
-          date_string =  d.getDate() + "/" + (d.getMonth() + 1) + "/" + (d.getYear() + 1900)
-          vlera = jsonResult[key]['kontrata']['vlera'];
-          qmimi = jsonResult[key]['kontrata']['qmimi'];
-          aneks = jsonResult[key]['kontrata']['qmimiAneks'];
-          totali = qmimi + aneks;
 
-          data.addRow([date_string, jsonResult[key].aktiviteti, jsonResult[key]['komuna']['emri'], vlera, qmimi, aneks, totali]);
+          var value = jsonResult[key]['kontrata']['vlera'];
+          var price = jsonResult[key]['kontrata']['qmimi'];
+          var anex = jsonResult[key]['kontrata']['qmimiAneks'];
+          date = new Date(jsonResult[key]["dataNenshkrimit"]['$date']);
+
+          var vlera = {v: value, f: toCurrency(value, true)};
+          totalVlera = totalVlera + value;
+
+          var cmimi = {v: price, f: toCurrency(price, true)};
+          totalCmimi = totalCmimi + price;
+
+          var aneks = {v: anex, f: toCurrency(anex, true)};
+          totalAneks = totalAneks + anex;
+
+          var totalVal = price + anex;
+          var totali = {v: totalVal, f: toCurrency(totalVal, true)};
+          totalTotal = totalTotal + totalVal;
+
+          data.addRow([date, jsonResult[key].aktiviteti, jsonResult[key]['komuna']['emri'], vlera, cmimi, aneks, totali]);
         }
+        
+        var tVlera = {v: totalVlera, f: toCurrency(totalVlera, true)};
+        var tCmimi = {v: totalCmimi, f: toCurrency(totalCmimi, true)};
+        var tAneks = {v: totalAneks, f: toCurrency(totalAneks, true)};
+        var tTotal = {v: totalTotal, f: toCurrency(totalTotal, true)};
+
+        data.addRow([null, '', '', tVlera, tCmimi, tAneks, tTotal]);
+
+        // Set apart the styling of the last row (the one showing the totals)
 
         var rowInds = data.getNumberOfRows();
-            for (var i = 0; i < rowInds; i++) {
-                for (var j= 0; j < 6; j++){
-                    data.setProperty(i, j, 'style', 'font-size:15px;');
+        for (var i = 0; i < rowInds; i++) {
+            for (var j= 0; j < 7; j++){
+                data.setProperty(i, j, 'style', 'font-size:15px;');
+                if (j > 2 && j < 7){
+                    data.setProperty(jsonResult.length, j, 'style', 'color: red; font-size:15px; font-weight: bold;');
                 }
+            }
         }
 
-
-        var formatter = new google.visualization.NumberFormat({
-            fractionDigits: 2,
-            prefix: '€ '
+        var formatter1 = new google.visualization.DateFormat({
+            formatType: 'long'
         });
 
-        for(var k = 3; k <= 6; k++){
-            formatter.format(data, k);
-        }
+        formatter1.format(data, 0);
 
 
         var options = {'allowHtml': true};
@@ -81,5 +148,15 @@
     <h3 class="company-detail-header"></h3>  
     <br>
     <div id="table_div"></div>
+    <div class="btn-csv-download-container" style="padding-top:10px;" align="right">
+        <a class="btn btn-success btn-xs btn-csv-download"><i class="fa fa-download fa-fw"></i> <span class="network-name">Export to CSV</span></a>
+      </div>
+    <br><br>
+    <div id="piecharts-container">
+        <div id="pie-buxheti" style="float: left; width: 50%; height:400px;"></div>
+        <div id="pie-prokurimi" style="float: right; width: 50%; height:400px;"></div>
+    </div>
+<br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br>
 </div>
 {% endblock %}
