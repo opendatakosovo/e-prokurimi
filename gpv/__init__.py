@@ -157,8 +157,12 @@ def register_json_url_rules(app):
         view_func=MunicipalityVleraCmimi.as_view('municipality_vlera_cmimi_json'))
 
     app.add_url_rule(
-        '/json/<string:komuna>/monthly-summary/<int:viti>',
+        '/json/monthly-summary/<string:komuna>/<int:viti>',
         view_func=VleraCmimi.as_view('vlera_cmimi_json'))
+
+    app.add_url_rule(
+        '/json/monthly-summary/<string:company_slug>',
+        view_func=VleraCmimi.as_view('vlera_cmimi_json_company'))
 
     app.add_url_rule(
         '/json/<string:komuna>/map/<int:viti>',

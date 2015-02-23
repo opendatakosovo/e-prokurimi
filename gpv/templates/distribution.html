@@ -17,7 +17,7 @@
           function drawValuePriceChart(){
             var year = $('#viti-select').val()
 
-            var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/monthly-summary/' + year;
+            var url = '{{ config.BASE_PATH }}/json/monthly-summary/{{ komuna }}/' + year;
             $.get(url, function(jsonResult){
 
               var data = new google.visualization.DataTable();

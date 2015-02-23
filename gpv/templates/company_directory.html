@@ -78,6 +78,12 @@
 
           data.addRow([kompaniaSlug, kompania, adresa, klientet, count, cmimi, aneks, totali]);
         }
+        var numberOfRows = data.getNumberOfRows();
+        for (var i = 0; i < numberOfRows; i++){
+          for (var j = 0; j <= 7; j++){
+            data.setProperty(i, j, 'style', 'font-size: 15px;');
+          }
+        }
 
         // Add last row for totals
         var tCmimi = {v: totalCmimi, f: toCurrency(totalCmimi, true)};
@@ -88,7 +94,7 @@
 
         // Set apart the styling of the last row (the one showing the totals)
         for(var i=3; i <= 7; i++){
-          data.setProperty(jsonResult.length, i, 'style', 'color: red; font-weight: bold;');
+          data.setProperty(jsonResult.length, i, 'style', 'font-size: 15px; color: red; font-weight: bold;');
         };
 
         var options = {'allowHtml': true};
