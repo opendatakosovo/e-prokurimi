@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% block body %}
+<script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
 <script type="text/javascript">
     $(".commune-dropdown").hide();
     google.load("visualization", "1", {packages:["table"]});
     google.load("visualization", "1", {packages:["corechart"]});
 
     var data = null;
+    var emriKompanise = "";
 
     $(document).ready(function(){
         drawTableChart();
@@ -98,6 +100,7 @@
     }
 
     function drawTableChart(){
+      var redFlagTrackerArray = new Array();
       var url = '{{config.BASE_PATH}}/json/kompanite/{{ kompania_slug }}';
 
       $.get(url, function(jsonResult){
@@ -116,10 +119,10 @@
         var totalAneks = 0;
         var totalTotal = 0;
         var d;
-        var date_string = '';
-        var emriKompanise = jsonResult[0]['kompania']['emri'];
+        var emriKompanis = jsonResult[0]['kompania']['emri'];
+        emriKompanise = emriKompanis;
 
-        $('.company-detail-header').append("Detajet për kontratat e fituara nga kompania: \"" + emriKompanise + "\"");
+        $('.company-detail-header').append("Detajet për kontratat e fituara nga kompania: \"" + emriKompanis + "\"");
 
         for ( var key in jsonResult){
 
@@ -154,11 +157,26 @@
         data.addRow([null, '', '', tVlera, tCmimi, tAneks, tTotal]);
 
         // Set apart the styling of the last row (the one showing the totals)
-
         var rowInds = data.getNumberOfRows();
         for (var i = 0; i < rowInds; i++) {
-            for (var j= 0; j < 7; j++){
-                data.setProperty(i, j, 'style', 'font-size:15px;');
+            var vlera = data.getValue(i, 3);
+            var qmimi = data.getValue(i, 4);
+            var aneks = data.getValue(i, 5);
+            if (i < jsonResult.length) {
+                var numberOfRedFlags = redFlagConditions(i, vlera, qmimi, aneks, redFlagTrackerArray);
+            }
+
+            for (var j = 0; j <= 6; j++) {
+                if(numberOfRedFlags > 0){
+                    var colorHex = getRedFlagHexColor(numberOfRedFlags);
+                    if( i < jsonResult.length){
+                      data.setProperty(i, j, 'style', 'font-size:14px; background-color:' + colorHex + ';');
+                    }
+                }
+                else{
+                    data.setProperty(i, j, 'style', 'font-size:14px;');
+                }
+
                 if (j > 2 && j < 7){
                     data.setProperty(jsonResult.length, j, 'style', 'color: red; font-size:15px; font-weight: bold;');
                 }
@@ -179,11 +197,38 @@
         $('.top-level').removeAttr('style');
         $($('.google-visualization-table-tr-head')[1]).remove();
 
-        google.visualization.events.addListener(table, 'select', showCompanyDetails);
+        google.visualization.events.addListener(table, 'select', showRedFlagDetails);
 
-        function showCompanyDetails() {
+        function showRedFlagDetails() {
             var selection = table.getSelection();
             var rowId = selection[0].row;
+            if(redFlagTrackerArray[rowId] != undefined){
+
+                var arrayLength = redFlagTrackerArray[rowId].length;
+
+                $( "#jqueryUI" ).dialog({
+                   draggable: false,
+                   autoOpen: false, 
+                   resizable: false,
+                   hide: "slide",
+                   show : "slide",
+                   position: {my: "top", at: "top+100", of: window},
+                   closeOnEscape: true,
+                   width: 700      
+                });
+
+                $("#jqueryUI").empty();
+              
+                $( "#jqueryUI" ).append('"Red Flags" për kompaninë: ' + emriKompanis + ':');
+
+                $( "#jqueryUI" ).append('<ul>');
+                for (var i = 0; i < arrayLength; i++) { 
+                    $( "#jqueryUI" ).append('<li>' + redFlagTrackerArray[rowId][i] + '</li>'); 
+                }
+                $( "#jqueryUI" ).append('</ul>');
+
+                $( "#jqueryUI" ).dialog( "open" );
+            }
         }         
       })
     }
@@ -203,5 +248,7 @@
         <div id="pie-buxheti" style="width: 100%; height:500px;"></div>
         <div id="pie-prokurimi" style="width: 100%; height:500px;"></div>
     </div>
+    <div id="jqueryUI" title='Detajet per "Red Flags" ?'>
+  </div>
 </div>
 {% endblock %}
