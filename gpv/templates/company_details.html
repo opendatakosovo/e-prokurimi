@@ -49,8 +49,10 @@
                         'title': "Vlera dhe Çmimi"
                     },
                     'hAxis': {
-                        'title': "Data"
-                    }
+                        'title': "Data",
+                    },
+                    'pointSize': 9,
+                    minValue: 0
                 };
 
                 var formatter = new google.visualization.NumberFormat({
@@ -241,7 +243,7 @@
         <a class="btn btn-success btn-xs btn-csv-download"><i class="fa fa-download fa-fw"></i> <span class="network-name">Export to CSV</span></a>
       </div>
     <br><br>
-    <div id="linechart" style="height: 500px;">
+    <div id="linechart" style="height: 600px;">
         
     </div>
     <div id="piecharts-container">
