@@ -51,7 +51,7 @@
                     'legend':'right',
                     'title': "Krahasimi i vlerës së paraparë, vlerës së kontraktuar dhe çmimit aneks sipas datës",
                     'vAxis': {
-                        'title': "Vlera dhe Çmimi"
+                        'title': "Vlera e paraparë, vlera kontratuese dhe çmimi aneks "
                     },
                     'hAxis': {
                         'title': "Data",
@@ -162,8 +162,6 @@
         var tCmimi = {v: totalCmimi, f: toCurrency(totalCmimi, true)};
         var tAneks = {v: totalAneks, f: toCurrency(totalAneks, true)};
         var tTotal = {v: totalTotal, f: toCurrency(totalTotal, true)};
-
-        data.sort({column: 0, desc: true});
 
         data.addRow([null, '', '', tVlera, tCmimi, tAneks, tTotal]);
 
