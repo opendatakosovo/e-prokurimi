@@ -12,7 +12,6 @@ from utils.utils import Utils
 # Create utils instance.
 utils = Utils()
 
-
 def create_app():
     ''' Create the Flask app.
     '''

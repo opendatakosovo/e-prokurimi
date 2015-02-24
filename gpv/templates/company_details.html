@@ -23,6 +23,11 @@
 
             window.open(encodedCsvUri);
         });
+
+        $('#tipi-select').change(function(){
+            drawPieChart('Prokurimi sipas llojit të buxhetit (përqindja)','buxheti', 'pie-buxheti');
+            drawPieChart('Ndarja sipas llojit të prokurimit publik', 'prokurimi', 'pie-prokurimi');
+        })
     })
 
     function drawComparisonChart(){
@@ -71,6 +76,7 @@
 
     function drawPieChart(tittle, tipi, div_id){
         var url = '{{config.BASE_PATH}}/json/'+ tipi +'/{{ kompania_slug }}';
+        var krahasimiSipas = $('#tipi-select').val();
         $.get(url, function(jsonResult){
             var dataTable = new google.visualization.DataTable();            
             dataTable.addColumn('string', 'Tipi');
@@ -79,7 +85,7 @@
             for (var key in jsonResult){
                 var tipi = jsonResult[key]['tipi'];
                 var tipi_str = tipi.toString();
-                var shuma = jsonResult[key]['shuma'];
+                var shuma = jsonResult[key][krahasimiSipas];
 
                 dataTable.addRow([tipi_str, shuma]);
             }
@@ -89,10 +95,12 @@
                 fractionDigits: 0
             });
 
-            formatter.format(dataTable, 1);
+            if (krahasimiSipas != 'nrKontratave'){
+                formatter.format(dataTable, 1);
+            }
 
             var options = {
-                'legend': 'right',
+                'legend': 'bottom',
                 title: tittle
             };
 
@@ -247,9 +255,26 @@
     <div id="linechart" style="width: 100%; height: 700px;">
         
     </div>
-    <div id="piecharts-container">
-        <div id="pie-buxheti" style="width: 100%; height:500px;"></div>
-        <div id="pie-prokurimi" style="width: 100%; height:500px;"></div>
+    <br>
+    <div id="select" style="display: block;">
+        <div id="select-container" style="margin:0 auto; width: 40%;">
+            <form class="form-inline">
+              <div class="form-group" style="margin-left:10px;">
+                  <label>Krahasimi sipas: </label>
+              </div>
+              <div class="form-group">
+                <select id="tipi-select" class="form-control">
+                    <option value="vlera" selected="selected">Vlerës të paraparë nga komuna</option>
+                    <option value="cmimi">Vlerës së kontraktuar nga komuna</option>
+                    <option value="nrKontratave">Numrit të kontratave</option>
+                </select>
+              </div>
+            </form>
+        </div>
+    </div>
+    <div id="piecharts-container" style="width: 100%;">
+        <div id="pie-buxheti" style="width: 50%; float:left; background-color: lightgray; height:500px;"></div>
+        <div id="pie-prokurimi" style="width: 50%; float:right; height:500px;"></div>
     </div>
     <div id="jqueryUI" title='Detajet per "Red Flags" ?'>
   </div>

@@ -46,7 +46,7 @@
 
     for(var idx in results){
       var type = results[idx]['tipi'];
-      var sum = results[idx]['shuma'];
+      var sum = results[idx]['vlera'];
 
       // Skip type "Konkurs projektimi" for now, well add it at the end.
       // This is so that we stay cosistent in the colors of the pie chart.
@@ -63,7 +63,7 @@
       var type = results[idx]['tipi'];
 
         if(type == "Konkurs projektimi" && type != "n/a" && type != "" && type != null){  
-          var sum = results[idx]['shuma'];
+          var sum = results[idx]['vlera'];
           dataTable.addRow([type, sum]);
         }
     }
