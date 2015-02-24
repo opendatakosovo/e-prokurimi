@@ -1,6 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
+<style type="text/css">
+  .redflagInfo{
+    color:#2c3e50;
+    float:right;
+  }
 
+  .redflagInfo:hover{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+  }
+</style>
 <script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
 <script type="text/javascript">
 
@@ -188,7 +199,7 @@
 
   <div id="jqueryUIRedFlag" title='Detajet e "Red Flags"'>
   </div>
-
+  <label class="redflagInfo" id="btn_red_flag_info">Çfarë janë "Red Flags" ?</label>
   <div id="jqueryUI" title='Çfarë janë "Red Flags" ?'>
   </div>
 </div>
