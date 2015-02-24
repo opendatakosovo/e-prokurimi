@@ -111,17 +111,16 @@
 
         $(".btn-csv-download-container").css('display', 'block');
 
-        google.visualization.events.addListener(table, 'select', showCompanyDetails);
-
         function showCompanyDetails() {
             var selection = table.getSelection();
             var rowId = selection[0].row;
             var slug = data.getValue(rowId, 0);
-            console.log(slug);
             if(slug.length > 0){
               document.location.href = '{{config.BASE_PATH}}/kompanite/' + slug + "?komuna={{ komuna }}";
             }
         }
+        google.visualization.events.addListener(table, 'select', showCompanyDetails);
+
       }else{
         $("#message").css('display', 'block');
         $(".btn-csv-download-container").css('display', 'none');
