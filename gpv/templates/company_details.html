@@ -30,12 +30,18 @@
         })
     })
 
+    function convertDate(inputFormat) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var d = new Date(inputFormat);
+        return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/');
+    }
+
     function drawComparisonChart(){
             var url = '{{ config.BASE_PATH }}/json/monthly-summary/{{ kompania_slug }}';
             $.get(url, function(jsonResult){
 
                 var data = new google.visualization.DataTable();
-                data.addColumn('date', 'Data');
+                data.addColumn('string', 'Data');
                 data.addColumn('number', 'Vlera e paraparë');
                 data.addColumn('number', 'Vlera kontratuese');
                 data.addColumn('number', 'Aneks');
@@ -43,8 +49,8 @@
 
                 for ( var key in jsonResult){
                     var date = new Date(jsonResult[key]['data']['$date']);
-
-                    data.addRow([date, jsonResult[key].vlera, jsonResult[key].qmimi, jsonResult[key].aneks]);
+                    var date_formatted = convertDate(date);
+                    data.addRow([date_formatted, jsonResult[key].vlera, jsonResult[key].qmimi, jsonResult[key].aneks]);
                 }
 
                 var options = {
@@ -193,7 +199,7 @@
         }
 
         var formatter1 = new google.visualization.DateFormat({
-            formatType: 'long'
+            pattern: "d/MM/yyyy"
         });
 
         formatter1.format(data, 0);
