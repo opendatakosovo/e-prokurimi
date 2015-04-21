@@ -117,6 +117,8 @@ from views.pages.municipalityPriceValue import MunicipalityPriceValue
 from views.pages.redflags import RedFlags
 from views.pages.company_dir_pages import CompanyDir
 from views.pages.company_details_page import CompanyDetailsPage
+from views.pages.about_page import AboutPage
+
 
 
 def register_url_rules(app):
@@ -237,3 +239,8 @@ def register_page_url_rules(app):
     app.add_url_rule(
         '/krahasimi',
         view_func=MunicipalityPriceValue.as_view('municipality_price_value'))
+
+    # About page:
+    app.add_url_rule(
+        '/per',
+        view_func=AboutPage.as_view('about'))
