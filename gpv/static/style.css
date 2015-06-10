@@ -23,3 +23,15 @@ body {
 .jqueryUIDialog:hover{
   color: blue;
 }
+
+.td-head{
+  width:100px;
+  font-size: 14px;
+  color: #000;
+  font-weight: bold;
+}
+
+.td-body, .td-body1, .td-body2, .td-body3{
+  width:100px;
+  font-size: 13px;
+}
