@@ -35,3 +35,10 @@ body {
   width:100px;
   font-size: 13px;
 }
+
+.td-foot{
+  width:110px;
+  font-size: 13px;
+  color: red;
+  margin-left: -5px;
+}
