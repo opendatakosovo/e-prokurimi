@@ -116,6 +116,18 @@
     var markerArray = [];
     var valueArray = [];
     $(document).ready(function(){
+
+        $( "#dialog-table" ).dialog({
+            draggable: false,
+            autoOpen: false, 
+            resizable: false,
+            hide: "slide",
+            show : "slide",
+            position: {my: "top", at: "top+190", of: window },
+            closeOnEscape: true,
+            width: "95%" 
+        });
+
         var komuna = '{{komuna}}';
         $('#viti-select').change(function(){
             initMap();
@@ -223,7 +235,7 @@
                         resizable: false,
                         hide: "slide",
                         show : "slide",
-                        position: {my: "top", at: "top+220", of: window },
+                        position: {my: "top", at: "top+190", of: window },
                         closeOnEscape: true,
                         width: "95%" 
                     });
