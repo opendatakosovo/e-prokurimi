@@ -40,8 +40,8 @@ body {
 }
 
 .td-foot{
+  padding-left: 10px;
   width:110px;
   font-size: 13px;
   color: red;
-  margin-left: -5px;
 }
