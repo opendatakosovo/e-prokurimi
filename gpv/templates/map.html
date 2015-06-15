@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
 <style>
     #map { 
         height: 600px;
@@ -83,7 +84,6 @@
         height: 30px;
         background-color: #B10026;
     }
-
     #min-value{
         margin-top: 5px;
         font-size: 13px;
@@ -112,7 +112,6 @@
     gradOfColor[4] = '#FC4E2A';
     gradOfColor[5] = '#E31A1C';
     gradOfColor[6] = '#B10026';
-
     var markerLayerGroup = undefined;
     var markerArray = [];
     var valueArray = [];
@@ -125,37 +124,30 @@
             initMap();
         })
         var map = L.map('map').setView([42.551056983385934, 20.87127685546875], 9);
-
         L.tileLayer('http://{s}.tiles.mapbox.com/v3/georges.jjc3k7b1/{z}/{x}/{y}.png', {
             attribution: 'Data Source: <a href="http://opendatakosovo.org">Open Data Kosovo</a>',
             maxZoom: 18
         }).addTo(map);
-
         initMap();
-
         function initMap(){
             // Init map with markers for default year, months and measurement selection.
             var year = $('#viti-select').val();
             var tipi = $('#tipi-select').val();
-
             addMarkers(komuna, year, tipi);
         }
         
         function addMarkers(komuna, viti, tipi){
+            $('.leaflet-control').css('display', 'block');
             markerArray = [];
-
             if(markerLayerGroup != undefined){
                 map.removeLayer(markerLayerGroup);
             }
-
             var tipi = $('#tipi-select').val();
+            var tipi_text = $("#tipi-select option[value='"+ tipi +"']").text();
             var year = $('#viti-select').val();
             var url = '{{ config.BASE_PATH }}/json/'+ komuna +'/map/'+ year;
-
             var popup = L.popup();
-
             $.get(url, function(jsonResult){
-
                 // Get max and min value of select parameter.
                 // We need this to calculate colorpleth buckets
                 var min = jsonResult['bounds'][tipi]['min'];
@@ -164,20 +156,16 @@
                 // Build gradient legend bucket array.
                 var gradientUnit = ( max - min ) / 7;
                 var gradiantBounds = new Array();
-
                 // Define first boun
                 gradiantBounds[0] = Math.ceil(min);
-
                 // Define the rest of the bounds, based on the first bound
                 for(var x = 1; x < 7; x++){
                     gradiantBounds[x] = Math.floor(gradiantBounds[x-1] + gradientUnit);
                 }
-
                 // Build colorpleth legend
                 if(tipi != 'numriKontratave'){
                     max = toCurrency(max, true);
                     min = toCurrency(min, true);
-
                     $('#min-value').text(min);
                     $('#max-value').text(max);
                 }
@@ -185,14 +173,12 @@
                     $('#min-value').text(min);
                     $('#max-value').text(max);
                 }
-
                 for (var key in jsonResult['result']){
-                    
                     var value = jsonResult['result'][key][tipi];
                     var selia = jsonResult['result'][key].selia;
                     var emri = jsonResult['result'][key].emri;
-
                     var color = '';
+
                     for(var c = 6; c >= 0; c--){
                         if(Math.ceil(value) >= gradiantBounds[c]){
                             color = gradOfColor[c];
@@ -208,11 +194,10 @@
                         }else{
                             displayValue = value;
                         }
-
+                        values[selia] = displayValue;
                         if (emri != undefined){
-                            var popupContent = '<strong>' + emri + '</strong><br>' + displayValue;
+                            var popupContent = '<strong>' + emri + '</strong><br>' + displayValue + "<br><button class='trigger btn btn-success' id='"+selia+"'>Detajet</button>";
                         }
-
                         var circle = L.circle([lat, lon], 3000, {
                             color: color,
                             fillColor: color,
@@ -224,14 +209,54 @@
                         markerArray.push(circle);
                     }
                 }
+
+                $('#map').on('click', '.trigger', function() {
+                    var selia = $(this).attr('id');
+                    console.log(selia);
+
+                    var year_get = $('#viti-select').val();
+                    var url_get = "{{ config.BASE_PATH }}/json/{{komuna}}/red-flags/"+selia+"/"+year_get+"";
+
+                    $( "#dialog-table" ).dialog({
+                        draggable: false,
+                        autoOpen: false, 
+                        resizable: false,
+                        hide: "slide",
+                        show : "slide",
+                        position: {my: "top", at: "top+220", of: window },
+                        closeOnEscape: true,
+                        width: "95%" 
+                    });
+
+                    $.get(url_get, function(){
+                    }).done(function(results, year_get){
+                        buildTable(results, year_get);
+                        $('#dialog-table').dialog('option', 'title', results[0].selia+", "+selected_type[tipi] + ": " + values[selia])
+
+                        $('#results_' + year_get).dataTable({
+                            "paging": true,
+                            "pagingType": "full_numbers"
+                        });
+                        $('.leaflet-control').css('display', 'none');
+                        $( "#dialog-table" ).dialog('open');
+                    });
+                });
+
                 markerLayerGroup = L.layerGroup(markerArray);
                 map.addLayer(markerLayerGroup);
             })
         }
     })
+    var selected_type = {
+        "vlera": "Vlera e paraparë nga komuna",
+        "cmimi": "Vlera e kontraktuar nga komuna",
+        "numriKontratave": "Numri i kontratave"
+    }
+
+    var values = {};
 </script>
 
-<div id="container" align="center" style="padding-top:100px;padding-left:1%;padding-right:1%;">
+<div id="container" align="center" style="padding-top:70px; padding-left:1%;padding-right:1%;">
     <div id="colors">
         <label id="min-value"></label>
         <label id="max-value"></label>
@@ -272,6 +297,12 @@
       </form>
     </div>
     <div id="map">
+    </div>
+    <div id="dialog-table">
+        <div id="table">
+        </div>
+    </div>
+    <div id="jqueryUIRedFlag" title='Detajet e "Red Flags"'>
     </div>
 </div>
 {% endblock %}

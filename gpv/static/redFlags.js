@@ -23,6 +23,87 @@
         redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10_PERCENT] = "Ndryshimi në mes vlerës të kontraktuar nga komuna dhe vlerës së paraparë nga komuna është më i vogël se 10% i vlerës së paraparë nga komuna.";
 
 
+function buildTable(jsonResult, year){
+      var redFlagTrackerArray = new Array();
+        var totali = 0;
+        var red_flags_number;
+        var row_index = 0;
+        $('#table').empty();
+        $('#table').append("<table id='results_"+ year +"' class='display' cellspacing='0' width='100%'><thead><tr><th class='td-head'>Kompania</th><th class='td-head'>Selia</th><th style='font-size: 13px; font-weight:bold; width:500px;'>Aktiviteti</th><th class='td-head'>Vlera e paraparë</th><th class='td-head'>Vlera e kontraktuar</th><th class='td-head'>Aneks</th><th class='td-head'>Vlera e kontraktuar + Aneks</th></tr></thead><tbody class='table-body' id='red-flags-table-"+year+"'></tbody></table>");
+        var totali_vlera = 0;
+        var totali_qmimi = 0;
+        var totali_aneks = 0; 
+        var totali_total = 0;
+        for ( var key in jsonResult ){
+          totali = jsonResult[key].qmimi + jsonResult[key].qmimiAneks;
+          totali_vlera = totali_vlera + jsonResult[key].vlera;
+          totali_qmimi = totali_qmimi + jsonResult[key].qmimi;
+          totali_aneks = totali_aneks + jsonResult[key].qmimiAneks;
+          totali_total = totali_total + totali;
+          $('#red-flags-table-' + year).append("<tr id='"+ row_index +"'>" +
+            "<td class='td-body'>"+jsonResult[key].kompania+"</td>"+
+            "<td class='td-body'>"+jsonResult[key].selia+"</td>"+
+            "<td style='font-size: 13px; width:500px;'>"+jsonResult[key].pershkrimi+"</td>"+
+            "<td value='"+ jsonResult[key].vlera + "' class='td-body1'>"+toCurrency(jsonResult[key].vlera, 1)+"</td>"+
+            "<td value='"+ jsonResult[key].qmimi + "' class='td-body2'>"+toCurrency(jsonResult[key].qmimi, 1)+"</td>"+
+            "<td value='"+ jsonResult[key].qmimiAneks + "' class='td-body3'>"+toCurrency(jsonResult[key].qmimiAneks, 1)+"</td>"+
+            "<td class='td-body'>"+toCurrency(totali, 1)+"</td></tr></tbody></table>");
+            row_index = row_index + 1;
+        }
+        $("#red-flags-table-"+ year +" tr").each(function() {
+            var indeksi = $( this ).attr('id');
+            var vlera = $( this ).find(".td-body1").attr('value');
+            var qmimi = $( this ).find(".td-body2").attr('value');
+            var aneks = $( this ).find(".td-body3").attr('value');
+            
+            red_flags_number = redFlagConditions(indeksi, vlera, qmimi, aneks, redFlagTrackerArray);
+            //console.log(index, red_flags_number);
+            if(red_flags_number > 0) {
+              var colorHex = getRedFlagHexColor(red_flags_number);
+              $(this).find('td').css('background', colorHex);
+            }
+            // compare id to what you want
+        });
+
+        $('#results_' + year).append("<tfoot><tr><th class='td-foot' style=color: red;>Totali</th><th class='td-foot'></th><th style='font-size: 14px; font-weight:bold; width:450px;'></th><th class='td-foot'>"+ toCurrency(totali_vlera, 1) +"</th><th class='td-foot'>"+ toCurrency(totali_qmimi, 1) +"</th><th class='td-foot'>"+toCurrency(totali_aneks, 1)+"</th><th class='td-foot'>"+toCurrency(totali_total, 1)+"</th></tr></tfoot>");
+
+        $('#red-flags-table-' + year).on('click', 'tr', function () {
+          var rowIndex = $( this ).attr('id');
+          if(redFlagTrackerArray[rowIndex] != undefined){
+              var arrayLength = redFlagTrackerArray[rowIndex].length;
+              console.log(redFlagTrackerArray[rowIndex]);
+              var companyName = $('td', this).eq(0).text();
+
+              $( "#jqueryUIRedFlag" ).dialog({
+                 draggable: false,
+                 autoOpen: false, 
+                 resizable: false,
+                 hide: "slide",
+                 show : "slide",
+                 position: {my: "top", at: "top+100", of: window},
+                 closeOnEscape: true,
+                 width: 700      
+              });
+
+              $("#jqueryUIRedFlag").empty();
+            
+              $( "#jqueryUIRedFlag" ).append('"Red Flags" për kompaninë: ' + companyName + ':');
+
+              $( "#jqueryUIRedFlag" ).append('<ul>');
+              for (var i = 0; i < arrayLength; i++) { 
+                  $( "#jqueryUIRedFlag" ).append('<li>' + redFlagTrackerArray[rowIndex][i] + '</li>'); 
+              }
+              $( "#jqueryUIRedFlag" ).append('</ul>');
+
+              $( "#jqueryUIRedFlag" ).dialog( "open" );
+            } else {
+              $("#jqueryUIRedFlag").empty();
+            }
+        });
+      }
+
+
+
 function redFlagConditions(i, vlera, qmimi, aneks, redFlagTrackerArray){
     var numberOfRedFlags = 0;
     var qmimi_str = qmimi.toString();

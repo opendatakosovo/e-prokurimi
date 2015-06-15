@@ -173,6 +173,10 @@ def register_json_url_rules(app):
         '/json/<string:komuna>/red-flags/<int:viti>',
         view_func=RedFlagsJson.as_view('red_flags_json'))
 
+    app.add_url_rule(
+        '/json/<string:komuna>/red-flags/<string:selia>/<int:viti>',
+        view_func=RedFlagsJson.as_view('red_flags_json_selia'))
+
     # Get JSON for TreeMap
     app.add_url_rule(
         '/json/<string:komuna>/treemap/<int:year>',
