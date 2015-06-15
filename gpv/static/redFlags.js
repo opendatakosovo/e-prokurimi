@@ -154,7 +154,7 @@ function redFlagConditions(i, vlera, qmimi, aneks, redFlagTrackerArray){
     if (qmimi_str.length >= 6 && qmimi_str.substr(-5) == '00000'){
       numberOfRedFlags = numberOfRedFlags + 1;
       // Keep track of this red flag in the red flag array (a global variable)
-      trackRedFlag(i, redFlags[RED_FLAG_ID_PRICE_IS_ROUND_NUMBER]);
+      trackRedFlag(redFlagTrackerArray, i, redFlags[RED_FLAG_ID_PRICE_IS_ROUND_NUMBER]);
     }
     else if (qmimi_str.length >= 5 && qmimi_str.substr(-4) == '0000'){
       numberOfRedFlags = numberOfRedFlags + 1;
