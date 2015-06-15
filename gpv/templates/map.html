@@ -123,7 +123,7 @@
             resizable: false,
             hide: "slide",
             show : "slide",
-            position: {my: "top", at: "top+190", of: window },
+            position: {my: "top", at: "top+170", of: window },
             closeOnEscape: true,
             width: "95%" 
         });
@@ -208,7 +208,7 @@
                         }
                         values[selia] = displayValue;
                         if (emri != undefined){
-                            var popupContent = '<strong>' + emri + '</strong><br>' + displayValue + "<br><button class='trigger btn btn-success' id='"+selia+"'>Detajet</button>";
+                            var popupContent = "<strong>" + emri + '</strong><br>'+selected_type[tipi]+": <b>" + displayValue + "</b><br><button class='trigger btn btn-success' id='"+selia+"'>Detajet</button>";
                         }
                         var circle = L.circle([lat, lon], 3000, {
                             color: color,
@@ -235,13 +235,13 @@
                         resizable: false,
                         hide: "slide",
                         show : "slide",
-                        position: {my: "top", at: "top+190", of: window },
+                        position: {my: "top", at: "top+170", of: window },
                         closeOnEscape: true,
                         width: "95%" 
                     });
 
                     $.get(url_get, function(){
-                    }).done(function(results, year_get){
+                    }).done(function(results){
                         buildTable(results, year_get);
                         $('#dialog-table').dialog('option', 'title', results[0].selia+", "+selected_type[tipi] + ": " + values[selia])
 
