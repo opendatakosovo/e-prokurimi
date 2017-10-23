@@ -27,6 +27,14 @@
             initContractValueTab(2014);
             setContractValueResetLink(2014);
         });
+        $( "#tab-pane-2015" ).click(function() {
+            initContractValueTab(2015);
+            setContractValueResetLink(2015);
+        });
+        $( "#tab-pane-2016" ).click(function() {
+            initContractValueTab(2016);
+            setContractValueResetLink(2016);
+        });
 
         $( "#tab-pane-contract-price-2011" ).click(function() {
             setContractPriceResetLink(2011);
@@ -46,6 +54,14 @@
             initContractPriceTab(2014);
             setContractPriceResetLink(2014);
         });
+        $( "#tab-pane-contract-price-2015" ).click(function() {
+            initContractPriceTab(2015);
+            setContractPriceResetLink(2015);
+        });
+        $( "#tab-pane-contract-price-2016" ).click(function() {
+            initContractPriceTab(2016);
+            setContractPriceResetLink(2016);
+        });
 
         $( "#tab-pane-contract-count-2011" ).click(function() {
             setContractCountResetLink(2011);
@@ -64,6 +80,16 @@
         $( "#tab-pane-contract-count-2014" ).click(function() {
             initContractCountTab(2014);
             setContractCountResetLink(2014);
+        });
+
+        $( "#tab-pane-contract-count-2015" ).click(function() {
+            initContractCountTab(2015);
+            setContractCountResetLink(2015);
+        });
+
+        $( "#tab-pane-contract-count-2016" ).click(function() {
+            initContractCountTab(2016);
+            setContractCountResetLink(2016);
         });
     });
 
@@ -200,7 +226,7 @@
 <div id="container" style="padding-top:100px;padding-left:100px; padding-right:100px;">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Vlera e paraparë e konratave nga komuna</h3>
+            <h3 class="panel-title">Vlera e paraparë e kontratave nga komuna</h3>
         </div>
         <div class="panel-body">
             <div class="tabbable">
@@ -225,6 +251,16 @@
                             2014
                         </a>
                     </li>
+                    <li id="tab-pane-2015">
+                        <a href="#pane-2015" data-toggle="tab">
+                            2015
+                        </a>
+                    </li>
+                    <li id="tab-pane-2016">
+                        <a href="#pane-2016" data-toggle="tab">
+                            2016
+                        </a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div id="pane-2011" style="width: 100%; height: 500px;" class="tab-pane active"> 
@@ -234,6 +270,10 @@
                     <div id="pane-2013" style="width: 100%; height: 500px;" class="tab-pane">
                     </div>
                     <div id="pane-2014" style="width: 100%; height: 500px;" class="tab-pane">
+                    </div>
+                    <div id="pane-2015" style="width: 100%; height: 500px;" class="tab-pane">
+                    </div>
+                    <div id="pane-2016" style="width: 100%; height: 500px;" class="tab-pane">
                     </div>
                 </div>
                 <div id="pane-contract-value-reset" align="right" style="padding-right:30px;cursor:pointer;">
@@ -248,6 +288,12 @@
                     </div>
                     <div style="display:none;">
                         <a id="pane-2014-reset">Kthehu</a>
+                    </div>
+                    <div style="display:none;">
+                        <a id="pane-2015-reset">Kthehu</a>
+                    </div>
+                    <div style="display:none;">
+                        <a id="pane-2016-reset">Kthehu</a>
                     </div>
                 </div> 
             </div>
@@ -282,6 +328,16 @@
                             2014
                         </a>
                     </li>
+                    <li id="tab-pane-contract-price-2015">
+                        <a href="#pane-contract-price-2015" data-toggle="tab">
+                            2015
+                        </a>
+                    </li>
+                    <li id="tab-pane-contract-price-2016">
+                        <a href="#pane-contract-price-2016" data-toggle="tab">
+                            2016
+                        </a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div id="pane-contract-price-2011" style="width: 100%; height: 500px;" class="tab-pane active">
@@ -291,6 +347,10 @@
                     <div id="pane-contract-price-2013" style="width: 100%; height: 500px;" class="tab-pane">
                     </div>
                     <div id="pane-contract-price-2014" style="width: 100%; height: 500px;" class="tab-pane">
+                    </div>
+                    <div id="pane-contract-price-2015" style="width: 100%; height: 500px;" class="tab-pane">
+                    </div>
+                    <div id="pane-contract-price-2016" style="width: 100%; height: 500px;" class="tab-pane">
                     </div>
                 </div>
                 <div id="pane-contract-price-reset" align="right" style="padding-right:30px;cursor:pointer;">
@@ -305,6 +365,12 @@
                     </div>
                     <div style="display:none;">
                         <a id="pane-contract-price-2014-reset">Kthehu</a>
+                    </div>
+                    <div style="display:none;">
+                        <a id="pane-contract-price-2015-reset">Kthehu</a>
+                    </div>
+                    <div style="display:none;">
+                        <a id="pane-contract-price-2016-reset">Kthehu</a>
                     </div>
                 </div> 
             </div>
@@ -338,6 +404,16 @@
                             2014
                         </a>
                     </li>
+                    <li id="tab-pane-contract-count-2015">
+                        <a href="#pane-contract-count-2015" data-toggle="tab">
+                            2015
+                        </a>
+                    </li>
+                    <li id="tab-pane-contract-count-2016">
+                        <a href="#pane-contract-count-2016" data-toggle="tab">
+                            2016
+                        </a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div id="pane-contract-count-2011" style="width: 100%; height: 500px;" class="tab-pane active"> 
@@ -347,6 +423,10 @@
                     <div id="pane-contract-count-2013" style="width: 100%; height: 500px;" class="tab-pane">
                     </div>
                     <div id="pane-contract-count-2014" style="width: 100%; height: 500px;" class="tab-pane">
+                    </div>
+                    <div id="pane-contract-count-2015" style="width: 100%; height: 500px;" class="tab-pane">
+                    </div>
+                    <div id="pane-contract-count-2016" style="width: 100%; height: 500px;" class="tab-pane">
                     </div>
                 </div>
                 <div id="pane-contract-count-reset" align="right" style="padding-right:30px;cursor:pointer;">
@@ -361,6 +441,12 @@
                     </div>
                     <div style="display:none;">
                         <a id="pane-contract-count-2014-reset">Kthehu</a>
+                    </div>
+                    <div style="display:none;">
+                        <a id="pane-contract-count-2015-reset">Kthehu</a>
+                    </div>
+                    <div style="display:none;">
+                        <a id="pane-contract-count-2016-reset">Kthehu</a>
                     </div>
                 </div> 
             </div>
