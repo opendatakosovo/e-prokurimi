@@ -8,7 +8,14 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 80px;
 }
-
+body {
+    line-height: 1.4;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 15px;
+    font-weight: 200;
+    letter-spacing: 0.5px;
+    overflow-x: hidden;
+}
 .ui-widget-header, .ui-state-default, ui-button{
   background:#2c3e50;
   border: 1px solid #2c3e50;
@@ -44,21 +51,31 @@ body {
   font-size: 13px;
   color: red;
 }
+/*Nagigation menu*/
 .menu-div li{
    font-weight: normal;
 }
 
-.active{
+.active, .active-ul .ul-active-li {
    font-weight: bold;
 }
+.active-ul, .active-ul .dropdown-toggle {
+    color: #18bc9c !important;
+    background-color: #1a242f;
+}
+.ul-active-li a{
+    color: #18bc9c !important;
+}
+.active-ul:hover{
+    color: #18bc9c !important;
+    background-color: #1a242f !important;
+}
+
 .top-nav-title{
     font-size: 25px !important;
     color: #18bc9c !important;
 }
 
-.active{
-    font-weight: normal;
-}
 #navigation .active a{
     font-weight: bold;
     color: #18bc9c !important;
@@ -69,20 +86,17 @@ body {
 .commune-dropdown .commune-dropdown-li-active{
     color:#ffffff;
 }
-.commune-dropdown-li a{
-    color: #7b8a8b;
+li.commune-active a{
+    font-weight: bold !important;
+    color: #18bc9c !important;
 }
 li {
   cursor:pointer;
 }
 
-
-/* FOOTER
----------------
-*/
+/*-------------FOOTER --------------- */
 #footer{
     background-color: rgba(230, 230, 230, 0.7);
-	margin-top: 50px;
 }
 #footer-logo{
     margin: auto;

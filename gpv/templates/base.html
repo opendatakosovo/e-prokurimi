@@ -155,16 +155,20 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse menu-div" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-left" id="navigation">
-                <li {% if request.path == '/' %}class="active"{% endif %} id="fillimi">
+                <li {% if request.path == '/' %} class="active" {% endif %} id="fillimi">
                   <a href="/"> Fillimi </a>
                 </li>
-                <li {% if '/shperndarja' in request.path %} class="active" {% endif %} class="dropdown" id="shperndarja">
+                <li {% if 'shperndarja' in request.path %} class="active-ul" {% endif %} class="dropdown" id="shperndarja">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Shp&euml;rndarja <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="/{{ komuna }}/shperndarja">Shp&euml;rndarja </a></li>
-                    <li><a href="/{{ komuna }}/shperndarja/buxheti">Lloji buxhetit</a></li>
-                    <li><a href="/{{ komuna }}/shperndarja/prokurimi">Lloji prokurimit</a></li>
-                    <li><a href="/{{ komuna }}/shperndarja/perfituesit">P&euml;rfituesit</a></li>
+                  <ul class="dropdown-menu shperndarja-dropdown" role="menu">
+                    <li {% if '/shperndarja' in request.path %} class="ul-active-li " {% endif %}>
+                        <a  href="/{{ komuna }}/shperndarja">Shp&euml;rndarja </a></li>
+                    <li {% if '/shperndarja/buxheti' in request.path %} class="ul-active-li" {% endif %}>
+                        <a href="/{{ komuna }}/shperndarja/buxheti">Lloji buxhetit</a></li>
+                    <li {% if '/shperndarja/prokurimi' in request.path %} class="ul-active-li" {% endif %}>
+                        <a href="/{{ komuna }}/shperndarja/prokurimi">Lloji prokurimit</a></li>
+                    <li {% if '/shperndarja/perfituesit' in request.path %} class="ul-active-li" {% endif %}>
+                        <a href="/{{ komuna }}/shperndarja/perfituesit">P&euml;rfituesit</a></li>
                   </ul>
                 </li>
                 <li {% if '/harta' in request.path %} class="active" {% endif %} id="harta">
@@ -190,12 +194,18 @@
                     <li class="dropdown commune-dropdown-li-first">
                       <a href="#" class="dropdown-toggle commune-dropdown-toggle cd-dispayed commune-dropdown-li-active" data-toggle="dropdown" role="button" aria-expanded="false"></a>
                       <ul class="dropdown-menu" role="menu">
-                        <li class="commune-dropdown-li"><a href='javascript:switchCommune("ferizaj");'>Ferizaj</a></li>
-                        <li class="commune-dropdown-li"><a href='javascript:switchCommune("gjakova");'>Gjakova</a></li>
-                        <li class="commune-dropdown-li"><a href='javascript:switchCommune("gjilan");'>Gjilan</a></li>
-                        <li class="commune-dropdown-li"><a href='javascript:switchCommune("prishtina");'>Prishtina</a></li>
-                        <li class="commune-dropdown-li"><a href='javascript:switchCommune("vitia");'>Vitia</a></li>
-                        <li class="commune-dropdown-li"><a href='javascript:switchCommune("hani-i-elezit");'>Hani i Elezit</a></li>
+                        <li {% if '/ferizaj' in request.path %} class="commune-active" {% endif %}>
+                            <a href='javascript:switchCommune("ferizaj");'>Ferizaj</a></li>
+                        <li {% if '/gjakova' in request.path %} class="commune-active" {% endif %}>
+                            <a href='javascript:switchCommune("gjakova");'>Gjakova</a></li>
+                        <li {% if '/gjilan' in request.path %} class="commune-active" {% endif %}>
+                            <a href='javascript:switchCommune("gjilan");'>Gjilan</a></li>
+                        <li {% if '/prishtina' in request.path %} class="commune-active" {% endif %}>
+                            <a href='javascript:switchCommune("prishtina");'>Prishtina</a></li>
+                        <li {% if '/vitia' in request.path %} class="commune-active" {% endif %}>
+                            <a href='javascript:switchCommune("vitia");'>Vitia</a></li>
+                        <li {% if '/hani-i-elezit' in request.path %} class="commune-active" {% endif %}>
+                            <a href='javascript:switchCommune("hani-i-elezit");'>Hani i Elezit</a></li>
                       </ul>
                     </li>
                   </ul>
