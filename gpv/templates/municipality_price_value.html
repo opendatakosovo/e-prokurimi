@@ -5,7 +5,9 @@
 	$(document).ready(function(){
       
       // Remove commune dropdown for the landing page.
-      $(".commune-dropdown").hide();
+      $(function () {
+          $(".commune-dropdown-div").hide();
+      });
 
 
       //draw chart on load

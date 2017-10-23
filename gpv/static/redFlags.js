@@ -1,26 +1,26 @@
 
     var RED_FLAG_ID_VALUE_ZERO = 0;
-        var RED_FLAG_ID_PRICE_ZERO = 1;
-        var RED_FLAG_ID_PRICE_ARE_EQUAL = 2;
-        var RED_FLAG_ID_VALUE_PRICE_DIFF = 3;
-        var RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF = 4;
-        var RED_FLAG_ID_PRICE_IS_ROUND_NUMBER = 5;
-        var RED_FLAG_ID_VALUE_PRICE_DIFF_TOO_SMALL = 6;
-        var RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF_TOO_SMALL = 7;
-        var RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10000 = 8;
-        var RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10_PERCENT = 9;
+    var RED_FLAG_ID_PRICE_ZERO = 1;
+    var RED_FLAG_ID_PRICE_ARE_EQUAL = 2;
+    var RED_FLAG_ID_VALUE_PRICE_DIFF = 3;
+    var RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF = 4;
+    var RED_FLAG_ID_PRICE_IS_ROUND_NUMBER = 5;
+    var RED_FLAG_ID_VALUE_PRICE_DIFF_TOO_SMALL = 6;
+    var RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF_TOO_SMALL = 7;
+    var RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10000 = 8;
+    var RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10_PERCENT = 9;
 
-        var redFlags = new Array();
-        redFlags[RED_FLAG_ID_VALUE_ZERO] = 'Vlera e paraparë nga komuna është €0.';
-        redFlags[RED_FLAG_ID_PRICE_ZERO] = 'Vlera e kontraktuar nga komuna është €0.';
-        redFlags[RED_FLAG_ID_PRICE_ARE_EQUAL] = ' Vlera e kontraktuar nga komuna është e barabartë me vlerën e paraparë nga komuna.';
-        redFlags[RED_FLAG_ID_PRICE_IS_ROUND_NUMBER] = 'Vlera e kontraktuar nga komuna është e rrumbullakësuar.';
-        redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF] = 'Vlera e kontraktuar nga komuna dallon nga vlera e paraparë nga komuna më shumë se 10% .';
-        redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF] = 'Ndryshimi në mes (Vlerës së kontraktuar + Çmimit Aneks) dhe Vlerës së paraparë është më i madh se 10% i vlerës së paraparë.';
-        redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_TOO_SMALL] = 'Ndryshimi mes vlerës së kontraktuar nga komuna dhe vlerës së paraparë nga komuna është më i vogël se €100.';
-        redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF_TOO_SMALL] = 'Ndryshimi në mes (Vlerës së kontraktuar + Çmimit Aneks) dhe Vlerës së paraparë është shum i vogel (nën €100).';
-        redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10000] = "Ndryshimi në mes (Vlerës të kontraktuar + Çmimit Aneks) dhe vlerës së paraparë për 'Vlerën e paraparë deri €10,000', është shum i vogel (nën €100).";
-        redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10_PERCENT] = "Ndryshimi në mes vlerës të kontraktuar nga komuna dhe vlerës së paraparë nga komuna është më i vogël se 10% i vlerës së paraparë nga komuna.";
+    var redFlags = new Array();
+    redFlags[RED_FLAG_ID_VALUE_ZERO] = 'Vlera e paraparë nga komuna është €0.';
+    redFlags[RED_FLAG_ID_PRICE_ZERO] = 'Vlera e kontraktuar nga komuna është €0.';
+    redFlags[RED_FLAG_ID_PRICE_ARE_EQUAL] = ' Vlera e kontraktuar nga komuna është e barabartë me vlerën e paraparë nga komuna.';
+    redFlags[RED_FLAG_ID_PRICE_IS_ROUND_NUMBER] = 'Vlera e kontraktuar nga komuna është e rrumbullakësuar.';
+    redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF] = 'Vlera e kontraktuar nga komuna dallon nga vlera e paraparë nga komuna më shumë se 10% .';
+    redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF] = 'Ndryshimi në mes (Vlerës së kontraktuar + Çmimit Aneks) dhe Vlerës së paraparë është më i madh se 10% i vlerës së paraparë.';
+    redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_TOO_SMALL] = 'Ndryshimi mes vlerës së kontraktuar nga komuna dhe vlerës së paraparë nga komuna është më i vogël se €100.';
+    redFlags[RED_FLAG_ID_VALUE_PRICE_ANNEX_DIFF_TOO_SMALL] = 'Ndryshimi në mes (Vlerës së kontraktuar + Çmimit Aneks) dhe Vlerës së paraparë është shum i vogel (nën €100).';
+    redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10000] = "Ndryshimi në mes (Vlerës të kontraktuar + Çmimit Aneks) dhe vlerës së paraparë për 'Vlerën e paraparë deri €10,000', është shum i vogel (nën €100).";
+    redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10_PERCENT] = "Ndryshimi në mes vlerës të kontraktuar nga komuna dhe vlerës së paraparë nga komuna është më i vogël se 10% i vlerës së paraparë nga komuna.";
 
 
     function buildTable(jsonResult, year){

@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block body %}
 <script type="text/javascript">
-  $(".commune-dropdown").hide();
-
+  $(function () {
+      $(".commune-dropdown-div").hide();
+  });
   google.load("visualization", "1", {packages:["table"]});
 
   var data = null;

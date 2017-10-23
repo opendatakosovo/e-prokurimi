@@ -10,11 +10,10 @@ body {
 }
 
 .ui-widget-header, .ui-state-default, ui-button{
-          background:#2c3e50;
-          border: 1px solid #2c3e50;
-          color: #FFFFFF;
-          font-weight: bold;
-       }
+  background:#2c3e50;
+  border: 1px solid #2c3e50;
+  color: #FFFFFF;
+}
 .jqueryUIDialog{
   float:right;
   color: #2c3e50;
@@ -44,4 +43,35 @@ body {
   width:110px;
   font-size: 13px;
   color: red;
+}
+.menu-div li{
+   font-weight: normal;
+}
+
+.active{
+   font-weight: bold;
+}
+.top-nav-title{
+    font-size: 25px !important;
+    color: #18bc9c !important;
+}
+
+.active{
+    font-weight: normal;
+}
+#navigation .active a{
+    font-weight: bold;
+    color: #18bc9c !important;
+}
+.active-commune-dropdown {
+    font-weight: bold;
+}
+.commune-dropdown .commune-dropdown-li-active{
+    color:#ffffff;
+}
+.commune-dropdown-li a{
+    color: #7b8a8b;
+}
+li {
+  cursor:pointer;
 }

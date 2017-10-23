@@ -15,7 +15,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
 <script type="text/javascript">
       google.load("visualization", "1", {packages:["table"]});
-      
+      $(".commune-dropdown-li-first").addClass("active");
       $(document).ready(function(){
 
         $( "#btn_red_flag_info" ).click(function() {
@@ -43,11 +43,11 @@
             });
 
 
-        var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/red-flags/'+ '2013';
+        var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/red-flags/'+ '2016';
         $.get(url, function(){
         }).done(function(jsonResult){
-            buildTable(jsonResult, '2013');
-            $('#results_2013').dataTable({
+            buildTable(jsonResult, '2016');
+            $('#results_2016').dataTable({
               "paging": true,
               "pagingType": "full_numbers"
             });
@@ -56,6 +56,7 @@
         $('#viti-select').on("change", function(event){
           var year_get = $('#viti-select').val();
           var url_get = '{{ config.BASE_PATH }}/json/{{ komuna }}/red-flags/'+ year_get;
+
           $.get(url_get, function(){
           }).done(function(results, year_get){
             buildTable(results, year_get);

@@ -213,7 +213,7 @@ def register_page_url_rules(app):
     #    view_func=CompanyDetails.as_view('company_details'))
 
     app.add_url_rule(
-        '/<string:komuna>/',
+        '/<string:komuna>/shperndarja',
         view_func=Distribution.as_view('distibution'))
 
     # Contract Distribution Amongst Companies
@@ -246,5 +246,5 @@ def register_page_url_rules(app):
 
     # About page:
     app.add_url_rule(
-        '/per',
+        '/per-projektin',
         view_func=AboutPage.as_view('about'))

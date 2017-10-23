@@ -2,7 +2,7 @@
 {% block body %}
 <script type="text/javascript">
     google.load("visualization", "1", {packages:["treemap"]});
-
+    $(".commune-dropdown-li-first").addClass("active");
     $(document).ready(function() {
         initContractValueTab(2011);
         initContractPriceTab(2011);
