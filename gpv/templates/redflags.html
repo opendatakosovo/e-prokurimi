@@ -15,9 +15,9 @@
 <script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
 <script type="text/javascript">
       google.load("visualization", "1", {packages:["table"]});
-      $(".commune-dropdown-li-first").addClass("active");
-      $(document).ready(function(){
 
+      $(document).ready(function(){
+        $(".commune-dropdown-li-first").addClass("active");
         $( "#btn_red_flag_info" ).click(function() {
                 $( "#jqueryUI" ).dialog({
                    draggable: false,
