@@ -159,6 +159,9 @@
         dataTable.addRow(['Konkurs projektimi', 'Global', 0]);
         dataTable.addRow(['Punë', 'Global', 0]);
         dataTable.addRow(['Shërbime', 'Global', 0]);
+        dataTable.addRow(['Prone e palujtshme', 'Global', 0]);
+        dataTable.addRow(['Punë me koncesion', 'Global', 0]);
+        dataTable.addRow(['Shërbime keshillimi', 'Global', 0]);
 
         var companies = []
 
@@ -176,7 +179,7 @@
             var type = results[idx]['tipi'];
             var amount = results[idx][param];
             
-            if(type != "Sherbime Keshillimi" && type != "n/a"){
+            if(type != "Sherbime Keshillimi" && type != "n/a" && type != null){
                 dataTable.addRow([company, type, amount]);
             }
             
