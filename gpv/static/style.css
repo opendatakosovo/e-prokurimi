@@ -168,3 +168,14 @@ a .fb, a .tw, a .eM, a .inst{
 #navigation .dropdown-menu>li>a, .commune-dropdown .dropdown-menu>li>a {
     font-size: 12px !important;
 }
+
+.main-content-div{
+    padding-top: 60px;
+}
+.rreth-projektit{
+    padding: 7%;
+    text-align: justify;
+}
+.lead-last{
+    margin-bottom: 0 !important;
+}
