@@ -165,3 +165,6 @@ a .fb, a .tw, a .eM, a .inst{
 #footer a{
     font-weight: bold;
 }
+#navigation .dropdown-menu>li>a, .commune-dropdown .dropdown-menu>li>a {
+    font-size: 12px !important;
+}
