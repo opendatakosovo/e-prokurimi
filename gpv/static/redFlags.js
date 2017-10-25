@@ -22,7 +22,6 @@
     redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10000] = "Ndryshimi në mes (Vlerës të kontraktuar + Çmimit Aneks) dhe vlerës së paraparë për 'Vlerën e paraparë deri €10,000', është shum i vogel (nën €100).";
     redFlags[RED_FLAG_ID_VALUE_PRICE_DIFF_UNDER_10_PERCENT] = "Ndryshimi në mes vlerës të kontraktuar nga komuna dhe vlerës së paraparë nga komuna është më i vogël se 10% i vlerës së paraparë nga komuna.";
 
-
     function buildTable(jsonResult, year){
         var redFlagTrackerArray = new Array();
         var totali = 0;

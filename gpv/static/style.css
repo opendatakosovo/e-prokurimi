@@ -179,3 +179,31 @@ a .fb, a .tw, a .eM, a .inst{
 .lead-last{
     margin-bottom: 0 !important;
 }
+/* --------------- Red Flags --------------- */
+.viti-select-lbl p , .red-flags-buttons{
+    padding-top: 10px;
+}
+.viti-select-lbl{
+    padding-left: 0;
+}
+.red-flag-verejtje{
+    color:red;
+    padding:10px 0 10px 0;
+}
+.red-flags-div{
+    padding: 4%;
+    text-align: justify;
+}
+.red-flags-buttons{
+    padding: 0 0 30px 0;
+}
+.red-flags-tb{
+   padding: 10px 0 10px 0;
+}
+#btn_red_flag_info:hover{
+    text-decoration: none;
+    cursor: pointer;
+    color: #18bc9c;
+}
+
+
