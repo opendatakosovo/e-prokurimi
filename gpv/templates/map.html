@@ -4,12 +4,14 @@
 <script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
 <style>
     #map { 
-        height: 600px;
-        width: 100%; 
-        margin-top: 35px;
+        height: 500px;
+        width: 98%;
+        margin-top: 20px;
+        margin-bottom: 2%;
+        margin-right: 5px;
     }
     #colors{
-        margin-right: 2px;
+        margin-right: 5px;
         border: 1px solid gray;
         border-radius: 4px;
         height: 70px;
@@ -132,10 +134,10 @@
         var komuna = '{{komuna}}';
         $('#viti-select').change(function(){
             initMap();
-        })
+        });
         $('#tipi-select').change(function(){
             initMap();
-        })
+        });
         var map = L.map('map').setView([42.551056983385934, 20.87127685546875], 9);
         L.tileLayer('http://{s}.tiles.mapbox.com/v3/georges.jjc3k7b1/{z}/{x}/{y}.png', {
             attribution: 'Data Source: <a href="http://opendatakosovo.org">Open Data Kosovo</a>',
@@ -270,49 +272,59 @@
 </script>
 
 <div id="container" align="center" style="padding-top:70px; padding-left:1%;padding-right:1%;">
-    <div id="colors">
-        <label id="min-value"></label>
-        <label id="max-value"></label>
-        <div id="colors-container">
-            <div id="color1"></div>
-            <div id="color2"></div>
-            <div id="color3"></div>
-            <div id="color4"></div>
-            <div id="color5"></div>
-            <div id="color6"></div>
-            <div id="color7"></div>
-        </div>
-    </div>
-    <div id="select" style="display: block; margin-left: 150px;">
-        <form class="form-inline">
-          <div class="form-group">
-              <label>Viti: </label>
-          </div>
-          <div class="form-group">
-              <select id="viti-select" class="form-control">
-                <option value="2010">2010</option>
-                <option value="2011">2011</option>
-                <option value="2012">2012</option>
-                <option value="2013">2013</option>
-                <option value="2014">2014</option>
-                <option value="2015">2015</option>
-                <option value="2016" selected="selected">2016</option>
-              </select>
-          </div>
-          <div class="form-group" style="margin-left:10px;">
-              <label>Krahasimi sipas: </label>
-          </div>
-          <div class="form-group">
-            <select id="tipi-select" class="form-control">
-                <option value="vlera" selected="selected">Vlerës të paraparë nga komuna</option>
-                <option value="cmimi">Vlerës së kontraktuar nga komuna</option>
-                <option value="numriKontratave">Numrit të kontratave</option>
-            </select>
-          </div>
-      </form>
-    </div>
+
+	<div class="row map-buttons">
+		<div class="col-md-12" style="padding: 0;">
+			<div class="row">
+				<div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
+                        <div id="select" class="viti-select-map">
+                        <form class="form-inline">
+                          <div class="form-group" style="margin-right: 10px;">
+                              <span>Viti: </span>
+                              <select id="viti-select" class="form-control"
+                                      width="100%" >
+                                <option value="2010">2010</option>
+                                <option value="2011">2011</option>
+                                <option value="2012">2012</option>
+                                <option value="2013">2013</option>
+                                <option value="2014">2014</option>
+                                <option value="2015">2015</option>
+                                <option value="2016" selected="selected">2016</option>
+                              </select>
+                          </div>
+                          <div class="form-group">
+                              <span>Krahasimi sipas: </span>
+                            <select id="tipi-select" class="form-control" width="100%">
+                                <option value="vlera" selected="selected">Vlerës të paraparë nga komuna</option>
+                                <option value="cmimi">Vlerës së kontraktuar nga komuna</option>
+                                <option value="numriKontratave">Numrit të kontratave</option>
+                            </select>
+                          </div>
+                        </form>
+                        </div>
+				</div>
+				<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                    <div id="colors">
+                    <label id="min-value"></label>
+                    <label id="max-value"></label>
+                    <div id="colors-container">
+                        <div id="color1"></div>
+                        <div id="color2"></div>
+                        <div id="color3"></div>
+                        <div id="color4"></div>
+                        <div id="color5"></div>
+                        <div id="color6"></div>
+                        <div id="color7"></div>
+                    </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
     <div id="map">
     </div>
+
     <div id="dialog-table">
         <div id="table">
         </div>

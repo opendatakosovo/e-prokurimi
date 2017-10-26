@@ -6,7 +6,7 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 80px;
+  /*margin-bottom: 80px;*/
 }
 body {
     line-height: 1.4;
@@ -176,9 +176,9 @@ a .fb, a .tw, a .eM, a .inst{
     padding: 7%;
     text-align: justify;
 }
-.lead-last{
-    margin-bottom: 0 !important;
-}
+/*.lead-last{*/
+    /*margin-bottom: 0 !important;*/
+/*}*/
 /* --------------- Red Flags --------------- */
 .viti-select-lbl p , .red-flags-buttons{
     padding-top: 10px;
@@ -205,5 +205,37 @@ a .fb, a .tw, a .eM, a .inst{
     cursor: pointer;
     color: #18bc9c;
 }
+/*MAP*/
+.viti-select-map{
+    display: inline;
+    margin-left: 0px;
+    float: left;
+}
+.map-buttons{
+    width: 98%;
+}
+/*Navigation menu */
+@media (min-width: 768px) and (max-width: 991px) {
+    .navbar-collapse.collapse {
+        display: none !important;
+    }
+    .navbar-collapse.collapse.in {
+        display: block !important;
+    }
+    .navbar-header .collapse, .navbar-toggle {
+        display:block !important;
+    }
+    .navbar-header {
+        float:none;
+    }
+    .rreth-projektit {
+        padding: 8%;
+    }
+}
 
+@media (max-width: 500px) {
+    .rreth-projektit .lead{
+        font-size: 14px !important;
+    }
 
+}
