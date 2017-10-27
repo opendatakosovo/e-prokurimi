@@ -258,8 +258,8 @@ a .fb, a .tw, a .eM, a .inst{
     .viti-select-lbl{
         float: left;
     }
-    .viti-select-div{
-        margin-right: 0px;
+    .form-group.viti-select-div{
+        margin-right: 0px !important;
     }
     .map-container{
         padding-top: 20px;
