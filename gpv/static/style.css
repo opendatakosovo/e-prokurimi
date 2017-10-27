@@ -265,7 +265,11 @@ a .fb, a .tw, a .eM, a .inst{
         padding-top: 20px;
     }
     /* ---- /Map ----*/
-    
+
+    .red-flags-buttons select.form-control{
+        display:inline-block !important;
+        width: fit-content !important;
+    }
 }
 
 @media (max-width: 500px) {
