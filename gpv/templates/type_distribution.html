@@ -7,19 +7,19 @@
     initTab(2011);
     
     $( "#tab-pane-2012" ).click(function() {
-      initTab(2012);
+      initTab(2012, 0);
     });
     $( "#tab-pane-2013" ).click(function() {
-       initTab(2013);
+       initTab(2013, 0);
     });
     $( "#tab-pane-2014" ).click(function() {
-       initTab(2014);
+       initTab(2014, 0);
     });
     $( "#tab-pane-2015" ).click(function() {
-       initTab(2015);
+       initTab(2015, 0);
     });
     $( "#tab-pane-2016" ).click(function() {
-       initTab(2016);
+       initTab(2016, 0);
     });
 
     // Set title
@@ -31,9 +31,9 @@
 
   });
 
-  function initTab(year){
+  function initTab(year, resize){
     // Only initialize the tab if it hasn't been initialized already.
-    if($('#chart-pane-' + year).children().size() == 0){
+    if($('#chart-pane-' + year).children().size() == 0  || resize === 1){
       url = "{{ config.BASE_PATH }}/json/{{type}}/{{komuna}}/" + year;
 
       $.get(url, function( results ) {
@@ -90,7 +90,7 @@
   }
    $(window).resize(function(){
         var openedChart = $("ul.type-distribution-tabs li.active");
-        initTab(openedChart.data("chart"));
+        initTab(openedChart.data("chart"), 1);
    });
 </script>
 
