@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block body %}
+    <style>
+    select.form-control{display:inline-block; width:fit-content;}
+
+    </style>
     <script type="text/javascript">
+
           $(".commune-dropdown-li-first").addClass("active");
           google.load("visualization", "1", {packages:["corechart"]});
           $(document).ready(function(){
@@ -8,7 +13,7 @@
             drawValuePriceChart();
             $('#viti-select').change(function(){
                 drawValuePriceChart();
-            })
+            });
 
             drawContractValueChart("Vlera e paraparë e kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "vlera", "linechart-vlera", true);
             drawContractValueChart("Vlera kontraktuese sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
@@ -23,8 +28,8 @@
 
               var data = new google.visualization.DataTable();
               data.addColumn('string', 'Muaji');
-              data.addColumn('number', 'Vlera e paraparë');
-              data.addColumn('number', 'Vlera kontratuese');
+              data.addColumn('number', 'E paraparë');
+              data.addColumn('number', 'E kontratuar');
 
               var monthArray = ["Janar", "Shkurt", "Mars", "Prill", "Maj", "Qershor", "Korrik",
               "Gusht","Shtator","Tetor","Nëntor","Dhjetor"];
@@ -40,14 +45,13 @@
 
               var options = {
                   'title': "Krahasimi i vlerës së paraparë dhe vlerës së kontraktuar sipas muajit,"  + " për komunën e " + replaceNameOfCity(komuna) + ", për vitin " + year,
-                  'width':1000,
-                  'height':800,
                   'vAxis': {
                     'title': "Vlera dhe Çmimi"
                   },
                   'hAxis': {
                     'title': "Muaji"
-                  }
+                  },
+                  legend: { position: 'bottom', alignment: 'end',maxLines: 1  }
                 };
 
                  var formatter = new google.visualization.NumberFormat({
@@ -117,7 +121,8 @@
               },
               'hAxis': {
                 'title': xAxisTitle
-              }
+              },
+              legend: { position: 'bottom', alignment: 'end' }
             };
 
             var chart = new google.visualization.LineChart(document.getElementById(containerDivId));
@@ -140,40 +145,65 @@
               return "Hanit të Elezit"
             }
           }
+          $(window).resize(function(){
+            drawValuePriceChart();
+            drawContractValueChart("Vlera e paraparë e kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "vlera", "linechart-vlera", true);
+            drawContractValueChart("Vlera kontraktuese sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Shuma", "qmimi", "linechart-qmimi", true);
+            drawContractValueChart("Numri i kontratave të prokurimit sipas muajit për komunën e " + replaceNameOfCity('{{komuna}}') + ", krahasuar ndër vite", "Muaji", "Numri i kontratave", "count", "linechart-contract-count", false);
+        });
     </script>
-    
-    <div id="container" align="center" style="padding-top:50px;">
-      <table>
-        <tr>
-          <td>
-            <div id="linechart-vlera-cmimi">  
-            </div>
-          </td>
-          <td valign="top" style="padding-top:145px;">
-              <div class="form-group">
+
+
+<div id="container" align="center" style="padding-top:50px;">
+    <div class="row">
+        <div class="col-xs-5 col-sm-5 col-md-5">
+          <div class="form-group" style="margin-bottom: 0";>
+            <span style="white-space: nowrap">
+              <span for="viti-select">Viti:</span>
               <select id="viti-select" class="form-control">
                 <option value="2010">2010</option>
                 <option value="2011">2011</option>
                 <option value="2012">2012</option>
-                <option value="2013" selected="selected">2013</option>
+                <option value="2013">2013</option>
                 <option value="2014">2014</option>
                 <option value="2015">2015</option>
                 <option value="2016" selected="selected">2016</option>
               </select>
-          </td>
-        </tr>
-      </table>
-
-      <div id="linechart-vlera" style="width:1000px;height:800px;">
-      </div>
-
-      <div id="linechart-qmimi" style="width:1000px;height:800px;">
-      </div>
-
-      <div id="linechart-contract-count" style="width:1000px;height:800px;">
-      </div>
+            </span>
+          </div>
+        </div>
     </div>
+    <div class="row">
+    <div id="linechart-vlera-cmimi" class="col-xs-12 col-sm-10 col-sm-offset-1
+    col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1"
+         style="min-height:600px;">
 
+    </div>
+</div>
+    <hr>
+<div class="row">
+    <div id="linechart-vlera" class="col-xs-12 col-sm-10 col-sm-offset-1
+    col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1"
+         style="min-height:600px;">
+
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div  id="linechart-qmimi" class="col-xs-12 col-sm-10 col-sm-offset-1
+    col-md-10
+    col-md-offset-1 col-lg-10 col-lg-offset-1" style="min-height:600px;">
+
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div id="linechart-contract-count" class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10
+    col-md-offset-1 col-lg-10 col-lg-offset-1" style="min-height:600px;">
+
+    </div>
+</div>
+</div>
 
 
 {% endblock %}

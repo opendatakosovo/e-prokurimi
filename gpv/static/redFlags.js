@@ -102,6 +102,7 @@
               $("#jqueryUIRedFlag").empty();
             }
         });
+
       }
 
 function redFlagConditions(i, vlera, qmimi, aneks, redFlagTrackerArray){

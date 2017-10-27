@@ -270,6 +270,7 @@ a .fb, a .tw, a .eM, a .inst{
         display:inline-block !important;
         width: fit-content !important;
     }
+
 }
 
 @media (max-width: 500px) {
