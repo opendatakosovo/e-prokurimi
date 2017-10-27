@@ -33,11 +33,11 @@
 
   function initTab(year){
     // Only initialize the tab if it hasn't been initialized already.
-    if($('#pane-' + year).children().size() == 0){
+    if($('#chart-pane-' + year).children().size() == 0){
       url = "{{ config.BASE_PATH }}/json/{{type}}/{{komuna}}/" + year;
 
       $.get(url, function( results ) {
-        piechartDivId = 'pane-' + year;
+        piechartDivId = 'chart-pane-' + year;
         drawChart(results, piechartDivId);
       });
     }
@@ -82,69 +82,111 @@
     formatter.format(dataTable, 1);
 
     var options = {
-      'legend': {
-        'position': 'right'
-      },
-      'width':1000,
-      'height':800
+      legend: { position: 'bottom', alignment: 'end' }
     };
 
     var chart = new google.visualization.PieChart(document.getElementById(divId));
     chart.draw(dataTable, options);
   }
+   $(window).resize(function(){
+        var openedChart = $("ul.type-distribution-tabs li.active");
+        initTab(openedChart.data("chart"));
+   });
 </script>
 
-<div id="container" style="padding-top:100px;padding-left:100px; padding-right:100px;">
+<div id="container" style="padding-top:100px;">
   <div class="panel panel-default">
       <div class="panel-heading">
-          <h3 class="panel-title">Type Distribution</h3>
+          <h3 class="panel-title"> </h3>
       </div>
       <div class="panel-body">
           <div class="tabbable">
-              <ul class="nav nav-tabs">
-                  <li id="tab-pane-2011" class="active">
+              <ul class="nav nav-tabs type-distribution-tabs">
+                  <li id="tab-pane-2011" class="active" data-chart="2011">
                       <a href="#pane-2011" data-toggle="tab">
                           2011
                       </a>
                   </li>
-                  <li id="tab-pane-2012">
+                  <li id="tab-pane-2012" data-chart="2012">
                       <a href="#pane-2012" data-toggle="tab">
                           2012
                       </a>
                   </li>
-                  <li id="tab-pane-2013">
+                  <li id="tab-pane-2013" data-chart="2013">
                       <a href="#pane-2013" data-toggle="tab">
                           2013
                       </a>
                   </li>
-                  <li id="tab-pane-2014">
+                  <li id="tab-pane-2014" data-chart="2014">
                       <a href="#pane-2014" data-toggle="tab">
                           2014
                       </a>
                   </li>
-                  <li id="tab-pane-2015">
+                  <li id="tab-pane-2015" data-chart="2015">
                         <a href="#pane-2015" data-toggle="tab">
                             2015
                         </a>
                     </li>
-                    <li id="tab-pane-2016">
+                    <li id="tab-pane-2016" data-chart="2016">
                         <a href="#pane-2016" data-toggle="tab">
                             2016
                         </a>
                     </li>
               </ul>
-              <div class="tab-content">
-                  <div id="pane-2011" class="tab-pane active">  
+               <div class="tab-content">
+                  <div id="pane-2011" class="tab-pane active">
+                      <div class="row">
+                          <div  class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                             <div id="chart-pane-2011"
+                                  style="min-height:600px;">
+                             </div>
+                          </div>
+                      </div>
                   </div>
                   <div id="pane-2012" class="tab-pane">
+                      <div class="row">
+                          <div  class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                             <div id="chart-pane-2012"
+                                  style="min-height:600px;">
+                             </div>
+                          </div>
+                      </div>
                   </div>
                   <div id="pane-2013" class="tab-pane">
+                      <div class="row">
+                          <div  class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                             <div id="chart-pane-2013"
+                                  style="min-height:600px;">
+                             </div>
+                          </div>
+                      </div>
                   </div>
                   <div id="pane-2014" class="tab-pane">
+                      <div class="row">
+                          <div  class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                             <div id="chart-pane-2014"
+                                  style="min-height:600px;">
+                             </div>
+                          </div>
+                      </div>
                   </div>
                   <div id="pane-2015" class="tab-pane">
+                      <div class="row">
+                          <div  class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                             <div id="chart-pane-2015"
+                                  style="min-height:600px;">
+                             </div>
+                          </div>
+                      </div>
                   </div>
                   <div id="pane-2016" class="tab-pane">
+                      <div class="row">
+                          <div  class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                             <div id="chart-pane-2016"
+                                  style="min-height:600px;">
+                             </div>
+                          </div>
+                      </div>
                   </div>
               </div>
           </div>
