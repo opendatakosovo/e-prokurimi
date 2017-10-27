@@ -271,16 +271,16 @@
     var values = {};
 </script>
 
-<div id="container" align="center" style="padding-top:70px; padding-left:1%;padding-right:1%;">
+<div id="container" class="map-container" align="center">
 
 	<div class="row map-buttons">
 		<div class="col-md-12" style="padding: 0;">
 			<div class="row">
-				<div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
+				<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                         <div id="select" class="viti-select-map">
                         <form class="form-inline">
-                          <div class="form-group" style="margin-right: 10px;">
-                              <span>Viti: </span>
+                          <div class="form-group viti-select" style="margin-right: 10px;">
+                              <span class="viti-select-lbl">Viti: </span>
                               <select id="viti-select" class="form-control"
                                       width="100%" >
                                 <option value="2010">2010</option>
@@ -293,7 +293,7 @@
                               </select>
                           </div>
                           <div class="form-group">
-                              <span>Krahasimi sipas: </span>
+                              <span class="viti-select-lbl">Krahasimi:</span>
                             <select id="tipi-select" class="form-control" width="100%">
                                 <option value="vlera" selected="selected">Vlerës të paraparë nga komuna</option>
                                 <option value="cmimi">Vlerës së kontraktuar nga komuna</option>
@@ -303,7 +303,7 @@
                         </form>
                         </div>
 				</div>
-				<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+				<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                     <div id="colors">
                     <label id="min-value"></label>
                     <label id="max-value"></label>

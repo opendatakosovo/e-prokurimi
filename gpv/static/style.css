@@ -205,7 +205,7 @@ a .fb, a .tw, a .eM, a .inst{
     cursor: pointer;
     color: #18bc9c;
 }
-/*MAP*/
+/* ----  Map ---- */
 .viti-select-map{
     display: inline;
     margin-left: 0px;
@@ -214,8 +214,15 @@ a .fb, a .tw, a .eM, a .inst{
 .map-buttons{
     width: 98%;
 }
-/*Navigation menu */
-@media (min-width: 768px) and (max-width: 991px) {
+.map-container{
+    padding-top:70px;
+    padding-left:1%;
+    padding-right:1%;
+}
+/* ----  /Map ---- */
+
+@media only screen and  (min-width: 768px) and (max-width: 991px) {
+    /* ---- Navigation menu ----*/
     .navbar-collapse.collapse {
         display: none !important;
     }
@@ -228,14 +235,41 @@ a .fb, a .tw, a .eM, a .inst{
     .navbar-header {
         float:none;
     }
+    /* ---- /Navigation menu ----*/
+
+     /* ---- About ----*/
     .rreth-projektit {
         padding: 8%;
     }
+     /* ---- /About ----*/
+
+     /* ---- Map ----*/
+     #viti-select, #tipi-select{
+         padding: 0 0 !important;
+     }
+      .map-container{
+        padding-top: 25px;
+    }
+    /* ---- /Map ----*/
+
+}
+@media (min-width: 168px) and (max-width: 767px) {
+    /* ---- Map ----*/
+    .viti-select-lbl{
+        float: left;
+    }
+    .viti-select-div{
+        margin-right: 0px;
+    }
+    .map-container{
+        padding-top: 20px;
+    }
+    /* ---- /Map ----*/
+    
 }
 
 @media (max-width: 500px) {
     .rreth-projektit .lead{
         font-size: 14px !important;
     }
-
 }
