@@ -206,12 +206,12 @@ a .fb, a .tw, a .eM, a .inst{
     color: #18bc9c;
 }
 /* ----  Map ---- */
-.viti-select-map{
+.viti-select-map,viti-select-price-value{
     display: inline;
     margin-left: 0px;
     float: left;
 }
-.map-buttons{
+.map-buttons, muncipality-price-value-buttons{
     width: 98%;
 }
 .map-container{
@@ -220,6 +220,13 @@ a .fb, a .tw, a .eM, a .inst{
     padding-right:1%;
 }
 /* ----  /Map ---- */
+
+/* ----  Muncipality price value (Krahasimi)---- */
+.muncipality-price-value-container {
+    padding-top: 70px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
 
 @media only screen and  (min-width: 768px) and (max-width: 991px) {
     /* ---- Navigation menu ----*/
@@ -247,8 +254,8 @@ a .fb, a .tw, a .eM, a .inst{
      #viti-select, #tipi-select{
          padding: 0 0 !important;
      }
-      .map-container{
-        padding-top: 25px;
+      .map-container, .muncipality-price-value-container{
+        padding-top: 30px;
     }
     /* ---- /Map ----*/
 
@@ -261,8 +268,8 @@ a .fb, a .tw, a .eM, a .inst{
     .form-group.viti-select-div{
         margin-right: 0px !important;
     }
-    .map-container{
-        padding-top: 20px;
+    .map-container,  .muncipality-price-value-container{
+        padding-top: 25px;
     }
     /* ---- /Map ----*/
 

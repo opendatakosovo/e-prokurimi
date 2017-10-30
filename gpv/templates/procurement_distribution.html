@@ -102,7 +102,8 @@
     }
 
     function setContractCountResetLink(year){
-        setResetLink(year, "pane-contract-count-reset", "pane-contract-count-")
+        setResetLink(year, "chart-pane-contract-count-reset",
+            "cahrt-pane-contract-count-")
     }
 
     function setResetLink(year, resetLinkContainerDivId, linkIdPrefix){
@@ -138,11 +139,12 @@
     }
 
     function initContractCountTab(year){
-        if($('#pane-contract-count-' + year).children().size() == 0){
+        if($('#chart-pane-contract-count-' + year).children().size() == 0){
             url = "{{ config.BASE_PATH }}/json/{{komuna}}/treemap/" + year;
 
             $.get(url, function( results ) {
-                contractCountContainerDivId = 'pane-contract-count-' + year;
+                contractCountContainerDivId = 'chart-pane-contract-count-' +
+                    year;
                 drawChart(results, contractCountContainerDivId, "count", false);
             });
         }
@@ -226,7 +228,7 @@
 
 </script>
 
-<div id="container" style="padding-top:100px;padding-left:100px; padding-right:100px;">
+<div id="container" style="padding-top:100px;">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Vlera e paraparë e kontratave nga komuna</h3>
@@ -379,6 +381,8 @@
             </div>
         </div>
     </div>
+    <div class="row">
+       <div  class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -419,8 +423,17 @@
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div id="pane-contract-count-2011" style="width: 100%; height: 500px;" class="tab-pane active"> 
-                    </div>
+                    <div id="pane-contract-count-2011" class="tab-pane active">
+                      <div class="row">
+                          <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                             <div id="chart-pane-contract-count-2011"
+                                  style="min-height:500px;">
+                             </div>
+                          </div>
+                      </div>
+                  </div>
+
+
                     <div id="pane-contract-count-2012" style="width: 100%; height: 500px;" class="tab-pane">
                     </div>
                     <div id="pane-contract-count-2013" style="width: 100%; height: 500px;" class="tab-pane">
@@ -454,6 +467,8 @@
                 </div> 
             </div>
         </div>
+    </div>
+</div>
     </div>
 </div>
 
