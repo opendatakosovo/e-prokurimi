@@ -136,6 +136,7 @@
         dataTable.addRow(['Shërbime keshillimi', 'Global', 0]);
 
         var companies = [];
+
         for(var idx in results){
             var company = results[idx]['kompania_emri'];
             // Address issue when same company in different types
@@ -151,8 +152,8 @@
             if(type != "Sherbime Keshillimi" && type != "n/a"){
                 dataTable.addRow([company, type, amount]);
             }
-
         }
+
         var options = {
             minColor: '#B2E0FF',
             midColor: '#19A3FF',
@@ -171,10 +172,7 @@
             chart.goUpAndDraw();
         });
     }
-    function myOnClickFunction(){
-        console.log(this);
-        alert('man!');
-    }
+
     function showCurrencyStaticTooltip(row, size, value) {
         return '<div style="background:#fd9; position:relative;padding:10px; ' +
             'border-style:solid; z-index:10000;">' +
@@ -182,6 +180,7 @@
            '</div>';
     }
     function showStaticTooltip(row, size, value) {
+
         return '<div style="background:#fd9; padding:10px; ' +
             'border-style:solid;position:relative; z-index:10000;">' +
            '<strong>' + size + '</strong>' +

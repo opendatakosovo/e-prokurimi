@@ -14,6 +14,7 @@
   select.form-control{display:inline-block; width:fit-content;}
   </style>
 <script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
+
 <script type="text/javascript">
       google.load("visualization", "1", {packages:["table"]});
 
@@ -28,7 +29,7 @@
                    show : "slide",
                    position: {my: "top", at: "top+100", of: window},
                    closeOnEscape: true,
-                   width: 700      
+                   width: "90%"
                 });
                 
                 $( "#jqueryUI" ).empty();
@@ -49,8 +50,11 @@
         }).done(function(jsonResult){
             buildTable(jsonResult, '2016');
             $('#results_2016').dataTable({
-              "paging": true,
-              "pagingType": "full_numbers"
+                "paging": true,
+                "pagingType": "full_numbers",
+                "bFilter": false,
+                "bPaginate": false,
+                "sScrollX": "100%"
             });
         });
 
@@ -105,9 +109,13 @@
               </div>
       </div>
   </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-sm-12 col-md-12">
+            <div id="table" class="red-flags-tb">
+            </div>
+        </div>
+    </div>
 
-  <div id="table" class="red-flags-tb">
-  </div>
 
   <br>
   <br>
