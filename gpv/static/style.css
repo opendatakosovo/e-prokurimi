@@ -215,17 +215,19 @@ a .fb, a .tw, a .eM, a .inst{
     width: 98%;
 }
 .map-container{
-    padding-top:70px;
-    padding-left:1%;
-    padding-right:1%;
+    padding-top: 70px;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-bottom: 1%;
 }
 /* ----  /Map ---- */
 
 /* ----  Muncipality price value (Krahasimi)---- */
-.muncipality-price-value-container {
+.muncipality-price-value-container, .type-distribution-container {
     padding-top: 70px;
     padding-left: 2%;
     padding-right: 2%;
+    padding-bottom: 1%;
 }
 
 @media only screen and  (min-width: 768px) and (max-width: 991px) {
@@ -254,7 +256,7 @@ a .fb, a .tw, a .eM, a .inst{
      #viti-select, #tipi-select{
          padding: 0 0 !important;
      }
-      .map-container, .muncipality-price-value-container{
+      .map-container, .muncipality-price-value-container, .type-distribution-container{
         padding-top: 30px;
     }
     /* ---- /Map ----*/
@@ -268,7 +270,7 @@ a .fb, a .tw, a .eM, a .inst{
     .form-group.viti-select-div{
         margin-right: 0px !important;
     }
-    .map-container,  .muncipality-price-value-container{
+    .map-container,  .muncipality-price-value-container, .type-distribution-container{
         padding-top: 25px;
     }
     /* ---- /Map ----*/

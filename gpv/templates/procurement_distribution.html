@@ -2,27 +2,21 @@
 {% block body %}
 <script type="text/javascript">
     google.load("visualization", "1", {packages:["treemap"]});
-    $(".commune-dropdown-li-first").addClass("active");
     $(document).ready(function() {
         initContractValueTab(2011);
         initContractPriceTab(2011);
         initContractCountTab(2011);
-
-
         $( "#tab-pane-2011" ).click(function() {
             setContractValueResetLink(2011);
         });
-
         $( "#tab-pane-2012" ).click(function() {
             initContractValueTab(2012);
             setContractValueResetLink(2012);
         });
-
         $( "#tab-pane-2013" ).click(function() {
             initContractValueTab(2013);
             setContractValueResetLink(2013);
         });
-
         $( "#tab-pane-2014" ).click(function() {
             initContractValueTab(2014);
             setContractValueResetLink(2014);
@@ -35,21 +29,17 @@
             initContractValueTab(2016);
             setContractValueResetLink(2016);
         });
-
         $( "#tab-pane-contract-price-2011" ).click(function() {
             setContractPriceResetLink(2011);
         });
-
         $( "#tab-pane-contract-price-2012" ).click(function() {
             initContractPriceTab(2012);
             setContractPriceResetLink(2012);
         });
-
         $( "#tab-pane-contract-price-2013" ).click(function() {
             initContractPriceTab(2013);
             setContractPriceResetLink(2013);
         });
-
         $( "#tab-pane-contract-price-2014" ).click(function() {
             initContractPriceTab(2014);
             setContractPriceResetLink(2014);
@@ -62,50 +52,39 @@
             initContractPriceTab(2016);
             setContractPriceResetLink(2016);
         });
-
         $( "#tab-pane-contract-count-2011" ).click(function() {
             setContractCountResetLink(2011);
         });
-
         $( "#tab-pane-contract-count-2012" ).click(function() {
             initContractCountTab(2012);
             setContractCountResetLink(2012);
         });
-
         $( "#tab-pane-contract-count-2013" ).click(function() {
             initContractCountTab(2013);
             setContractCountResetLink(2013);
         });
-
         $( "#tab-pane-contract-count-2014" ).click(function() {
             initContractCountTab(2014);
             setContractCountResetLink(2014);
         });
-
         $( "#tab-pane-contract-count-2015" ).click(function() {
             initContractCountTab(2015);
             setContractCountResetLink(2015);
         });
-
         $( "#tab-pane-contract-count-2016" ).click(function() {
             initContractCountTab(2016);
             setContractCountResetLink(2016);
         });
     });
-
     function setContractValueResetLink(year){
         setResetLink(year, "pane-contract-value-reset", "pane-")
     }
-
     function setContractPriceResetLink(year){
         setResetLink(year, "pane-contract-price-reset", "pane-contract-price-")
     }
-
     function setContractCountResetLink(year){
-        setResetLink(year, "chart-pane-contract-count-reset",
-            "cahrt-pane-contract-count-")
+        setResetLink(year, "pane-contract-count-reset", "pane-contract-count-")
     }
-
     function setResetLink(year, resetLinkContainerDivId, linkIdPrefix){
         $('#' + resetLinkContainerDivId + ' a').each(function(){
             if($(this).attr('id') === linkIdPrefix + year + "-reset"){
@@ -115,47 +94,38 @@
             }
         });
     }
-
     function initContractValueTab(year){
         if($('#pane-' + year).children().size() == 0){
             url = "{{ config.BASE_PATH }}/json/{{komuna}}/treemap/" + year;
-
             $.get(url, function( results ) {
                 containerDivId = 'pane-' + year;
                 drawChart(results, containerDivId, 'shuma', true);
             });
         }
     }
-
     function initContractPriceTab(year){
         if($('#pane-contract-price-' + year).children().size() == 0){
             url = "{{ config.BASE_PATH }}/json/{{komuna}}/treemap/price/" + year;
-
             $.get(url, function( results ) {
                 contractCountContainerDivId = 'pane-contract-price-' + year;
                 drawChart(results, contractCountContainerDivId, "shuma", true);
             });
         }
     }
-
     function initContractCountTab(year){
-        if($('#chart-pane-contract-count-' + year).children().size() == 0){
+        if($('#pane-contract-count-' + year).children().size() == 0){
             url = "{{ config.BASE_PATH }}/json/{{komuna}}/treemap/" + year;
-
             $.get(url, function( results ) {
-                contractCountContainerDivId = 'chart-pane-contract-count-' +
-                    year;
+                contractCountContainerDivId = 'pane-contract-count-' + year;
                 drawChart(results, contractCountContainerDivId, "count", false);
             });
         }
     }
-
     function drawChart(results, chartContainerDivId, param, isCurrency) {
         var dataTable = new google.visualization.DataTable();
         dataTable.addColumn('string', 'Procurement Type');
         dataTable.addColumn('string', 'Parent');
         dataTable.addColumn('number', 'Amount');
-
         dataTable.addRow(['Global', null, 0]);
         dataTable.addRow(['Furnizim', 'Global', 0]);
         dataTable.addRow(['Konkurs projektimi', 'Global', 0]);
@@ -165,11 +135,9 @@
         dataTable.addRow(['Punë me koncesion', 'Global', 0]);
         dataTable.addRow(['Shërbime keshillimi', 'Global', 0]);
 
-        var companies = []
-
+        var companies = [];
         for(var idx in results){
             var company = results[idx]['kompania_emri'];
-
             // Address issue when same company in different types
             if(companies[company] != undefined){
                 companies[company] = companies[company] + 1;
@@ -177,58 +145,52 @@
             }else{
                 companies[company] = 1;
             }
-
             var type = results[idx]['tipi'];
             var amount = results[idx][param];
-            
-            if(type != "Sherbime Keshillimi" && type != "n/a" && type != null){
+
+            if(type != "Sherbime Keshillimi" && type != "n/a"){
                 dataTable.addRow([company, type, amount]);
             }
-            
-        }
 
+        }
         var options = {
             minColor: '#B2E0FF',
             midColor: '#19A3FF',
             maxColor: '#003D66'
         };
-
         if(isCurrency == true){
             options['generateTooltip'] = showCurrencyStaticTooltip;
         }else{
             options['generateTooltip'] = showStaticTooltip;
         }
-        
 
         var chart = new google.visualization.TreeMap(document.getElementById(chartContainerDivId));
         chart.draw(dataTable, options);
-        
+
         $( "#" + chartContainerDivId + "-reset" ).click(function() {
             chart.goUpAndDraw();
         });
-
     }
-
     function myOnClickFunction(){
         console.log(this);
         alert('man!');
     }
-
     function showCurrencyStaticTooltip(row, size, value) {
-        return '<div style="background:#fd9; padding:10px; border-style:solid">' +
+        return '<div style="background:#fd9; position:relative;padding:10px; ' +
+            'border-style:solid; z-index:10000;">' +
            '<strong>' + toCurrency(size, true) + '</strong>' +
            '</div>';
     }
-
     function showStaticTooltip(row, size, value) {
-        return '<div style="background:#fd9; padding:10px; border-style:solid">' +
+        return '<div style="background:#fd9; padding:10px; ' +
+            'border-style:solid;position:relative; z-index:10000;">' +
            '<strong>' + size + '</strong>' +
            '</div>';
     }
-
 </script>
 
-<div id="container" style="padding-top:100px;">
+<div id="container" style="padding-top:100px;padding-left:3%;
+padding-right:2%;">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Vlera e paraparë e kontratave nga komuna</h3>
@@ -236,71 +198,77 @@
         <div class="panel-body">
             <div class="tabbable">
                 <ul class="nav nav-tabs">
-                    <li id="tab-pane-2011" class="active">
+                    <li id="tab-pane-2011" class="active" data-id="2011">
                         <a href="#pane-2011" data-toggle="tab">
                             2011
                         </a>
                     </li>
-                    <li id="tab-pane-2012">
+                    <li id="tab-pane-2012" data-id="2012">
                         <a href="#pane-2012" data-toggle="tab">
                             2012
                         </a>
                     </li>
-                    <li id="tab-pane-2013">
+                    <li id="tab-pane-2013" data-id="2013">
                         <a href="#pane-2013" data-toggle="tab">
                             2013
                         </a>
                     </li>
-                    <li id="tab-pane-2014">
+                    <li id="tab-pane-2014" data-id="2014">
                         <a href="#pane-2014" data-toggle="tab">
                             2014
                         </a>
                     </li>
-                    <li id="tab-pane-2015">
+                    <li id="tab-pane-2015" data-id="2015">
                         <a href="#pane-2015" data-toggle="tab">
                             2015
                         </a>
                     </li>
-                    <li id="tab-pane-2016">
+                    <li id="tab-pane-2016" data-id="2016">
                         <a href="#pane-2016" data-toggle="tab">
                             2016
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div id="pane-2011" style="width: 100%; height: 500px;" class="tab-pane active"> 
+                    <div id="pane-2011" style="width: 100%; height: 500px;"
+                         class="tab-pane active" data-id="2011">
                     </div>
-                    <div id="pane-2012" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-2012" style="width: 100%; height: 500px;"
+                         class="tab-pane" data-id="2012">
                     </div>
-                    <div id="pane-2013" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-2013" style="width: 100%; height: 500px;"
+                         class="tab-pane" data-id="2013">
                     </div>
-                    <div id="pane-2014" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-2014" style="width: 100%; height: 500px;"
+                         class="tab-pane" data-id="2014">
                     </div>
-                    <div id="pane-2015" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-2015" style="width: 100%; height: 500px;"
+                         class="tab-pane" data-id="2015">
                     </div>
-                    <div id="pane-2016" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-2016" style="width: 100%; height: 500px;"
+                         class="tab-pane" data-id="2016">
                     </div>
                 </div>
                 <div id="pane-contract-value-reset" align="right" style="padding-right:30px;cursor:pointer;">
                     <div>
-                        <a id="pane-2011-reset">Kthehu</a>
+                        <a id="pane-2011-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-2012-reset">Kthehu</a>
+                        <a id="pane-2012-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-2013-reset">Kthehu</a>
+                        <a id="pane-2013-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-2014-reset">Kthehu</a>
+                        <a id="pane-2014-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-2015-reset">Kthehu</a>
+                        <a id="pane-2015-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-2016-reset">Kthehu</a>
+                        <a id="pane-2016-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
@@ -313,17 +281,18 @@
         <div class="panel-body">
             <div class="tabbable">
                 <ul class="nav nav-tabs">
-                    <li id="tab-pane-contract-price-2011" class="active">
+                    <li id="tab-pane-contract-price-2011" data-id="2011"
+                        class="active">
                         <a href="#pane-contract-price-2011" data-toggle="tab">
                             2011
                         </a>
                     </li>
-                    <li id="tab-pane-contract-price-2012">
+                    <li id="tab-pane-contract-price-2012" data-id="2012">
                         <a href="#pane-contract-price-2012" data-toggle="tab">
                             2012
                         </a>
                     </li>
-                    <li id="tab-pane-contract-price-2013">
+                    <li id="tab-pane-contract-price-2013" data-id="2013">
                         <a href="#pane-contract-price-2013" data-toggle="tab">
                             2013
                         </a>
@@ -333,56 +302,60 @@
                             2014
                         </a>
                     </li>
-                    <li id="tab-pane-contract-price-2015">
+                    <li id="tab-pane-contract-price-2015" data-id="2015">
                         <a href="#pane-contract-price-2015" data-toggle="tab">
                             2015
                         </a>
                     </li>
-                    <li id="tab-pane-contract-price-2016">
+                    <li id="tab-pane-contract-price-2016" data-id="2015">
                         <a href="#pane-contract-price-2016" data-toggle="tab">
                             2016
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div id="pane-contract-price-2011" style="width: 100%; height: 500px;" class="tab-pane active">
+                    <div id="pane-contract-price-2011" style="width: 100%;
+                    height: 500px;" class="tab-pane active" data-id="2011">
                     </div>
-                    <div id="pane-contract-price-2012" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-contract-price-2012" style="width: 100%;
+                    height: 500px;" class="tab-pane" data-id="2012">
                     </div>
-                    <div id="pane-contract-price-2013" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-contract-price-2013" style="width: 100%;
+                    height: 500px;" class="tab-pane" data-id="2013">
                     </div>
-                    <div id="pane-contract-price-2014" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-contract-price-2014" style="width: 100%;
+                    height: 500px;" class="tab-pane" data-id="2014">
                     </div>
-                    <div id="pane-contract-price-2015" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-contract-price-2015" style="width: 100%;
+                    height: 500px;" class="tab-pane" data-id="2015">
                     </div>
-                    <div id="pane-contract-price-2016" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-contract-price-2016" style="width: 100%;
+                    height: 500px;" class="tab-pane" data-id="2016">
                     </div>
                 </div>
                 <div id="pane-contract-price-reset" align="right" style="padding-right:30px;cursor:pointer;">
                     <div>
-                        <a id="pane-contract-price-2011-reset">Kthehu</a>
+                        <a id="pane-contract-price-2011-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-contract-price-2012-reset">Kthehu</a>
+                        <a id="pane-contract-price-2012-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-contract-price-2013-reset">Kthehu</a>
+                        <a id="pane-contract-price-2013-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-contract-price-2014-reset">Kthehu</a>
+                        <a id="pane-contract-price-2014-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-contract-price-2015-reset">Kthehu</a>
+                        <a id="pane-contract-price-2015-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-contract-price-2016-reset">Kthehu</a>
+                        <a id="pane-contract-price-2016-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
-    <div class="row">
-       <div  class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -391,84 +364,79 @@
         <div class="panel-body">
             <div class="tabbable">
                 <ul class="nav nav-tabs">
-                    <li id="tab-pane-contract-count-2011" class="active">
+                    <li id="tab-pane-contract-count-2011" class="active" data-id="2011">
                         <a href="#pane-contract-count-2011" data-toggle="tab">
                             2011
                         </a>
                     </li>
-                    <li id="tab-pane-contract-count-2012">
+                    <li id="tab-pane-contract-count-2012" data-id="2012">
                         <a href="#pane-contract-count-2012" data-toggle="tab">
                             2012
                         </a>
                     </li>
-                    <li id="tab-pane-contract-count-2013">
+                    <li id="tab-pane-contract-count-2013" data-id="2013">
                         <a href="#pane-contract-count-2013" data-toggle="tab">
                             2013
                         </a>
                     </li>
-                    <li id="tab-pane-contract-count-2014">
+                    <li id="tab-pane-contract-count-2014" data-id="2014">
                         <a href="#pane-contract-count-2014" data-toggle="tab">
                             2014
                         </a>
                     </li>
-                    <li id="tab-pane-contract-count-2015">
+                    <li id="tab-pane-contract-count-2015" data-id="2015">
                         <a href="#pane-contract-count-2015" data-toggle="tab">
                             2015
                         </a>
                     </li>
-                    <li id="tab-pane-contract-count-2016">
+                    <li id="tab-pane-contract-count-2016" data-id="2016">
                         <a href="#pane-contract-count-2016" data-toggle="tab">
                             2016
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div id="pane-contract-count-2011" class="tab-pane active">
-                      <div class="row">
-                          <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                             <div id="chart-pane-contract-count-2011"
-                                  style="min-height:500px;">
-                             </div>
-                          </div>
-                      </div>
-                  </div>
-
-
-                    <div id="pane-contract-count-2012" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-contract-count-2011" style="width: 100%;
+                    height: 500px;" class="tab-pane active" data-id="2011">
                     </div>
-                    <div id="pane-contract-count-2013" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-contract-count-2012" style="width: 100%;
+                    height: 500px;" class="tab-pane" data-id="2012">
                     </div>
-                    <div id="pane-contract-count-2014" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-contract-count-2013" style="width: 100%;
+                    height: 500px;" class="tab-pane" data-id="2013">
                     </div>
-                    <div id="pane-contract-count-2015" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-contract-count-2014" style="width: 100%;
+                    height: 500px;" class="tab-pane" data-id="2014">
                     </div>
-                    <div id="pane-contract-count-2016" style="width: 100%; height: 500px;" class="tab-pane">
+                    <div id="pane-contract-count-2015" style="width: 100%;
+                    height: 500px;" class="tab-pane" data-id="2015">
+                    </div>
+                    <div id="pane-contract-count-2016" style="width: 100%;
+                    height: 500px;" class="tab-pane" data-id="2016">
                     </div>
                 </div>
                 <div id="pane-contract-count-reset" align="right" style="padding-right:30px;cursor:pointer;">
                     <div>
-                        <a id="pane-contract-count-2011-reset">Kthehu</a>
+                        <a id="pane-contract-count-2011-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-contract-count-2012-reset">Kthehu</a>
+                        <a id="pane-contract-count-2012-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-contract-count-2013-reset">Kthehu</a>
+                        <a id="pane-contract-count-2013-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-contract-count-2014-reset">Kthehu</a>
+                        <a id="pane-contract-count-2014-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-contract-count-2015-reset">Kthehu</a>
+                        <a id="pane-contract-count-2015-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
                     <div style="display:none;">
-                        <a id="pane-contract-count-2016-reset">Kthehu</a>
+                        <a id="pane-contract-count-2016-reset"><i class="fa fa-arrow-left" aria-hidden="true"></i>Kthehu</a>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
-    </div>
-</div>
     </div>
 </div>
 
