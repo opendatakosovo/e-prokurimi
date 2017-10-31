@@ -29,8 +29,8 @@
         $('#tipi-select').change(function(){
             drawPieChart('Prokurimi sipas llojit të buxhetit (përqindja)','buxheti', 'pie-buxheti');
             drawPieChart('Ndarja sipas llojit të prokurimit publik', 'prokurimi', 'pie-prokurimi');
-        })
-    })
+        });
+    });
 
     function convertDate(inputFormat) {
         function pad(s) { return (s < 10) ? '0' + s : s; }
@@ -56,7 +56,7 @@
                 }
 
                 var options = {
-                    'legend':'right',
+                    'legend': { position: 'bottom', alignment: 'end' },
                     'title': "Krahasimi i vlerës së paraparë, vlerës së kontraktuar dhe çmimit aneks sipas datës",
                     'vAxis': {
                         'title': "Vlera e paraparë, vlera kontratuese dhe çmimi aneks "
@@ -108,7 +108,7 @@
             }
 
             var options = {
-                'legend': 'bottom',
+                legend: { position: 'bottom', alignment: 'end' },
                 title: tittle
             };
 
@@ -207,7 +207,7 @@
         formatter1.format(data, 0);
 
 
-        var options = {'allowHtml': true};
+        var options = {'allowHtml': true, showRowNumber: true, width: '100%'};
         var table = new google.visualization.Table(document.getElementById('table_div'));
         table.draw(data, options);
         // Hack to resolve CSS conflicts between googlecharts tabel and bootstrap
@@ -224,14 +224,13 @@
                 var arrayLength = redFlagTrackerArray[rowId].length;
 
                 $( "#jqueryUI" ).dialog({
-                   draggable: false,
-                   autoOpen: false, 
-                   resizable: false,
-                   hide: "slide",
-                   show : "slide",
-                   position: {my: "top", at: "top+100", of: window},
                    closeOnEscape: true,
-                   width: 700      
+                   autoOpen: false,
+                    height: "auto",
+                    width: "90%",
+                     my: "center",
+                     at: "center",
+                     of: window
                 });
 
                 $("#jqueryUI").empty();
@@ -249,35 +248,57 @@
         }         
       })
     }
+    $(window).resize(function(){
+        drawComparisonChart();
+        drawPieChart('Prokurimi sipas llojit të buxhetit (përqindja)','buxheti', 'pie-buxheti');
+        drawPieChart('Ndarja sipas llojit të prokurimit publik', 'prokurimi', 'pie-prokurimi');
+
+    });
 </script>
-<div id="container" style="padding:100px;">
-    <h3 class="company-detail-header"></h3>  
+<div id="container" class="company-details-container">
+    <h4 class="company-detail-header"></h4>
     <br>
     <div id="table_div"></div>
     <div class="btn-csv-download-container" style="padding-top:10px;" align="right">
         <a class="btn btn-success btn-xs btn-csv-download"><i class="fa fa-download fa-fw"></i> <span class="network-name">Export to CSV</span></a>
-      </div>
-    <br><br>
-    <div id="linechart" style="width: 100%; height: 700px;">
-        
     </div>
     <br>
-    <div id="select" style="display: block;">
-        <div id="select-container" style="margin:0 auto; width: 40%;">
-            <form class="form-inline">
-              <div class="form-group" style="margin-left:10px;">
-                  <label>Krahasimi sipas: </label>
-              </div>
-              <div class="form-group">
-                <select id="tipi-select" class="form-control">
-                    <option value="vlera" selected="selected">Vlerës të paraparë nga komuna</option>
-                    <option value="cmimi">Vlerës së kontraktuar nga komuna</option>
-                    <option value="nrKontratave">Numrit të kontratave</option>
-                </select>
-              </div>
-            </form>
+
+    <hr>
+    <div class="row">
+        <div  id="linechart" class="col-xs-12 col-sm-10 col-sm-offset-1
+        col-md-10
+        col-md-offset-1 col-lg-10 col-lg-offset-1" style="width: 100%;
+        min-height:550px;">
         </div>
     </div>
+
+    <hr>
+    <div class="row muncipality-price-value-buttons">
+        <div class="col-md-12" style="padding: 0;">
+            <div class="row">
+				<div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+                        <div id="select" class="viti-select-price-value"
+                             style="padding-left: 15px;">
+                        <form class="form-inline">
+                          <div class="form-group">
+                              <span class="viti-select-lbl">Krahasimi:</span>
+                            <select id="tipi-select" class="form-control" width="100%">
+                                <option value="vlera" selected="selected">Vlerës të paraparë nga komuna</option>
+                                <option value="cmimi">Vlerës së kontraktuar nga komuna</option>
+                                <option value="numriKontratave">Numrit të kontratave</option>
+                            </select>
+                          </div>
+                        </form>
+                 </div>
+				</div>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+
     <div id="piecharts-container" style="width: 100%; height: 600px;">
         <div id="pie-buxheti" style="width: 50%; float:left; background-color: lightgray; height:500px;"></div>
         <div id="pie-prokurimi" style="width: 50%; float:right; height:500px;"></div>

@@ -19,7 +19,6 @@
     $('#txt_emriKompanise').on('input', function() {
         var kompania = $("#txt_emriKompanise").val();
         var kompania_slug = slugify(kompania);
-
         if(kompania_slug.length > 2){
           drawTable(kompania_slug);
         }
