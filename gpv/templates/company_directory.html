@@ -10,11 +10,9 @@
 
   $(document).ready(function(){
     $( ".btn-csv-download" ).click(function() {
-      var csvContent = "data:text/csv;charset=utf-8,";
-
+      var csvContent = "data:application/csv;charset=utf-8,,";
       var csvContent = csvContent + google.visualization.dataTableToCsv(data);
       var encodedCsvUri = encodeURI(csvContent);
-
       window.open(encodedCsvUri);
     });
 
