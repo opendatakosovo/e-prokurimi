@@ -223,7 +223,7 @@ a .fb, a .tw, a .eM, a .inst{
 /* ----  /Map ---- */
 
 /* ----  Muncipality price value (Krahasimi)---- */
-.muncipality-price-value-container, .type-distribution-container, .procurement-distribution-container {
+.muncipality-price-value-container, .type-distribution-container, .procurement-distribution-container, .company-container {
     padding-top: 70px;
     padding-left: 2%;
     padding-right: 2%;
@@ -256,7 +256,7 @@ a .fb, a .tw, a .eM, a .inst{
      #viti-select, #tipi-select{
          padding: 0 0 !important;
      }
-      .map-container, .muncipality-price-value-container, .type-distribution-container, .procurement-distribution-container{
+      .map-container, .muncipality-price-value-container, .type-distribution-container, .procurement-distribution-container, .company-container{
         padding-top: 30px;
     }
     /* ---- /Map ----*/
@@ -270,7 +270,7 @@ a .fb, a .tw, a .eM, a .inst{
     .form-group.viti-select-div{
         margin-right: 0px !important;
     }
-    .map-container,  .muncipality-price-value-container, .type-distribution-container, .procurement-distribution-container{
+    .map-container,  .muncipality-price-value-container, .type-distribution-container, .procurement-distribution-container, .company-container{
         padding-top: 25px;
     }
     /* ---- /Map ----*/
@@ -280,6 +280,9 @@ a .fb, a .tw, a .eM, a .inst{
     }
     #jqueryUI, #jqueryUIRedFlag {
         font-size: 14px !important;
+    }
+    .red-flags-tb .dataTables_length{
+        float: left !important;
     }
 }
 
