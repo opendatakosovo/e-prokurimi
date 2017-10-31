@@ -77,14 +77,13 @@
               var companyName = $('td', this).eq(0).text();
 
               $( "#jqueryUIRedFlag" ).dialog({
-                 draggable: false,
-                 autoOpen: false, 
-                 resizable: false,
-                 hide: "slide",
-                 show : "slide",
-                 position: {my: "top", at: "top+220", of: window},
-                 closeOnEscape: true,
-                 width: 700      
+                    closeOnEscape: true,
+                    autoOpen: false,
+                    height: "auto",
+                    width: "70%",
+                    my: "center",
+                    at: "center",
+                    of: window
               });
 
               $("#jqueryUIRedFlag").empty();

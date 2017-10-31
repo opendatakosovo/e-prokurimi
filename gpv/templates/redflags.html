@@ -7,10 +7,13 @@
   }
 
   .redflagInfo:hover{
-    text-decoration: underline;
-    color: blue;
-    cursor: pointer;
-  }
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
+      }
+{#  .ui-draggable, .ui-droppable {#}
+{#	background-position: top;#}
+{#    }#}
   select.form-control{display:inline-block; width:fit-content;}
   </style>
 <script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
@@ -22,14 +25,13 @@
         $(".commune-dropdown-li-first").addClass("active");
         $( "#btn_red_flag_info" ).click(function() {
                 $( "#jqueryUI" ).dialog({
-                   draggable: false,
-                   autoOpen: false, 
-                   resizable: false,
-                   hide: "slide",
-                   show : "slide",
-                   position: {my: "top", at: "top+100", of: window},
                    closeOnEscape: true,
-                   width: "90%"
+                   autoOpen: false,
+                    height: "auto",
+                    width: "90%",
+                     my: "center",
+                     at: "center",
+                     of: window
                 });
                 
                 $( "#jqueryUI" ).empty();
@@ -67,8 +69,11 @@
             buildTable(results, year_get);
             // Some time later, recreate with just filtering (no scrolling)
             $('#results_' + year_get).dataTable({
-              "paging": true,
-              "pagingType": "full_numbers"
+                "paging": true,
+                "pagingType": "full_numbers",
+                "bFilter": false,
+                "bPaginate": false,
+                "sScrollX": "100%"
             });
           });
         });
