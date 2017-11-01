@@ -10,9 +10,11 @@
 
   $(document).ready(function(){
     $( ".btn-csv-download" ).click(function() {
-      var csvContent = "data:application/csv;charset=utf-8,,";
+      var csvContent = "data:application/csv;charset=utf-8," + '\uFEFF' ;
       var csvContent = csvContent + google.visualization.dataTableToCsv(data);
       var encodedCsvUri = encodeURI(csvContent);
+      this.setAttribute("href", encodedCsvUri);
+      this.setAttribute("download", "data.csv");
       window.open(encodedCsvUri);
     });
 
@@ -114,7 +116,8 @@
             var rowId = selection[0].row;
             var slug = data.getValue(rowId, 0);
             if(slug.length > 0){
-              document.location.href = '{{config.BASE_PATH}}/kompanite/' + slug + "?komuna={{ komuna }}";
+              document.location.href = '{{config.BASE_PATH}}/kompanite/' +
+                  slug;
             }
         }
         google.visualization.events.addListener(table, 'select', showCompanyDetails);
@@ -164,7 +167,8 @@
       table-hover"></div>
     </div>
     <div class="btn-csv-download-container" style="padding-top:10px;display:none;" align="right">
-        <a class="btn btn-success btn-xs btn-csv-download"><i class="fa fa-download fa-fw"></i> <span class="network-name">Export to CSV</span></a>
+        <a class="btn btn-success btn-xs btn-csv-download"><i class="fa
+        fa-download fa-fw"></i> <span class="network-name">Export to CSV</span></a>
     </div>
 
 </div>
