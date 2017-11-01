@@ -9,13 +9,12 @@
   var data = null;
 
   $(document).ready(function(){
-    $( ".btn-csv-download" ).click(function() {
+    $( ".btn-csv-download-company" ).click(function() {
       var csvContent = "data:application/csv;charset=utf-8," + '\uFEFF' ;
       var csvContent = csvContent + google.visualization.dataTableToCsv(data);
       var encodedCsvUri = encodeURI(csvContent);
       this.setAttribute("href", encodedCsvUri);
       this.setAttribute("download", "data.csv");
-      window.open(encodedCsvUri);
     });
 
     $('#txt_emriKompanise').on('input', function() {
@@ -167,7 +166,7 @@
       table-hover"></div>
     </div>
     <div class="btn-csv-download-container" style="padding-top:10px;display:none;" align="right">
-        <a class="btn btn-success btn-xs btn-csv-download"><i class="fa
+        <a class="btn btn-success btn-xs btn-csv-download-company"><i class="fa
         fa-download fa-fw"></i> <span class="network-name">Export to CSV</span></a>
     </div>
 
