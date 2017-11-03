@@ -130,12 +130,9 @@
           urlArray[i] =  selectedCommune ;
         }
       }
-
-      urlArray = urlArray.join("/");
-      document.location.href =  urlArray;
+        urlArray = urlArray.join("/");
+        document.location.href =  urlArray;
     }
-
-
     
   </script>
 
@@ -175,10 +172,10 @@
                   <a href="/{{ komuna }}/harta">Harta</a>
                 </li>
                 <li {% if '/krahasimi' in request.path %} class="active" {% endif %} id="krahasimi">
-                  <a href="/krahasimi?komuna={{ komuna }}">Krahasimi</a>
+                  <a href="/krahasimi">Krahasimi</a>
                 </li>
                 <li {% if '/kompanite' in request.path %} class="active" {% endif %} id="krahasimi">
-                  <a href="/kompanite?komuna={{ komuna }}">Kompanitë</a>
+                  <a href="/kompanite">Kompanitë</a>
                 </li>
                 <li {% if '/red-flags' in request.path %} class="active" {% endif %} id="red_flag">
                   <a href="/{{ komuna }}/red-flags">Red Flags</a>
@@ -187,11 +184,10 @@
                   <a href="/per-projektin">Për projektin</a>
                 </li>
               </ul>
-
               <!-- Commune selection dropdown -->
-              <div class="commune-dropdown-div">
+              <div class="commune-dropdown-div" id="commune-dropdown-div">
                   <ul class="nav navbar-nav navbar-right commune-dropdown">
-                    <li class="dropdown commune-dropdown-li-first">
+                    <li class="dropdown  commune-dropdown-li-first">
                       <a href="#" class="dropdown-toggle commune-dropdown-toggle cd-dispayed commune-dropdown-li-active" data-toggle="dropdown" role="button" aria-expanded="false"></a>
                       <ul class="dropdown-menu" role="menu">
                         <li {% if '/ferizaj' in request.path %} class="commune-active" {% endif %}>
