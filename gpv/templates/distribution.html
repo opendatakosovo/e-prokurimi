@@ -24,6 +24,7 @@
             var year = $('#viti-select').val()
 
             var url = '{{ config.BASE_PATH }}/json/monthly-summary/{{ komuna }}/' + year;
+            console.log(url)
             $.get(url, function(jsonResult){
 
               var data = new google.visualization.DataTable();
