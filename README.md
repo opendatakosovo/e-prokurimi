@@ -16,7 +16,7 @@ automatically detects irregularities through a contextual and custom built red f
 
 
 # Data
-Follow the instruction on this repository to import data.
+Follow the instructions on this repository to import data.
 [https://github.com/opendatakosovo/municipality-procurement-data-importer](https://github.com/opendatakosovo/municipality-procurement-data-importer) 
 
 
