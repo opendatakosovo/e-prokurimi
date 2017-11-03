@@ -1,108 +1,9 @@
-{% extends "base.html" %}
-{% block body %}
+{% extends "base.html" %} {% block body %}
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
-<style>
-    #map { 
-        height: 550px;
-        width: 98%;
-        margin-top: 20px;
-    }
-    #colors{
-        margin-right: 5px;
-        border: 1px solid gray;
-        border-radius: 4px;
-        height: 70px;
-        width: 250px;
-        float: right;
-        box-shadow: 3px 3px 2px #888888;
-        background-color: transparent;
-    }
-    #colors-container{
-        margin-left: 18px;
-        margin-top: 30px;
-    }
-    #color1{
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
-        border-left: 1px solid gray;
-        border-top: 1px solid gray;
-        border-bottom: 1px solid gray;
-        float:left;
-        width: 30px;
-        height: 30px;
-        background-color: #FFFFB2;
-    }
-    #color2{
-        float:left;
-        border-top: 1px solid gray;
-        border-bottom: 1px solid gray;
-        width: 30px;
-        height: 30px;
-        background-color: #FED976;
-    }
-    #color3{
-        float:left;
-        border-top: 1px solid gray;
-        border-bottom: 1px solid gray;
-        width: 30px;
-        height: 30px;
-        background-color: #FEB24C;
-    }
-    #color4{
-        float:left;
-        border-top: 1px solid gray;
-        border-bottom: 1px solid gray;
-        width: 30px;
-        height: 30px;
-        background-color: #FD8D3C;
-    }
-    #color5{
-        float:left;
-        border-top: 1px solid gray;
-        border-bottom: 1px solid gray;
-        width: 30px;
-        height: 30px;
-        background-color: #FC4E2A;
-    }
-    #color6{
-        float:left;
-        border-top: 1px solid gray;
-        border-bottom: 1px solid gray;
-        width: 30px;
-        height: 30px;
-        background-color: #E31A1C;
-    }
-    #color7{
-        float:left;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-        border-top: 1px solid gray;
-        border-bottom: 1px solid gray;
-        border-right: 1px solid gray;
-        width: 30px;
-        height: 30px;
-        background-color: #B10026;
-    }
-    #min-value{
-        margin-top: 5px;
-        font-size: 13px;
-        float: left;
-        margin-left: 18px;
-        color: #2C3E50;
-    }
-    #max-value{
-        margin-top: 5px;
-        font-size: 13px;
-        float: right;
-        margin-right: 18px;
-        color: #2C3E50;
-    }
-</style>
-
 <!-- leaflets JS -->
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    
+
 <script type="text/javascript">
     $(".commune-dropdown-li-first").addClass("active");
     var gradOfColor = new Array();
@@ -116,24 +17,28 @@
     var markerLayerGroup = undefined;
     var markerArray = [];
     var valueArray = [];
-    $(document).ready(function(){
+    $(document).ready(function() {
 
-        $( "#dialog-table" ).dialog({
+        $("#dialog-table").dialog({
             draggable: false,
-            autoOpen: false, 
+            autoOpen: false,
             resizable: false,
             hide: "slide",
-            show : "slide",
-            position: {my: "top", at: "top+170", of: window },
+            show: "slide",
+            position: {
+                my: "top",
+                at: "top+170",
+                of: window
+            },
             closeOnEscape: true,
-            width: "95%" 
+            width: "95%"
         });
 
         var komuna = '{{komuna}}';
-        $('#viti-select').change(function(){
+        $('#viti-select').change(function() {
             initMap();
         });
-        $('#tipi-select').change(function(){
+        $('#tipi-select').change(function() {
             initMap();
         });
         var map = L.map('map').setView([42.551056983385934, 20.87127685546875], 9);
@@ -142,74 +47,74 @@
             maxZoom: 18
         }).addTo(map);
         initMap();
-        function initMap(){
+
+        function initMap() {
             // Init map with markers for default year, months and measurement selection.
             var year = $('#viti-select').val();
             var tipi = $('#tipi-select').val();
             addMarkers(komuna, year, tipi);
         }
-        
-        function addMarkers(komuna, viti, tipi){
+
+        function addMarkers(komuna, viti, tipi) {
             $('.leaflet-control').css('display', 'block');
             markerArray = [];
-            if(markerLayerGroup != undefined){
+            if (markerLayerGroup != undefined) {
                 map.removeLayer(markerLayerGroup);
             }
             var tipi = $('#tipi-select').val();
-            var tipi_text = $("#tipi-select option[value='"+ tipi +"']").text();
+            var tipi_text = $("#tipi-select option[value='" + tipi + "']").text();
             var year = $('#viti-select').val();
-            var url = '{{ config.BASE_PATH }}/json/'+ komuna +'/map/'+ year;
+            var url = '{{ config.BASE_PATH }}/json/' + komuna + '/map/' + year;
             var popup = L.popup();
-            $.get(url, function(jsonResult){
+            $.get(url, function(jsonResult) {
                 // Get max and min value of select parameter.
                 // We need this to calculate colorpleth buckets
                 var min = jsonResult['bounds'][tipi]['min'];
                 var max = jsonResult['bounds'][tipi]['max'];
-                
+
                 // Build gradient legend bucket array.
-                var gradientUnit = ( max - min ) / 7;
+                var gradientUnit = (max - min) / 7;
                 var gradiantBounds = new Array();
                 // Define first boun
                 gradiantBounds[0] = Math.ceil(min);
                 // Define the rest of the bounds, based on the first bound
-                for(var x = 1; x < 7; x++){
-                    gradiantBounds[x] = Math.floor(gradiantBounds[x-1] + gradientUnit);
+                for (var x = 1; x < 7; x++) {
+                    gradiantBounds[x] = Math.floor(gradiantBounds[x - 1] + gradientUnit);
                 }
                 // Build colorpleth legend
-                if(tipi != 'numriKontratave'){
+                if (tipi != 'numriKontratave') {
                     max = toCurrency(max, true);
                     min = toCurrency(min, true);
                     $('#min-value').text(min);
                     $('#max-value').text(max);
-                }
-                else{
+                } else {
                     $('#min-value').text(min);
                     $('#max-value').text(max);
                 }
-                for (var key in jsonResult['result']){
+                for (var key in jsonResult['result']) {
                     var value = jsonResult['result'][key][tipi];
                     var selia = jsonResult['result'][key].selia;
                     var emri = jsonResult['result'][key].emri;
                     var color = '';
 
-                    for(var c = 6; c >= 0; c--){
-                        if(Math.ceil(value) >= gradiantBounds[c]){
+                    for (var c = 6; c >= 0; c--) {
+                        if (Math.ceil(value) >= gradiantBounds[c]) {
                             color = gradOfColor[c];
                             break;
                         }
                     }
-                    
+
                     var lon = jsonResult['result'][key].gjatesia;
                     var lat = jsonResult['result'][key].gjeresia;
-                    if (lat != null){
-                        if(tipi != 'numriKontratave'){
+                    if (lat != null) {
+                        if (tipi != 'numriKontratave') {
                             displayValue = toCurrency(value, true);
-                        }else{
+                        } else {
                             displayValue = value;
                         }
                         values[selia] = displayValue;
-                        if (emri != undefined){
-                            var popupContent = "<strong>" + emri + '</strong><br>'+selected_type[tipi]+": <b>" + displayValue + "</b><br><button class='trigger btn btn-success' id='"+selia+"'>Detajet</button>";
+                        if (emri != undefined) {
+                            var popupContent = "<strong>" + emri + '</strong><br>' + selected_type[tipi] + ": <b>" + displayValue + "</b><br><button class='trigger btn btn-success' id='" + selia + "'>Detajet</button>";
                         }
                         var circle = L.circle([lat, lon], 3000, {
                             color: color,
@@ -217,7 +122,7 @@
                             fillOpacity: 0.9
                         });
                     }
-                    if(popupContent != undefined){
+                    if (popupContent != undefined) {
                         circle.bindPopup(popupContent);
                         markerArray.push(circle);
                     }
@@ -228,30 +133,33 @@
                     console.log(selia);
 
                     var year_get = $('#viti-select').val();
-                    var url_get = "{{ config.BASE_PATH }}/json/{{komuna}}/red-flags/"+selia+"/"+year_get+"";
+                    var url_get = "{{ config.BASE_PATH }}/json/{{komuna}}/red-flags/" + selia + "/" + year_get + "";
 
-                    $( "#dialog-table" ).dialog({
+                    $("#dialog-table").dialog({
                         draggable: false,
-                        autoOpen: false, 
+                        autoOpen: false,
                         resizable: false,
                         hide: "slide",
-                        show : "slide",
-                        position: {my: "top", at: "top+170", of: window },
+                        show: "slide",
+                        position: {
+                            my: "top",
+                            at: "top+170",
+                            of: window
+                        },
                         closeOnEscape: true,
-                        width: "95%" 
+                        width: "95%"
                     });
 
-                    $.get(url_get, function(){
-                    }).done(function(results){
+                    $.get(url_get, function() {}).done(function(results) {
                         buildTable(results, year_get);
-                        $('#dialog-table').dialog('option', 'title', results[0].selia+", "+selected_type[tipi] + ": " + values[selia])
+                        $('#dialog-table').dialog('option', 'title', results[0].selia + ", " + selected_type[tipi] + ": " + values[selia])
 
                         $('#results_' + year_get).dataTable({
                             "paging": true,
                             "pagingType": "full_numbers"
                         });
                         $('.leaflet-control').css('display', 'none');
-                        $( "#dialog-table" ).dialog('open');
+                        $("#dialog-table").dialog('open');
                     });
                 });
 
@@ -271,55 +179,53 @@
 
 <div id="container" class="map-container" align="center">
 
-	<div class="row map-buttons">
-		<div class="col-md-12" style="padding: 0;">
-			<div class="row">
-				<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-                        <div id="select" class="viti-select-map">
+    <div class="row map-buttons">
+        <div class="col-md-12" style="padding: 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                    <div id="select" class="viti-select-map">
                         <form class="form-inline">
-                          <div class="form-group viti-select-div"
-                               style="margin-right: 10px;">
-                              <span class="viti-select-lbl">Viti: </span>
-                              <select id="viti-select" class="form-control"
-                                      width="100%" >
-                                <option value="2010">2010</option>
-                                <option value="2011">2011</option>
-                                <option value="2012">2012</option>
-                                <option value="2013">2013</option>
-                                <option value="2014">2014</option>
-                                <option value="2015">2015</option>
-                                <option value="2016" selected="selected">2016</option>
-                              </select>
-                          </div>
-                          <div class="form-group">
-                              <span class="viti-select-lbl">Krahasimi:</span>
-                            <select id="tipi-select" class="form-control" width="100%">
-                                <option value="vlera" selected="selected">Vlerës të paraparë nga komuna</option>
-                                <option value="cmimi">Vlerës së kontraktuar nga komuna</option>
-                                <option value="numriKontratave">Numrit të kontratave</option>
-                            </select>
-                          </div>
+                            <div class="form-group viti-select-div" style="margin-right: 10px;">
+                                <span class="viti-select-lbl">Viti: </span>
+                                <select id="viti-select" class="form-control" width="100%">
+                                    <option value="2010">2010</option>
+                                    <option value="2011">2011</option>
+                                    <option value="2012">2012</option>
+                                    <option value="2013">2013</option>
+                                    <option value="2014">2014</option>
+                                    <option value="2015">2015</option>
+                                    <option value="2016" selected="selected">2016</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <span class="viti-select-lbl">Krahasimi:</span>
+                                <select id="tipi-select" class="form-control" width="100%">
+                                    <option value="vlera" selected="selected">Vlerës të paraparë nga komuna</option>
+                                    <option value="cmimi">Vlerës së kontraktuar nga komuna</option>
+                                    <option value="numriKontratave">Numrit të kontratave</option>
+                                </select>
+                            </div>
                         </form>
-                        </div>
-				</div>
-				<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                     <div id="colors">
-                    <label id="min-value"></label>
-                    <label id="max-value"></label>
-                    <div id="colors-container">
-                        <div id="color1"></div>
-                        <div id="color2"></div>
-                        <div id="color3"></div>
-                        <div id="color4"></div>
-                        <div id="color5"></div>
-                        <div id="color6"></div>
-                        <div id="color7"></div>
+                        <label id="min-value"></label>
+                        <label id="max-value"></label>
+                        <div id="colors-container">
+                            <div id="color1"></div>
+                            <div id="color2"></div>
+                            <div id="color3"></div>
+                            <div id="color4"></div>
+                            <div id="color5"></div>
+                            <div id="color6"></div>
+                            <div id="color7"></div>
+                        </div>
                     </div>
-                    </div>
-				</div>
-			</div>
-		</div>
-	</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="map">
     </div>
