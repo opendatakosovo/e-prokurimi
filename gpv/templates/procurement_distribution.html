@@ -47,6 +47,7 @@
     function initContractValueTab(year) {
         if ($('#pane-' + year).children().size() == 0) {
             url = "{{ config.BASE_PATH }}/json/{{komuna}}/treemap/" + year;
+            console.log(url);
             $.get(url, function(results) {
                 containerDivId = 'pane-' + year;
                 drawChart(results, containerDivId, 'shuma', true);
@@ -57,6 +58,7 @@
     function initContractPriceTab(year) {
         if ($('#pane-contract-price-' + year).children().size() == 0) {
             url = "{{ config.BASE_PATH }}/json/{{komuna}}/treemap/price/" + year;
+            console.log(url);
             $.get(url, function(results) {
                 contractCountContainerDivId = 'pane-contract-price-' + year;
                 drawChart(results, contractCountContainerDivId, "shuma", true);
@@ -67,6 +69,7 @@
     function initContractCountTab(year) {
         if ($('#pane-contract-count-' + year).children().size() == 0) {
             url = "{{ config.BASE_PATH }}/json/{{komuna}}/treemap/" + year;
+            console.log(url);
             $.get(url, function(results) {
                 contractCountContainerDivId = 'pane-contract-count-' + year;
                 drawChart(results, contractCountContainerDivId, "count", false);
@@ -102,7 +105,8 @@
             var type = results[idx]['tipi'];
             var amount = results[idx][param];
 
-            if (type != "Sherbime Keshillimi" && type != "n/a") {
+            if (type != "Sherbime Keshillimi" && type != "n/a" && type !=
+                null) {
                 dataTable.addRow([company, type, amount]);
             }
         }
