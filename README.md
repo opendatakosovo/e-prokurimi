@@ -1,4 +1,4 @@
-#e-prokurimi
+# e-prokurimi
 A platform that visualizes procurement data from local municipality and 
 automatically detects irregularities through a contextual and custom built red flagging algorithm.
 
@@ -20,7 +20,7 @@ Follow the instruction on this repository to import data.
 [https://github.com/opendatakosovo/municipality-procurement-data-importer](https://github.com/opendatakosovo/municipality-procurement-data-importer) 
 
 
-#API
+# API
 The API in this repository is used to get the data. 
 [https://github.com/opendatakosovo/e-prokurimi-api](https://github.com/opendatakosovo/e-prokurimi-api)
 This needs to be running while using e-prokurimi app.
