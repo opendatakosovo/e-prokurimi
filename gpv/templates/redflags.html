@@ -16,68 +16,66 @@
 <script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
 
 <script type="text/javascript">
-      google.load("visualization", "1", {packages:["table"]});
+  google.load("visualization", "1", {packages:["table"]});
 
-      $(document).ready(function(){
-        $(".commune-dropdown-li-first").addClass("active");
-        $( "#btn_red_flag_info" ).click(function() {
-                $( "#jqueryUI" ).dialog({
-                   closeOnEscape: true,
-                   autoOpen: false,
-                    height: "auto",
-                    width: "90%",
-                     my: "center",
-                     at: "center",
-                     of: window
-                });
-                
-                $( "#jqueryUI" ).empty();
-                $( "#jqueryUI" ).append('Kontrata hijëzohet me të kuqe atëherë kur: ');
-
-                $( "#jqueryUI" ).append('<ul>');
-                for (var i = 0; i< redFlags.length; i++) {
-                  $( "#jqueryUI" ).append('<li>' + redFlags[i] + '</li>');
-                }
-                $( "#jqueryUI" ).append('</ul>');
-                
-                $( "#jqueryUI" ).dialog('open');
+  $(document).ready(function(){
+    $(".commune-dropdown-li-first").addClass("active");
+    $( "#btn_red_flag_info" ).click(function() {
+            $( "#jqueryUI" ).dialog({
+               closeOnEscape: true,
+               autoOpen: false,
+                height: "auto",
+                width: "90%",
+                 my: "center",
+                 at: "center",
+                 of: window
             });
 
+            $( "#jqueryUI" ).empty();
+            $( "#jqueryUI" ).append('Kontrata hijëzohet me të kuqe atëherë kur: ');
 
-        var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/red-flags/'+ '2016';
-        $.get(url, function(){
-        }).done(function(jsonResult){
-            buildTable(jsonResult, '2016');
-            $('#results_2016').dataTable({
-                "paging": true,
-                "pagingType": "full_numbers",
-                "bFilter": false,
-                "bPaginate": false,
-                "sScrollX": "100%"
-            });
+            $( "#jqueryUI" ).append('<ul>');
+            for (var i = 0; i< redFlags.length; i++) {
+              $( "#jqueryUI" ).append('<li>' + redFlags[i] + '</li>');
+            }
+            $( "#jqueryUI" ).append('</ul>');
+
+            $( "#jqueryUI" ).dialog('open');
         });
 
-        $('#viti-select').on("change", function(event){
-          var year_get = $('#viti-select').val();
-          var url_get = '{{ config.BASE_PATH }}/json/{{ komuna }}/red-flags/'+ year_get;
 
-          $.get(url_get, function(){
-          }).done(function(results, year_get){
-            buildTable(results, year_get);
-            // Some time later, recreate with just filtering (no scrolling)
-            $('#results_' + year_get).dataTable({
-                "paging": true,
-                "pagingType": "full_numbers",
-                "bFilter": false,
-                "bPaginate": false,
-                "sScrollX": "100%"
-            });
-          });
+    var url = '{{ config.BASE_PATH }}/json/{{ komuna }}/red-flags/'+ '2016';
+    $.get(url, function(){
+    }).done(function(jsonResult){
+        buildTable(jsonResult, '2016');
+        $('#results_2016').dataTable({
+            "paging": true,
+            "pagingType": "full_numbers",
+            "bFilter": false,
+            "bPaginate": false,
+            "sScrollX": "100%"
+        });
+    });
+
+    $('#viti-select').on("change", function(event){
+      var year_get = $('#viti-select').val();
+      var url_get = '{{ config.BASE_PATH }}/json/{{ komuna }}/red-flags/'+ year_get;
+
+      $.get(url_get, function(){
+      }).done(function(results, year_get){
+        buildTable(results, year_get);
+        // Some time later, recreate with just filtering (no scrolling)
+        $('#results_' + year_get).dataTable({
+            "paging": true,
+            "pagingType": "full_numbers",
+            "bFilter": false,
+            "bPaginate": false,
+            "sScrollX": "100%"
         });
       });
+    });
+  });
 </script>
-
-
 
 <div id="container1" class="red-flags-div">
   <div class="col-xs-12 col-sm-12 col-sm-12 col-md-12" style="align-content:
