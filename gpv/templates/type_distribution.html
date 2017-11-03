@@ -6,22 +6,9 @@
   $(document).ready(function() {
     var windoResized = 0;
     initTab(2011, windoResized);
-    
-    $( "#tab-pane-2012" ).click(function() {
-        initTab(2012, windoResized);
 
-    });
-    $( "#tab-pane-2013" ).click(function() {
-       initTab(2013, windoResized);
-    });
-    $( "#tab-pane-2014" ).click(function() {
-       initTab(2014, windoResized);
-    });
-    $( "#tab-pane-2015" ).click(function() {
-       initTab(2015, windoResized);
-    });
-    $( "#tab-pane-2016" ).click(function() {
-       initTab(2016, windoResized);
+    $('.type-distribution-tabs').on('click', 'li', function(){
+        initTab($(this).data('chart'), windoResized);
     });
 
     // Set title
