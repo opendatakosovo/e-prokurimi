@@ -2,127 +2,139 @@
 {% block body %}
 <script type="text/javascript" src="{{ url_for('static', filename='redFlags.js') }}"></script>
 <script type="text/javascript">
-    $(function () {
-        $(".commune-dropdown-div").hide();
+$(function() {
+    $(".commune-dropdown-div").hide();
+});
+google.load("visualization", "1", {
+    packages: ["table"]
+});
+google.load("visualization", "1", {
+    packages: ["corechart"]
+});
+
+var data = null;
+var emriKompanise = "";
+
+$(document).ready(function() {
+    drawTableChart();
+    drawComparisonChart();
+    drawPieChart('Prokurimi sipas llojit të buxhetit (përqindja)', 'buxheti', 'pie-buxheti');
+    drawPieChart('Ndarja sipas llojit të prokurimit publik', 'prokurimi', 'pie-prokurimi');
+
+    $(".btn-csv-download").click(function() {
+        var csvContent = "data:application/csv;charset=utf-8," + '\uFEFF';
+        var csvContent = csvContent + google.visualization.dataTableToCsv(data);
+        var encodedCsvUri = encodeURI(csvContent);
+        this.setAttribute("href", encodedCsvUri);
+        this.setAttribute("download", "data.csv");
     });
-    google.load("visualization", "1", {packages:["table"]});
-    google.load("visualization", "1", {packages:["corechart"]});
 
-    var data = null;
-    var emriKompanise = "";
 
-    $(document).ready(function(){
-        drawTableChart();
-        drawComparisonChart();
+    $('#tipi-select').change(function() {
         drawPieChart('Prokurimi sipas llojit të buxhetit (përqindja)', 'buxheti', 'pie-buxheti');
         drawPieChart('Ndarja sipas llojit të prokurimit publik', 'prokurimi', 'pie-prokurimi');
-
-        $( ".btn-csv-download" ).click(function() {
-          var csvContent = "data:application/csv;charset=utf-8," + '\uFEFF' ;
-          var csvContent = csvContent + google.visualization.dataTableToCsv(data);
-          var encodedCsvUri = encodeURI(csvContent);
-          this.setAttribute("href", encodedCsvUri);
-          this.setAttribute("download", "data.csv");
-        });
-
-
-        $('#tipi-select').change(function(){
-            drawPieChart('Prokurimi sipas llojit të buxhetit (përqindja)','buxheti', 'pie-buxheti');
-            drawPieChart('Ndarja sipas llojit të prokurimit publik', 'prokurimi', 'pie-prokurimi');
-        });
     });
+});
 
-    function convertDate(inputFormat) {
-        function pad(s) { return (s < 10) ? '0' + s : s; }
-        var d = new Date(inputFormat);
-        return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/');
+function convertDate(inputFormat) {
+    function pad(s) {
+        return (s < 10) ? '0' + s : s;
     }
+    var d = new Date(inputFormat);
+    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/');
+}
 
-    function drawComparisonChart(){
-            var url = '{{ config.BASE_PATH }}/json/monthly-summary/{{ kompania_slug }}';
-            $.get(url, function(jsonResult){
+function drawComparisonChart() {
+    var url = '{{ config.BASE_PATH }}/json/monthly-summary/{{ kompania_slug }}';
+    $.get(url, function(jsonResult) {
 
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Data');
-                data.addColumn('number', 'Vlera e paraparë');
-                data.addColumn('number', 'Vlera kontratuese');
-                data.addColumn('number', 'Aneks');
-                var date;
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Data');
+        data.addColumn('number', 'Vlera e paraparë');
+        data.addColumn('number', 'Vlera kontratuese');
+        data.addColumn('number', 'Aneks');
+        var date;
 
-                for ( var key in jsonResult){
-                    var date = new Date(jsonResult[key]['data']['$date']);
-                    var date_formatted = convertDate(date);
-                    data.addRow([date_formatted, jsonResult[key].vlera, jsonResult[key].qmimi, jsonResult[key].aneks]);
-                }
+        for (var key in jsonResult) {
+            var date = new Date(jsonResult[key]['data']['$date']);
+            var date_formatted = convertDate(date);
+            data.addRow([date_formatted, jsonResult[key].vlera, jsonResult[key].qmimi, jsonResult[key].aneks]);
+        }
 
-                var options = {
-                    'legend': { position: 'bottom', alignment: 'end' },
-                    'title': "Krahasimi i vlerës së paraparë, vlerës së kontraktuar dhe çmimit aneks sipas datës",
-                    'vAxis': {
-                        'title': "Vlera e paraparë, vlera kontratuese dhe çmimi aneks "
-                    },
-                    'hAxis': {
-                        'title': "Data",
-                    },
-                    'pointSize': 11,
-                    'minValue': 0
-                };
+        var options = {
+            'legend': {
+                position: 'bottom',
+                alignment: 'end'
+            },
+            'title': "Krahasimi i vlerës së paraparë, vlerës së kontraktuar dhe çmimit aneks sipas datës",
+            'vAxis': {
+                'title': "Vlera e paraparë, vlera kontratuese dhe çmimi aneks "
+            },
+            'hAxis': {
+                'title': "Data",
+            },
+            'pointSize': 11,
+            'minValue': 0
+        };
 
-                var formatter = new google.visualization.NumberFormat({
-                    fractionDigits: 0,
-                    prefix: '€ '
-                });
-                for(var i=1; i <= 3; i++){
-                    formatter.format(data, i);
-                }
+        var formatter = new google.visualization.NumberFormat({
+            fractionDigits: 0,
+            prefix: '€ '
+        });
+        for (var i = 1; i <= 3; i++) {
+            formatter.format(data, i);
+        }
 
-                var chart = new google.visualization.LineChart(document.getElementById("linechart"));
+        var chart = new google.visualization.LineChart(document.getElementById("linechart"));
 
-                chart.draw(data, options);
-            })
-          }
+        chart.draw(data, options);
+    })
+}
 
-    function drawPieChart(tittle, tipi, div_id){
-        var url = '{{config.BASE_PATH}}/json/'+ tipi +'/{{ kompania_slug }}';
-        var krahasimiSipas = $('#tipi-select').val();
-        $.get(url, function(jsonResult){
-            var dataTable = new google.visualization.DataTable();            
-            dataTable.addColumn('string', 'Tipi');
-            dataTable.addColumn('number', 'Shuma');
+function drawPieChart(tittle, tipi, div_id) {
+    var url = '{{config.BASE_PATH}}/json/' + tipi + '/{{ kompania_slug }}';
+    var krahasimiSipas = $('#tipi-select').val();
+    $.get(url, function(jsonResult) {
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn('string', 'Tipi');
+        dataTable.addColumn('number', 'Shuma');
 
-            for (var key in jsonResult){
-                var tipi = jsonResult[key]['tipi'];
-                var tipi_str = tipi.toString();
-                var shuma = jsonResult[key][krahasimiSipas];
+        for (var key in jsonResult) {
+            var tipi = jsonResult[key]['tipi'];
+            var tipi_str = tipi.toString();
+            var shuma = jsonResult[key][krahasimiSipas];
 
-                dataTable.addRow([tipi_str, shuma]);
-            }
+            dataTable.addRow([tipi_str, shuma]);
+        }
 
-            var formatter = new google.visualization.NumberFormat({
-                prefix: "€ ",
-                fractionDigits: 0
-            });
+        var formatter = new google.visualization.NumberFormat({
+            prefix: "€ ",
+            fractionDigits: 0
+        });
 
-            if (krahasimiSipas != 'nrKontratave'){
-                formatter.format(dataTable, 1);
-            }
+        if (krahasimiSipas != 'nrKontratave') {
+            formatter.format(dataTable, 1);
+        }
 
-            var options = {
-                legend: { position: 'bottom', alignment: 'end' },
-                title: tittle
-            };
+        var options = {
+            legend: {
+                position: 'bottom',
+                alignment: 'end'
+            },
+            title: tittle
+        };
 
-            var chart = new google.visualization.PieChart(document.getElementById(div_id));
+        var chart = new google.visualization.PieChart(document.getElementById(div_id));
 
-            chart.draw(dataTable, options);
-        })
-    }
+        chart.draw(dataTable, options);
+    })
+}
 
-    function drawTableChart(){
-      var redFlagTrackerArray = new Array();
-      var url = '{{config.BASE_PATH}}/json/kompanite/{{ kompania_slug }}';
+function drawTableChart() {
+    var redFlagTrackerArray = new Array();
+    var url = '{{config.BASE_PATH}}/json/kompanite/{{ kompania_slug }}';
 
-      $.get(url, function(jsonResult){
+    $.get(url, function(jsonResult) {
         data = new google.visualization.DataTable();
         data.addColumn('date', 'Data e nënshkrimit');
         data.addColumn('string', 'Aktiviteti');
@@ -143,33 +155,57 @@
 
         $('.company-detail-header').append("Detajet për kontratat e fituara nga kompania: \"" + emriKompanis + "\"");
 
-        for ( var key in jsonResult){
+        for (var key in jsonResult) {
 
-          var value = jsonResult[key]['kontrata']['vlera'];
-          var price = jsonResult[key]['kontrata']['qmimi'];
-          var anex = jsonResult[key]['kontrata']['qmimiAneks'];
-          date = new Date(jsonResult[key]["dataNenshkrimit"]['$date']);
+            var value = jsonResult[key]['kontrata']['vlera'];
+            var price = jsonResult[key]['kontrata']['qmimi'];
+            var anex = jsonResult[key]['kontrata']['qmimiAneks'];
+            date = new Date(jsonResult[key]["dataNenshkrimit"]['$date']);
 
-          var vlera = {v: value, f: toCurrency(value, true)};
-          totalVlera = totalVlera + value;
+            var vlera = {
+                v: value,
+                f: toCurrency(value, true)
+            };
+            totalVlera = totalVlera + value;
 
-          var cmimi = {v: price, f: toCurrency(price, true)};
-          totalCmimi = totalCmimi + price;
+            var cmimi = {
+                v: price,
+                f: toCurrency(price, true)
+            };
+            totalCmimi = totalCmimi + price;
 
-          var aneks = {v: anex, f: toCurrency(anex, true)};
-          totalAneks = totalAneks + anex;
+            var aneks = {
+                v: anex,
+                f: toCurrency(anex, true)
+            };
+            totalAneks = totalAneks + anex;
 
-          var totalVal = price + anex;
-          var totali = {v: totalVal, f: toCurrency(totalVal, true)};
-          totalTotal = totalTotal + totalVal;
+            var totalVal = price + anex;
+            var totali = {
+                v: totalVal,
+                f: toCurrency(totalVal, true)
+            };
+            totalTotal = totalTotal + totalVal;
 
-          data.addRow([date, jsonResult[key].aktiviteti, jsonResult[key]['komuna']['emri'], vlera, cmimi, aneks, totali]);
+            data.addRow([date, jsonResult[key].aktiviteti, jsonResult[key]['komuna']['emri'], vlera, cmimi, aneks, totali]);
         }
-        
-        var tVlera = {v: totalVlera, f: toCurrency(totalVlera, true)};
-        var tCmimi = {v: totalCmimi, f: toCurrency(totalCmimi, true)};
-        var tAneks = {v: totalAneks, f: toCurrency(totalAneks, true)};
-        var tTotal = {v: totalTotal, f: toCurrency(totalTotal, true)};
+
+        var tVlera = {
+            v: totalVlera,
+            f: toCurrency(totalVlera, true)
+        };
+        var tCmimi = {
+            v: totalCmimi,
+            f: toCurrency(totalCmimi, true)
+        };
+        var tAneks = {
+            v: totalAneks,
+            f: toCurrency(totalAneks, true)
+        };
+        var tTotal = {
+            v: totalTotal,
+            f: toCurrency(totalTotal, true)
+        };
 
         data.addRow([null, '', '', tVlera, tCmimi, tAneks, tTotal]);
 
@@ -184,17 +220,16 @@
             }
 
             for (var j = 0; j <= 6; j++) {
-                if(numberOfRedFlags > 0){
+                if (numberOfRedFlags > 0) {
                     var colorHex = getRedFlagHexColor(numberOfRedFlags);
-                    if( i < jsonResult.length){
-                      data.setProperty(i, j, 'style', 'font-size:14px; background-color:' + colorHex + ';');
+                    if (i < jsonResult.length) {
+                        data.setProperty(i, j, 'style', 'font-size:14px; background-color:' + colorHex + ';');
                     }
-                }
-                else{
+                } else {
                     data.setProperty(i, j, 'style', 'font-size:14px;');
                 }
 
-                if (j > 2 && j < 7){
+                if (j > 2 && j < 7) {
                     data.setProperty(jsonResult.length, j, 'style', 'color: red; font-size:15px; font-weight: bold;');
                 }
             }
@@ -207,7 +242,11 @@
         formatter1.format(data, 0);
 
 
-        var options = {'allowHtml': true, showRowNumber: true, width: '100%'};
+        var options = {
+            'allowHtml': true,
+            showRowNumber: true,
+            width: '100%'
+        };
         var table = new google.visualization.Table(document.getElementById('table_div'));
         table.draw(data, options);
         // Hack to resolve CSS conflicts between googlecharts tabel and bootstrap
@@ -219,41 +258,40 @@
         function showRedFlagDetails() {
             var selection = table.getSelection();
             var rowId = selection[0].row;
-            if(redFlagTrackerArray[rowId] != undefined){
+            if (redFlagTrackerArray[rowId] != undefined) {
 
                 var arrayLength = redFlagTrackerArray[rowId].length;
 
-                $( "#jqueryUI" ).dialog({
-                   closeOnEscape: true,
-                   autoOpen: false,
+                $("#jqueryUI").dialog({
+                    closeOnEscape: true,
+                    autoOpen: false,
                     height: "auto",
                     width: "90%",
-                     my: "center",
-                     at: "center",
-                     of: window
+                    my: "center",
+                    at: "center",
+                    of: window
                 });
 
                 $("#jqueryUI").empty();
-              
-                $( "#jqueryUI" ).append('"Red Flags" për kompaninë: ' + emriKompanis + ':');
 
-                $( "#jqueryUI" ).append('<ul>');
-                for (var i = 0; i < arrayLength; i++) { 
-                    $( "#jqueryUI" ).append('<li>' + redFlagTrackerArray[rowId][i] + '</li>'); 
+                $("#jqueryUI").append('"Red Flags" për kompaninë: ' + emriKompanis + ':');
+
+                $("#jqueryUI").append('<ul>');
+                for (var i = 0; i < arrayLength; i++) {
+                    $("#jqueryUI").append('<li>' + redFlagTrackerArray[rowId][i] + '</li>');
                 }
-                $( "#jqueryUI" ).append('</ul>');
+                $("#jqueryUI").append('</ul>');
 
-                $( "#jqueryUI" ).dialog( "open" );
+                $("#jqueryUI").dialog("open");
             }
-        }         
-      })
-    }
-    $(window).resize(function(){
-        drawComparisonChart();
-        drawPieChart('Prokurimi sipas llojit të buxhetit (përqindja)','buxheti', 'pie-buxheti');
-        drawPieChart('Ndarja sipas llojit të prokurimit publik', 'prokurimi', 'pie-prokurimi');
-
-    });
+        }
+    })
+}
+$(window).resize(function() {
+    drawComparisonChart();
+    drawPieChart('Prokurimi sipas llojit të buxhetit (përqindja)', 'buxheti', 'pie-buxheti');
+    drawPieChart('Ndarja sipas llojit të prokurimit publik', 'prokurimi', 'pie-prokurimi');
+});
 </script>
 <div id="container" class="company-details-container">
     <h4 class="company-detail-header"></h4>
