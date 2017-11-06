@@ -1,144 +1,166 @@
 {% extends "base.html" %}
 {% block body %}
 <script type="text/javascript">
-  $(function () {
-      $(".commune-dropdown-div").hide();
-  });
-  google.load("visualization", "1", {packages:["table"]});
+$(function() {
+    $(".commune-dropdown-div").hide();
+});
+google.load("visualization", "1", {
+    packages: ["table"]
+});
 
-  var data = null;
+var data = null;
 
-  $(document).ready(function(){
-    $( ".btn-csv-download-company" ).click(function() {
-      var csvContent = "data:application/csv;charset=utf-8," + '\uFEFF' ;
-      var csvContent = csvContent + google.visualization.dataTableToCsv(data);
-      var encodedCsvUri = encodeURI(csvContent);
-      this.setAttribute("href", encodedCsvUri);
-      this.setAttribute("download", "data.csv");
+$(document).ready(function() {
+    $(".btn-csv-download-company").click(function() {
+        var csvContent = "data:application/csv;charset=utf-8," + '\uFEFF';
+        var csvContent = csvContent + google.visualization.dataTableToCsv(data);
+        var encodedCsvUri = encodeURI(csvContent);
+        this.setAttribute("href", encodedCsvUri);
+        this.setAttribute("download", "data.csv");
     });
 
     $('#txt_emriKompanise').on('input', function() {
         var kompania = $("#txt_emriKompanise").val();
         var kompania_slug = slugify(kompania);
-        if(kompania_slug.length > 2){
-          drawTable(kompania_slug);
+        if (kompania_slug.length > 2) {
+            drawTable(kompania_slug);
         }
     });
-  });
-  
-  function drawTable(kompania_slug) {
+});
+
+function drawTable(kompania_slug) {
     // Clear table
     $("#table_div").empty();
-    
+
     var url = '{{ config.BASE_PATH }}/json/kompanite/kerko/' + kompania_slug;
 
-    $.get(url, function(jsonResult){
+    $.get(url, function(jsonResult) {
 
-      if(jsonResult.length > 0 ){
+        if (jsonResult.length > 0) {
 
-        $("#message").css('display', 'none');
+            $("#message").css('display', 'none');
 
-        data = new google.visualization.DataTable();
-        data.addColumn('string', 'Kompania Slug');
-        data.addColumn('string', 'Kompania');
-        data.addColumn('string', 'Adresa e Kompanisë');
-        data.addColumn('string', 'Klientët');
-        data.addColumn('number', 'Numri i kontratave');
-        data.addColumn('number', 'Vlera e kontraktuar');
-        data.addColumn('number', 'Aneks');
-        data.addColumn('number', 'Vlera e kontraktuar + Aneks');
+            data = new google.visualization.DataTable();
+            data.addColumn('string', 'Kompania Slug');
+            data.addColumn('string', 'Kompania');
+            data.addColumn('string', 'Adresa e Kompanisë');
+            data.addColumn('string', 'Klientët');
+            data.addColumn('number', 'Numri i kontratave');
+            data.addColumn('number', 'Vlera e kontraktuar');
+            data.addColumn('number', 'Aneks');
+            data.addColumn('number', 'Vlera e kontraktuar + Aneks');
 
-        var totalCount = 0;
-        var totalCmimi = 0;
-        var totalAneks = 0;
-        var totalTotal = 0;
+            var totalCount = 0;
+            var totalCmimi = 0;
+            var totalAneks = 0;
+            var totalTotal = 0;
 
-        for (var key in jsonResult){
+            for (var key in jsonResult) {
 
-          var kompaniaSlug = jsonResult[key].slug;
-          var kompania = jsonResult[key].emrat[0];
-          var adresa = jsonResult[key].adresa;
-          var klientet = jsonResult[key].klientet;
-          var klientet = klientet.join(', ');
-          var adresa = adresa.join(', ');
+                var kompaniaSlug = jsonResult[key].slug;
+                var kompania = jsonResult[key].emrat[0];
+                var adresa = jsonResult[key].adresa;
+                var klientet = jsonResult[key].klientet;
+                var klientet = klientet.join(', ');
+                var adresa = adresa.join(', ');
 
-          var count = jsonResult[key].count;
-          totalCount = totalCount + count;
+                var count = jsonResult[key].count;
+                totalCount = totalCount + count;
 
-          var cmimi = {v: jsonResult[key].cmimi, f: toCurrency(jsonResult[key].cmimi, true)};
-          totalCmimi = totalCmimi + jsonResult[key].cmimi;
+                var cmimi = {
+                    v: jsonResult[key].cmimi,
+                    f: toCurrency(jsonResult[key].cmimi, true)
+                };
+                totalCmimi = totalCmimi + jsonResult[key].cmimi;
 
-          var aneks = {v: jsonResult[key].aneks, f: toCurrency(jsonResult[key].aneks, true)};
-          totalAneks = totalAneks + jsonResult[key].aneks;
+                var aneks = {
+                    v: jsonResult[key].aneks,
+                    f: toCurrency(jsonResult[key].aneks, true)
+                };
+                totalAneks = totalAneks + jsonResult[key].aneks;
 
-          var totalVal = jsonResult[key].cmimi + jsonResult[key].aneks;
-          var totali = {v: totalVal, f: toCurrency(totalVal, true)};
-          totalTotal = totalTotal + totalVal;
+                var totalVal = jsonResult[key].cmimi + jsonResult[key].aneks;
+                var totali = {
+                    v: totalVal,
+                    f: toCurrency(totalVal, true)
+                };
+                totalTotal = totalTotal + totalVal;
 
-          data.addRow([kompaniaSlug, kompania, adresa, klientet, count, cmimi, aneks, totali]);
-        }
-        var numberOfRows = data.getNumberOfRows();
-        for (var i = 0; i < numberOfRows; i++){
-          for (var j = 0; j <= 7; j++){
-            data.setProperty(i, j, 'style', 'font-size: 15px;');
-          }
-        }
-
-        // Add last row for totals
-        var tCmimi = {v: totalCmimi, f: toCurrency(totalCmimi, true)};
-        var tAneks = {v: totalAneks, f: toCurrency(totalAneks, true)};
-        var tTotal = {v: totalTotal, f: toCurrency(totalTotal, true)};
-
-        data.addRow(['', '', '', '', totalCount, tCmimi, tAneks, tTotal]);
-
-        // Set apart the styling of the last row (the one showing the totals)
-        for(var i=3; i <= 7; i++){
-          data.setProperty(jsonResult.length, i, 'style', 'font-size: 15px; color: red; font-weight: bold;');
-        };
-
-        var options = {'allowHtml': true, showRowNumber: true, width: '100%'};
-        var table = new google.visualization.Table(document.getElementById('table_div'));
-
-        var dataView = new google.visualization.DataView(data)
-        dataView.hideColumns([0]);
-
-        table.draw(dataView, options);
-
-        // Hack to resolve CSS conflicts between googlecharts tabel and bootstrap
-        $('.top-level').removeAttr('style');
-        $($('.google-visualization-table-tr-head')[1]).remove();
-
-        $(".btn-csv-download-container").css('display', 'block');
-
-        function showCompanyDetails() {
-            var selection = table.getSelection();
-            var rowId = selection[0].row;
-            var slug = data.getValue(rowId, 0);
-            if(slug.length > 0){
-              document.location.href = '{{config.BASE_PATH}}/kompanite/' +
-                  slug;
+                data.addRow([kompaniaSlug, kompania, adresa, klientet, count, cmimi, aneks, totali]);
             }
+            var numberOfRows = data.getNumberOfRows();
+            for (var i = 0; i < numberOfRows; i++) {
+                for (var j = 0; j <= 7; j++) {
+                    data.setProperty(i, j, 'style', 'font-size: 15px;');
+                }
+            }
+
+            // Add last row for totals
+            var tCmimi = {
+                v: totalCmimi,
+                f: toCurrency(totalCmimi, true)
+            };
+            var tAneks = {
+                v: totalAneks,
+                f: toCurrency(totalAneks, true)
+            };
+            var tTotal = {
+                v: totalTotal,
+                f: toCurrency(totalTotal, true)
+            };
+
+            data.addRow(['', '', '', '', totalCount, tCmimi, tAneks, tTotal]);
+
+            // Set apart the styling of the last row (the one showing the totals)
+            for (var i = 3; i <= 7; i++) {
+                data.setProperty(jsonResult.length, i, 'style', 'font-size: 15px; color: red; font-weight: bold;');
+            };
+
+            var options = {
+                'allowHtml': true,
+                showRowNumber: true,
+                width: '100%'
+            };
+            var table = new google.visualization.Table(document.getElementById('table_div'));
+
+            var dataView = new google.visualization.DataView(data)
+            dataView.hideColumns([0]);
+
+            table.draw(dataView, options);
+
+            // Hack to resolve CSS conflicts between googlecharts tabel and bootstrap
+            $('.top-level').removeAttr('style');
+            $($('.google-visualization-table-tr-head')[1]).remove();
+
+            $(".btn-csv-download-container").css('display', 'block');
+
+            function showCompanyDetails() {
+                var selection = table.getSelection();
+                var rowId = selection[0].row;
+                var slug = data.getValue(rowId, 0);
+                if (slug.length > 0) {
+                    document.location.href = '{{config.BASE_PATH}}/kompanite/' +
+                        slug;
+                }
+            }
+            google.visualization.events.addListener(table, 'select', showCompanyDetails);
+
+        } else {
+            $("#message").css('display', 'block');
+            $(".btn-csv-download-container").css('display', 'none');
         }
-        google.visualization.events.addListener(table, 'select', showCompanyDetails);
-
-      }else{
-        $("#message").css('display', 'block');
-        $(".btn-csv-download-container").css('display', 'none');
-      }
     })
-  }
+}
 
-  function slugify(text){
+function slugify(text) {
     return text.toString().toLowerCase()
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-    .replace(/\-\-+/g, '-') // Replace multiple - with single -
-    .replace(/^-+/, '') // Trim - from start of text
-    .replace(/-+$/, ''); // Trim - from end of text
-  }
-
+        .replace(/\s+/g, '-') // Replace spaces with -
+        .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+        .replace(/\-\-+/g, '-') // Replace multiple - with single -
+        .replace(/^-+/, '') // Trim - from start of text
+        .replace(/-+$/, ''); // Trim - from end of text
+}
 </script>
-
 <div id="container" class="company-container">
 
     <div class="col-xs-12 col-sm-12 col-sm-12 col-md-12 company-buttons">
